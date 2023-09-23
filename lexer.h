@@ -1,6 +1,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+
 typedef enum
 {
     START_STATE,
@@ -12,5 +13,9 @@ typedef enum
     NUMBER_STATE,
 
 } SM_STATE;
+
+bool Get_Token(token **T);
+
+bool lexer(dyn_string *buffer, token_type *type);
 
 #endif
