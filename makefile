@@ -8,7 +8,7 @@ SRC_FILES = $(wildcard *.c)
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 # Define the executable name
-EXECUTABLE = my_program
+EXECUTABLE = ifjcomp
 
 all: $(EXECUTABLE)
 

@@ -1,3 +1,1 @@
-viktor je pleb
-(56)
-nazi
+let pipik String = pp

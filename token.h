@@ -9,34 +9,23 @@
  */
 typedef enum
 {
-    variableT,   //  $...
-    operatorT,   //  +   -   *   / <  >  <=  >=  !==  === .
-    assingmentT, //  =
-    commaT,      //  ,
-    ifT,         // if keyword
-    whileT,      // while keyword
-    elseT,       // else keyword
-    functionT,   // function keyword
-    floatT,      // float keyword
-    intT,        // int keyword
-    nullT,       // null keyword
-    returnT,     // return keyword
-    stringT,     // string keyword
-    voidT,       // void keyword
-    endT,        //  ;
-    colonT,      //  :
-    strTypeT,    // string
-    intTypeT,    // int
-    floatTypeT,  // float
-    SbracketT,   //  (
-    EbracketT,   //  )
-    SCbracketT,  //  {
-    ECbracketT,  //  }
-    dataTypeT,   // with ? and without
-    LcomTypeT,   // line comment
-    BcomTypeT,   // block comment
-    MadagaskarT,
-    BENGININGT
+    identifierT,// variable and function names
+    intT,       // int
+    doubleT,    // double
+    stringT,    // string
+    varT,       // var
+    nilT,       // nil
+    SbracketT,  // (
+    EbracketT,  // )
+    ErrT,       // error in lexer
+    ifT,        // if
+    elseT,      // else
+    whileT,     // while
+    letT,       // let
+    returnT,    // return
+    dotsT,      // :
+    assignT,   // =
+    funcT
 } token_type;
 
 typedef struct
