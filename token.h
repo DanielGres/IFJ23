@@ -25,7 +25,30 @@ typedef enum
     returnT,    // return
     dotsT,      // :
     assignT,   // =
-    funcT
+    funcT,
+
+    varidT,
+    colonT,
+    vartypeT,
+    equalT,
+    vyrazT,
+    varT,
+    letT,
+    ifT,
+    LbracketT,
+    RbracketT,
+    LCbracketT,
+    RCbracketT,
+    elseT,
+    funcT,
+    paramNameT,
+    commaT,
+    arrowT,
+    whileT,
+    returnT,
+    termT,
+    newlineT,
+    semicolonT
 } token_type;
 
 typedef struct
