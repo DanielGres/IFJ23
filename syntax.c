@@ -4,59 +4,54 @@
 token *myToken;
 
 const char* enumers[] = {
-    "identifierT",
-    "intT",
-    "doubleT",
-    "stringT",
-    "varT",
-    "nilT",
-    "SbracketT",
-    "EbracketT",
-    "ErrT",
-    "ifT",
-    "elseT",
-    "whileT",
-    "letT",
-    "returnT",
-    "funcT"
+    "varidT",        // variable and function names
+    "operatorT",     // !  * /  + -  == != < >  <= >=  ??
+    "colonT",        // :
+    "vartypeT",      // Double, Int, String or same with ? on the end
+    "equalT",        // =
+    "vyrazT",
+    "intnumT",      // whole number
+    "doublemumT",   // double/float number
+    "varT",          // var keyword
+    "letT",          // let keyword
+    "ifT",           // if keyword
+    // "doubleT",       // Double keyword
+    // "intT",          // Int keyword
+    "stringT",       // string in the input code
+    "nilT",          // nil keyword
+    "LbracketT",     // (
+    "RbracketT",     // )
+    "LCbracketT",    // {
+    "RCbracketT",    // }
+    "elseT",         // else keyword
+    "funcT",         // func keyword
+    "paramNameT",    // name of the parameter in a function
+    "commaT",        // ,
+    "arrowT",        // ->
+    "whileT",        // while keyword
+    "returnT",       // return keyword
+    "termT",         // TODO realne hocico to moze byt
+    "newlineT",      // \n
+    "semicolonT",    // ;
+    "linecommentT",  // //comment
+    "blockcommentT" //  /* comment */
 };
 
 int main(){
-    // while(Get_Token(&myToken)){
-    //     //dynstr_print((myToken->val));
-    //     printf("%s\n",enumers[myToken->dtype]);
+    while(Get_Token(&myToken)){
+        //dynstr_print((myToken->val));
+        printf(" %s\n",enumers[myToken->dtype]);
         
+    }
+    // if(CorpusPrime()){
+    //     printf("spravne! :DD\n");
     // }
-    if(main_body()){
-        printf("spravne! :DD\n");
-    }
-    else{
-        printf("nespravne! :((\n");
-    }
+    // else{
+    //     printf("nespravne! :((\n");
+    // }
 }
 
-bool main_body(){
-    Get_Token(&myToken);
-    if(myToken->dtype == letT){                                                 // "let" Rule
-        Get_Token(&myToken);                                                    // looks for identifier token
-        if(myToken->dtype != identifierT) return false;                         // checks if correct
-        Get_Token(&myToken);                                                    // looks for double dots token
-        if(myToken->dtype != dotsT) return false;                               // checks if correct
-        Get_Token(&myToken);                                                    // looks for type
-        if(myToken->dtype != intT && myToken->dtype != stringT) return false;   // check if any of int, double, string
-        Get_Token(&myToken);                                                    // looks for assign sign token
-        if(myToken->dtype != assignT) return false;                             // checks if correct
-        Get_Token(&myToken);                                                    // looks for expression start
-        if(expression()) return true;                                           // calls expression rule
-    }
-    else if(myToken->dtype == identifierT){                                     // "assign" Rule
-        Get_Token(&myToken);
-        if(myToken->dtype != assignT) return false;
-        Get_Token(&myToken);
-        if(expression()) return true;  
-    }
-    return false;
-}
+
 
 bool expression(){
     //precedencna tabulka etc :))))

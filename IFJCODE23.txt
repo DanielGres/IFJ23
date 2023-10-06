@@ -1,1 +1,2 @@
-let pipik String = pp
+let lol = "idem(hore) \u{Fzzz}" 666
+var : preco(nie);
