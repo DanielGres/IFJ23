@@ -3,8 +3,6 @@
 #include "token.h"
 #include "bin_tree.h"
 
-bool Expression();
-
 bool CorpusPrime();
 
 bool Corpus();
