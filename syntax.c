@@ -42,18 +42,18 @@ int main(){
         //dynstr_print((myToken->val));
         printf(" %s\n",enumers[myToken->dtype]);
         
+    // }
+
+    if(CorpusPrime()){
+        printf("spravne! :DD\n");
     }
-    // if(CorpusPrime()){
-    //     printf("spravne! :DD\n");
-    // }
-    // else{
-    //     printf("nespravne! :((\n");
-    // }
+    else{
+        printf("nespravne! :((\n");
+    }
 }
 
 
-
-bool expression(){
+bool Expression(){
     //precedencna tabulka etc :))))
     return true;
 }
@@ -61,41 +61,35 @@ bool expression(){
 bool CorpusPrime(){
     Get_Token(&myToken);
     switch(myToken->dtype){
-        case ifT:
+        case letT:
         {
-
+            Get_Token(&myToken);
+            if(myToken->dtype != varidT) return false;
+            if(!DeclarationArgs()) return false;
         }
         break;
-        case funcT:
+        case varT:
         {
-
-        }
-        break;
-        case varidT:
-        {
-
-        }
-        break;
-        case whileT:
-        {
-
-        }
-        break;
-        default:
-        {
-            return false;
+            Get_Token(&myToken);
+            if(myToken->dtype != varidT) return false;
+            if(!DeclarationArgs()) return false;
         }
         break;
     }
+    return true;
 }
 
 bool Corpus();
 
 bool CorpusRet();
 
-bool FuncCallDecision();
+bool FuncCallDecision(){
 
-bool FuncInputParams();
+}
+
+bool FuncInputParams(){
+
+}
 
 bool NextFuncInputParams();
 
@@ -107,14 +101,65 @@ bool ParamList();
 
 bool NextParamList();
 
-bool IfDecision();
+bool IfDecision(){
+}
 
-bool IfElseDecision();
+bool IfElseDecision(){
 
-bool DeclarationArgs();
+}
 
-bool FinalDeclaration();
+bool DeclarationArgs(){
+    Get_Token(&myToken);
+    switch(myToken->dtype){
+        case colonT:
+        {
+            Get_Token(&myToken);
+            if(myToken->dtype != vartypeT) return false;
+            if(!FinalDeclaration()) return false;
+        }
+        break;
+        case equalT:
+        {
+            if(!FuncCallDecision()) return false;
+        }
+        break;
+    }
+    return true;
+}
+
+bool FinalDeclaration(){
+    Get_Token(&myToken);
+    switch(myToken->dtype){
+        case equalT:
+        {
+            Get_Token(&myToken);
+            if(myToken->dtype != vyrazT) return false;
+        }
+        break;
+        case equalT:
+        {
+            if(!FuncCallDecision()) return false;
+        }
+        break;
+    }
+    return true;
+}
 
 bool Declaration();
 
-bool Exitus();
+bool Exitus(){
+    Get_Token(&myToken);
+    switch(myToken->dtype){
+        case newlineT:
+        case semicolonT:
+        {
+            return true;
+        }
+        break;
+        default:
+        {
+            return false;
+        }
+    }
+    return true;
+}

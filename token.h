@@ -9,37 +9,29 @@
  */
 typedef enum
 {
-    varidT, // variable and function names
-    operatorT, // !  * /  + -  == != < >  <= >=  ??
-    colonT, // :
-    vartypeT, //  Double, Int, String or same with ? on the the end 
-    equalT, // = 
-    vyrazT, 
-    intnumT, // whole number
-    doublenumT, // double/float number
-    varT, // var keyword
-    letT, // let keyword
-    ifT, // if keyword
-    // doubleT, // Double keyword NETREBA JE TO VARTYPE
-    // intT, // Int keyword NETREBA JE TO V VARTYPE
-    stringT, // string in the input code
-    nilT, // nil keyword
-    LbracketT, // (
-    RbracketT, // )
-    LCbracketT, // {
-    RCbracketT, // }
-    elseT, // else keyword
-    funcT, // func keyword
-    paramNameT, // name of parameter in function TODO no idea how toto rozlisit asi az v syntaxi/semantike
-    commaT, // ,
-    arrowT, // ->
-    whileT, // while keyword
-    returnT, // return keyword
-    termT, // TODO realne hocico to moze byt
-    newlineT, // \n //TODO probably iba ukoncenie riadku netreba token na toto asi
-    semicolonT, // ; //TODO probably iba ukoncenie riadku netreba token na toto asi
-    linecommentT, //comment
-    blockcommentT, /* comment */
+    varidT,
+    colonT,
+    vartypeT,
+    equalT,
+    vyrazT,
+    varT,
+    letT,
+    ifT,
+    LbracketT,
+    RbracketT,
+    LCbracketT,
+    RCbracketT,
+    elseT,
+    funcT,
+    paramNameT,
+    commaT,
+    arrowT,
+    whileT,
+    returnT,
+    termT,
+    newlineT,
+    semicolonT,
+    endT
 } token_type;
 
 typedef struct

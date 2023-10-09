@@ -30,7 +30,8 @@ bool Get_Token(token **T)
         }
         else
         {
-            // mistake_print(&errMSG, errType);
+            Token_set(T, &buffer, endT);
+            //mistake_print(&errMSG, errType);
             return false;
         }
     }
