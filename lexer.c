@@ -151,11 +151,11 @@ bool lexer(dyn_string *buffer, token_type *type)
                 b_ex = false;
                 eNextState = SEMICOL_STATE;
             }
-            // else if(c == 10)
-            // {
-            //     b_ex = false;
-            //     eNextState = NEWLINE_STATE;
-            // }
+            else if(c == 10)
+            {
+                b_ex = false;
+                eNextState = NEWLINE_STATE;
+            }
             else if (c == 32 || c == 10)
             { // Exitus
                 b_ex = false;
@@ -175,14 +175,14 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        // case NEWLINE_STATE: // \n
-        // {
-        //     *type = newlineT;
-        //     b_ex = true;
-        //     condition = false;
-        //     eNextState = START_STATE;
-        // }
-        // break;
+        case NEWLINE_STATE: // \n
+        {
+            *type = newlineT;
+            b_ex = true;
+            condition = false;
+            eNextState = START_STATE;
+        }
+        break;
         case SEMICOL_STATE: // ;
         {
             *type = semicolonT;
@@ -737,7 +737,7 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case STRINGU3_STATE: // "\u{NIECO
         {
-            printf("character is: %c\n",c);
+            //printf("character is: %c\n",c);
             if(stringCounter <= 8)
             {
                 if((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
@@ -906,7 +906,7 @@ bool lexer(dyn_string *buffer, token_type *type)
         else
         {
             //debug print
-            dynstr_print(buffer);
+            //dynstr_print(buffer);
             if (compareWithTable)
             {
                 if (dynstr_cmp(buffer, "if"))

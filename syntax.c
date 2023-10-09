@@ -9,7 +9,6 @@ const char* enumers[] = {
     "colonT",        // :
     "vartypeT",      // Double, Int, String or same with ? on the end
     "equalT",        // =
-    "vyrazT",
     "intnumT",      // whole number
     "doublemumT",   // double/float number
     "varT",          // var keyword
@@ -38,23 +37,24 @@ const char* enumers[] = {
 };
 
 int main(){
-    while(Get_Token(&myToken)){
-        //dynstr_print((myToken->val));
-        printf(" %s\n",enumers[myToken->dtype]);
+    // while(Get_Token(&myToken)){
+    //     //dynstr_print((myToken->val));
+    //     printf(" %s\n",enumers[myToken->dtype]);
         
+    // }
+    if(CorpusPrime()){
+        printf("spravne! :DD\n");
     }
-    // if(CorpusPrime()){
-    //     printf("spravne! :DD\n");
-    // }
-    // else{
-    //     printf("nespravne! :((\n");
-    // }
+    else{
+        printf("nespravne! :((\n");
+    }
 }
 
 
 
 bool expression(){
-    //precedencna tabulka etc :))))
+    Get_Token(&myToken);
+    if(myToken->dtype != intnumT) return false;
     return true;
 }
 
@@ -66,19 +66,11 @@ bool CorpusPrime(){
 
         }
         break;
-        case funcT:
+        case varT:
         {
-
-        }
-        break;
-        case varidT:
-        {
-
-        }
-        break;
-        case whileT:
-        {
-
+            Get_Token(&myToken);
+            if(myToken->dtype != varidT) return false;
+            return DeclarationArgs();
         }
         break;
         default:
@@ -111,10 +103,85 @@ bool IfDecision();
 
 bool IfElseDecision();
 
-bool DeclarationArgs();
+bool DeclarationArgs(){
+    Get_Token(&myToken);
+    switch(myToken->dtype){
+        case colonT:
+        {
+            Get_Token(&myToken);
+            if(myToken->dtype != vartypeT) return false;
+            return FinalDeclaration();
+        }
+        break;
+        case equalT:
+        {
+            //return Funccalldecs..
+            return false;
+        }
+        default:
+        {
+            return false;
+        }
+        break;
+    }
+}
 
-bool FinalDeclaration();
+bool FinalDeclaration(){
+    Get_Token(&myToken);
+    switch(myToken->dtype){
+        case equalT:
+        {
+            if(!expression()) return false;
+            return Exitus();
+        }
+        break;
+        default:
+        {
+            return ExitusW();
+        }
+        break;
+    }
+}
 
 bool Declaration();
 
-bool Exitus();
+bool Exitus(){
+    Get_Token(&myToken);
+    switch(myToken->dtype){
+        case newlineT:
+        {
+            return true;
+        }
+        break;
+        case semicolonT:
+        {
+            return true;
+        }
+        break;
+        default:
+        {
+            return false;
+        }
+        break;
+    }
+}
+
+bool ExitusW(){
+    switch(myToken->dtype){
+        case newlineT:
+        {
+            return true;
+        }
+        break;
+        case semicolonT:
+        {
+            return true;
+        }
+        break;
+        default:
+        {
+            return false;
+        }
+        break;
+    }
+}

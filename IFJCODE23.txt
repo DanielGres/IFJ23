@@ -1,2 +1,1 @@
-let lol = "idem(hore) \u{Fzzz}" 666
-var : preco(nie);
+var pepek  sakr : String = 66

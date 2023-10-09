@@ -34,3 +34,6 @@ bool FinalDeclaration();
 bool Declaration();
 
 bool Exitus();
+
+//without geting token
+bool ExitusW();

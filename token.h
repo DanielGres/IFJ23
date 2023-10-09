@@ -14,7 +14,6 @@ typedef enum
     colonT, // :
     vartypeT, //  Double, Int, String or same with ? on the the end 
     equalT, // = 
-    vyrazT, 
     intnumT, // whole number
     doublenumT, // double/float number
     varT, // var keyword

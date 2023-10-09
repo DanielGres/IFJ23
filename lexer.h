@@ -58,7 +58,7 @@ typedef enum
     QUESTION2_STATE,
     COMMA_STATE,
     SEMICOL_STATE,
-    // NEWLINE_STATE,
+    NEWLINE_STATE,
 } SM_STATE;
 
 bool Get_Token(token **T);
