@@ -37,10 +37,76 @@ bool Get_Token(token **T)
     return false;
 }
 
+// Function to convert a single hexadecimal character to an integer
+int hexCharToInt(char c) {
+    if (c >= '0' && c <= '9') {
+        return c - '0';
+    }
+    if (c >= 'a' && c <= 'f') {
+        return c - 'a' + 10;
+    }
+    if (c >= 'A' && c <= 'F') {
+        return c - 'A' + 10;
+    }
+    return -1;  // Invalid character
+}
+
+// Function to convert a hexadecimal string to its decimal representation
+int hexToDecimal(dyn_string *hex) {
+    int decimal = 0;
+    for (int i = 0; i < hex->len; i++) {
+        int hexValue = hexCharToInt(hex->s[i]);
+        if (hexValue == -1) {
+            // Invalid hex character
+            return -1;
+        }
+        decimal = decimal * 16 + hexValue;
+    }
+    return decimal;
+}
+
+void replaceUnicodeSequences(dyn_string *inputString) {
+    dyn_string resultString;
+    dynstr_init(&resultString);
+
+    int i = 0;
+    while (i < inputString->len) {
+        if (inputString->s[i] == '\\' && inputString->s[i + 1] == 'u' && inputString->s[i + 2] == '{') {
+            int start = i + 3;
+            while (i < inputString->len && inputString->s[i] != '}') {
+                i++;
+            }
+            int end = i;
+            i++;  // Skip the closing '}'
+
+            // Extract the hexadecimal sequence (excluding the closing curly bracket)
+            dyn_string hexSequence;
+            dynstr_init(&hexSequence);
+            for (int j = start; j < end; j++) {
+                if (inputString->s[j] != '}') {
+                    dynstr_add(&hexSequence, inputString->s[j]);
+                }
+            }
+
+            // Convert the hexadecimal sequence to decimal
+            int decimalValue = hexToDecimal(&hexSequence);
+            dynstr_destr(&hexSequence);
+
+            // Append the corresponding ASCII character to the result string
+            char asciiChar = (char)decimalValue;
+            dynstr_add(&resultString, asciiChar);
+        } else {
+            dynstr_add(&resultString, inputString->s[i]);
+            i++;
+        }
+    }
+    dynstr_copy(inputString, &resultString);
+    dynstr_destr(&resultString);
+}
+
 bool lexer(dyn_string *buffer, token_type *type)
 {
     SM_STATE eNextState = START_STATE;
-
     bool condition = true;
     bool compareWithTable = false;
 
@@ -468,12 +534,6 @@ bool lexer(dyn_string *buffer, token_type *type)
                 b_ex = false;
                 eNextState = ID2_STATE;
             }
-            else if(c == 32 || c == 10)
-            {
-                //TODO error
-                return false;
-
-            }
             else
             {
                 *type = varidT;
@@ -693,6 +753,7 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case STRING3_STATE:
         {
+            replaceUnicodeSequences(buffer);
             *type = stringT;
             condition = false;
             b_ex = true;
@@ -745,7 +806,6 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case STRINGU3_STATE: // "\u{NIECO
         {
-            //printf("character is: %c\n",c);
             if(stringCounter <= 8)
             {
                 if((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
@@ -806,7 +866,7 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case STRINGMULTI3_STATE: // """ \n
         {
-           if (c == 10)
+        if (c == 10)
             {
                 b_ex = false;
                 eNextState = STRINGMULTI3_STATE;
@@ -820,7 +880,7 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case STRINGMULTI4_STATE: // """ something
         {
-           if (c == 10)
+        if (c == 10)
             {
                 b_ex = false;
                 eNextState = STRINGMULTI5_STATE;
@@ -839,7 +899,7 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case STRINGMULTI5_STATE: // """ something \n
         {
-           if (c == 10)
+        if (c == 10)
             {
                 b_ex = false;
                 eNextState = STRINGMULTI5_STATE;
@@ -896,6 +956,7 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case STRINGMULTI8_STATE: // """ something """
         {
+            replaceUnicodeSequences(buffer);
             *type = stringT;
             condition = false;
             b_ex = true;

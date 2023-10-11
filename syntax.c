@@ -7,7 +7,8 @@ const char* enumers[] = {
     "varidT",        // variable and function names
     "operatorT",     // !  * /  + -  == != < >  <= >=  ??
     "colonT",        // :
-    "vartypeT",      // Double, Int, String or same with ? on the end
+    "vartypeT",      // Double, Int, String 
+    "vartypeQT",     // Double?, Int?, String?
     "equalT",        // =
     "intnumT",      // whole number
     "doublemumT",   // double/float number
@@ -37,17 +38,17 @@ const char* enumers[] = {
 };
 
 int main(){
-    // while(Get_Token(&myToken)){
-    //     //dynstr_print((myToken->val));
-    //     printf(" %s\n",enumers[myToken->dtype]);
+    while(Get_Token(&myToken)){
+        dynstr_print((myToken->val));
+        printf(" %s\n",enumers[myToken->dtype]);
         
+    }
+    // if(CorpusPrime()){
+    //     printf("spravne! :DD\n");
     // }
-    if(CorpusPrime()){
-        printf("spravne! :DD\n");
-    }
-    else{
-        printf("nespravne! :((\n");
-    }
+    // else{
+    //     printf("nespravne! :((\n");
+    // }
 }
 
 
