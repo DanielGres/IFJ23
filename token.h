@@ -12,7 +12,8 @@ typedef enum
     varidT, // variable and function names
     operatorT, // !  * /  + -  == != < >  <= >=  ??
     colonT, // :
-    vartypeT, //  Double, Int, String or same with ? on the the end 
+    vartypeT, //  Double, Int, String
+    vartypeQT, // Double?, Int?, String?
     equalT, // = 
     intnumT, // whole number
     doublenumT, // double/float number

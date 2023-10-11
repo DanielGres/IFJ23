@@ -156,7 +156,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 b_ex = false;
                 eNextState = NEWLINE_STATE;
             }
-            else if (c == 32 || c == 10)
+            else if (c == 32)
             { // Exitus
                 b_ex = false;
                 eNextState = START_STATE;
@@ -461,12 +461,18 @@ bool lexer(dyn_string *buffer, token_type *type)
             eNextState = START_STATE;
         }
         break;
-        case ID_STATE:
+        case ID_STATE: // _
         {
             if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
             {
                 b_ex = false;
                 eNextState = ID2_STATE;
+            }
+            else if(c == 32 || c == 10)
+            {
+                //TODO error
+                return false;
+
             }
             else
             {
@@ -478,7 +484,7 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        case ID2_STATE:
+        case ID2_STATE: // __
         {
             if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
             {
@@ -487,6 +493,7 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else if (c == '?')
             {
+                b_ex = false;
                 eNextState = IDTYPE_STATE;
             }
             else
@@ -501,12 +508,13 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case IDTYPE_STATE:
         {
-            *type = varidT;
+            *type = vartypeQT; // tu bolo varidT no idea why + nebol break; na konci lmao KEBY CHYBA TA SEMKA
             condition = false;
             compareWithTable = true;
             b_ex = true;
             eNextState = START_STATE;
         }
+        break;
         case LEFTBRACKET_STATE:
         {
             *type = LbracketT;
@@ -775,8 +783,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                //TODO ERROR
-                return false;
+                *type = stringT;
+                condition = false;
+                b_ex = true;
+                eNextState = START_STATE;
             }
         }
         break;
@@ -925,17 +935,29 @@ bool lexer(dyn_string *buffer, token_type *type)
                 {
                     *type = funcT;
                 }
-                else if ((dynstr_cmp(buffer, "Double")) || (dynstr_cmp(buffer, "Double?")))
+                else if (dynstr_cmp(buffer, "Double"))
                 {
                     *type = vartypeT;
                 }
-                else if ((dynstr_cmp(buffer, "Int")) || (dynstr_cmp(buffer, "Int?")))
+                else if (dynstr_cmp(buffer, "Double?"))
+                {
+                    *type = vartypeQT;
+                }
+                else if (dynstr_cmp(buffer, "Int"))
                 {
                     *type = vartypeT;
                 }
-                else if ((dynstr_cmp(buffer, "String")) || (dynstr_cmp(buffer, "String?")))
+                else if (dynstr_cmp(buffer, "Int?"))
+                {
+                    *type = vartypeQT;
+                }
+                else if (dynstr_cmp(buffer, "String"))
                 {
                     *type = vartypeT;
+                }
+                else if (dynstr_cmp(buffer, "String?"))
+                {
+                    *type = vartypeQT;
                 }
                 else if (dynstr_cmp(buffer, "nil"))
                 {
