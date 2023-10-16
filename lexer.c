@@ -30,7 +30,7 @@ bool Get_Token(token **T)
         }
         else
         {
-            Token_set(T, NULL, eofT);
+            Token_set(T, &buffer, eofT);
             return false;
         }
     }
