@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "token.h"
 #include "bin_tree.h"
+#include "lexer.h"
 
 bool CorpusPrime();
 
