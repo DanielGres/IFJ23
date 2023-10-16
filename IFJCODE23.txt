@@ -1,1 +1,8 @@
-var pepek  sakr : String = 66
+var pepek : String = 66
+if ( 66 )
+{
+
+}
+else{
+
+}

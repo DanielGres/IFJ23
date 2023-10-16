@@ -63,14 +63,33 @@ bool CorpusPrime(){
     switch(myToken->dtype){
         case ifT:
         {
-
+            if(!IfDecision()) return false;
+            Get_Token(&myToken);
+            if(myToken->dtype != LCbracketT) return false;
+            if(!Corpus()) return false;
+            Get_Token(&myToken);
+            if(myToken->dtype != RCbracketT) return false;
+            Get_Token(&myToken);
+            if(myToken->dtype != elseT) return false;
+            Get_Token(&myToken);
+            if(myToken->dtype != LCbracketT) return false;
+            if(!Corpus()) return false;
+            Get_Token(&myToken);
+            if(myToken->dtype != RCbracketT) return false;
+            return CorpusPrime();
         }
         break;
         case varT:
         {
             Get_Token(&myToken);
             if(myToken->dtype != varidT) return false;
-            return DeclarationArgs();
+            if(!DeclarationArgs()) return false;
+            return CorpusPrime();
+        }
+        break;
+        case eofT:
+        {
+            return true;
         }
         break;
         default:
@@ -81,7 +100,9 @@ bool CorpusPrime(){
     }
 }
 
-bool Corpus();
+bool Corpus(){
+    return true;
+}
 
 bool CorpusRet();
 
@@ -99,9 +120,35 @@ bool ParamList();
 
 bool NextParamList();
 
-bool IfDecision();
+bool IfDecision(){
+    Get_Token(&myToken);
+    if(myToken->dtype != LbracketT) return false;
+    if(!expression()) return false;
+    Get_Token(&myToken);
+    if(myToken->dtype != RbracketT) return false;
+    return true;
+}
 
-bool IfElseDecision();
+// bool IfElseDecision(){
+//     Get_Token(&myToken);
+//     switch(myToken->dtype){
+//         case elseT:
+//         {
+//             Get_Token(&myToken);
+//             if(myToken->dtype != LCbracketT) return false;
+//             if(!Corpus()) return false;
+//             Get_Token(&myToken);
+//             if(myToken->dtype != RCbracketT) return false;
+//             return true;
+//         }
+//         break;
+//         default:
+//         {
+//             return ExitusW();
+//         }
+//         break;
+//     }
+// }
 
 bool DeclarationArgs(){
     Get_Token(&myToken);
@@ -131,8 +178,8 @@ bool FinalDeclaration(){
     switch(myToken->dtype){
         case equalT:
         {
-            if(!expression()) return false;
-            return Exitus();
+            //if(!expression()) return false;
+            return expression();
         }
         break;
         default:
