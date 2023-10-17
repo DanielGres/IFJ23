@@ -30,7 +30,7 @@ bool Get_Token(token **T)
         }
         else
         {
-            // mistake_print(&errMSG, errType);
+            Token_set(T, &buffer, eofT);
             return false;
         }
     }
@@ -215,12 +215,16 @@ bool lexer(dyn_string *buffer, token_type *type)
             else if (c == ';')
             {
                 b_ex = false;
-                eNextState = SEMICOL_STATE;
+                //shady uprava by xgresd00
+                //eNextState = SEMICOL_STATE;
+                eNextState = START_STATE;
             }
             else if(c == 10)
             {
                 b_ex = false;
-                eNextState = NEWLINE_STATE;
+                //shady uprava by xgresd00
+                //eNextState = NEWLINE_STATE;
+                eNextState = START_STATE;
             }
             else if (c == 32)
             { // Exitus

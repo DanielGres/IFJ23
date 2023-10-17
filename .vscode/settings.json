@@ -1,0 +1,10 @@
+{
+    "conventionalCommits.scopes": [
+        "codegeneration",
+        "syntax"
+    ],
+    "files.associations": {
+        "lexer.h": "c",
+        "bin_tree.h": "c"
+    }
+}

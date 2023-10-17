@@ -6,35 +6,10 @@
 
 bool CorpusPrime();
 
-bool Corpus();
+bool CorpusSecondary();
 
-bool CorpusRet();
+bool Expression();
 
-bool FuncCallDecision();
+bool Let();
 
-bool FuncInputParams();
-
-bool NextFuncInputParams();
-
-bool ReturnF();
-
-bool FuncVoidDecision();
-
-bool ParamList();
-
-bool NextParamList();
-
-bool IfDecision();
-
-bool IfElseDecision();
-
-bool DeclarationArgs();
-
-bool FinalDeclaration();
-
-bool Declaration();
-
-bool Exitus();
-
-//without geting token
-bool ExitusW();
+bool IfPrime();

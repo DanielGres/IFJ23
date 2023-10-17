@@ -2,6 +2,8 @@
 #include "syntax.h"
 
 token *myToken;
+bool TakeToken = true;
+#define GetToken() if (TakeToken) { Get_Token(&myToken);}
 
 const char* enumers[] = {
     "varidT",        // variable and function names
@@ -38,151 +40,111 @@ const char* enumers[] = {
 };
 
 int main(){
-    while(Get_Token(&myToken)){
-        dynstr_print((myToken->val));
-        printf(" %s\n",enumers[myToken->dtype]);
+    // while(Get_Token(&myToken)){
+    //     dynstr_print((myToken->val));
+    //     printf(" %s\n",enumers[myToken->dtype]);
         
+    // }
+    if(CorpusPrime()){
+        printf("spravne! :DD\n");
     }
-    // if(CorpusPrime()){
-    //     printf("spravne! :DD\n");
-    // }
-    // else{
-    //     printf("nespravne! :((\n");
-    // }
+    else{
+        printf("nespravne! :((\n");
+    }
 }
 
 
 
-bool expression(){
-    Get_Token(&myToken);
+bool Expression(){
+    GetToken();
     if(myToken->dtype != intnumT) return false;
     return true;
 }
 
 bool CorpusPrime(){
-    Get_Token(&myToken);
+    GetToken();
+    TakeToken = true;
     switch(myToken->dtype){
-        case ifT:
-        {
-
+        case letT:{
+            if(!Let()) return false;
+            return CorpusPrime();
         }
         break;
-        case varT:
+        case ifT:{
+            if(!IfPrime()) return false;
+            return CorpusPrime();
+        }
+        case eofT:
         {
-            Get_Token(&myToken);
-            if(myToken->dtype != varidT) return false;
-            return DeclarationArgs();
+            return true;
         }
         break;
         default:
         {
             return false;
         }
-        break;
+
     }
 }
 
-bool Corpus();
-
-bool CorpusRet();
-
-bool FuncCallDecision();
-
-bool FuncInputParams();
-
-bool NextFuncInputParams();
-
-bool ReturnF();
-
-bool FuncVoidDecision();
-
-bool ParamList();
-
-bool NextParamList();
-
-bool IfDecision();
-
-bool IfElseDecision();
-
-bool DeclarationArgs(){
-    Get_Token(&myToken);
-    switch(myToken->dtype){
-        case colonT:
+bool CorpusSecondary(){
+    GetToken();
+    TakeToken = true;
+    switch (myToken->dtype){
+        case letT:{
+            if(!Let()) return false;
+            return CorpusSecondary();
+        }
+        break;
+        case RCbracketT:{
+            return true;
+        }
+        break;
+        default:
         {
-            Get_Token(&myToken);
+            return false;
+        }
+    }
+}
+
+bool Let(){
+    GetToken();
+    if(myToken->dtype != varidT) return false;
+    GetToken();
+    switch(myToken->dtype){
+        case colonT:{
+            GetToken();
             if(myToken->dtype != vartypeT) return false;
-            return FinalDeclaration();
+            GetToken();
+            if(myToken->dtype == equalT){
+                return Expression();
+            }
+            else{
+                TakeToken = false;
+                return true;
+            }
         }
         break;
-        case equalT:
-        {
-            //return Funccalldecs..
-            return false;
-        }
-        default:
-        {
-            return false;
+        case equalT:{
+            return Expression();
         }
         break;
+        default:{
+            return false;
+        }  
     }
+
 }
 
-bool FinalDeclaration(){
-    Get_Token(&myToken);
-    switch(myToken->dtype){
-        case equalT:
-        {
-            if(!expression()) return false;
-            return Exitus();
-        }
-        break;
-        default:
-        {
-            return ExitusW();
-        }
-        break;
-    }
-}
-
-bool Declaration();
-
-bool Exitus(){
-    Get_Token(&myToken);
-    switch(myToken->dtype){
-        case newlineT:
-        {
-            return true;
-        }
-        break;
-        case semicolonT:
-        {
-            return true;
-        }
-        break;
-        default:
-        {
-            return false;
-        }
-        break;
-    }
-}
-
-bool ExitusW(){
-    switch(myToken->dtype){
-        case newlineT:
-        {
-            return true;
-        }
-        break;
-        case semicolonT:
-        {
-            return true;
-        }
-        break;
-        default:
-        {
-            return false;
-        }
-        break;
-    }
+bool IfPrime(){
+    if(!Expression()) return false;
+    GetToken();
+    if(myToken->dtype != LCbracketT) return false;
+    if(!CorpusSecondary()) return false;
+    GetToken();
+    if(myToken->dtype != elseT) return false;
+    GetToken();
+    if(myToken->dtype != LCbracketT) return false;
+    if(!CorpusSecondary()) return false;
+    return true;
 }
