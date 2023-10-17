@@ -3,7 +3,7 @@
 
 token *myToken;
 bool TakeToken = true;
-#define GetToken() if (TakeToken) { Get_Token(&myToken);}
+#define GetToken() if (TakeToken) { Get_Token(&myToken);} else {TakeToken = true;}
 
 const char* enumers[] = {
     "varidT",        // variable and function names
@@ -63,10 +63,13 @@ bool Expression(){
 
 bool CorpusPrime(){
     GetToken();
-    TakeToken = true;
     switch(myToken->dtype){
         case letT:{
             if(!Let()) return false;
+            return CorpusPrime();
+        }
+        case varT:{
+            if(!Var()) return false;
             return CorpusPrime();
         }
         break;
@@ -74,6 +77,12 @@ bool CorpusPrime(){
             if(!IfPrime()) return false;
             return CorpusPrime();
         }
+        break;
+        case whileT:{
+            if(!While()) return false;
+            return CorpusPrime();
+        }
+        break;
         case eofT:
         {
             return true;
@@ -136,6 +145,35 @@ bool Let(){
 
 }
 
+bool Var(){
+    GetToken();
+    if(myToken->dtype != varidT) return false;
+    GetToken();
+    switch(myToken->dtype){
+        case colonT:{
+            GetToken();
+            if(myToken->dtype != vartypeT) return false;
+            GetToken();
+            if(myToken->dtype == equalT){
+                return Expression();
+            }
+            else{
+                TakeToken = false;
+                return true;
+            }
+        }
+        break;
+        case equalT:{
+            return Expression();
+        }
+        break;
+        default:{
+            return false;
+        }  
+    }
+
+}
+
 bool IfPrime(){
     if(!Expression()) return false;
     GetToken();
@@ -143,6 +181,14 @@ bool IfPrime(){
     if(!CorpusSecondary()) return false;
     GetToken();
     if(myToken->dtype != elseT) return false;
+    GetToken();
+    if(myToken->dtype != LCbracketT) return false;
+    if(!CorpusSecondary()) return false;
+    return true;
+}
+
+bool While(){
+    if(!Expression()) return false;
     GetToken();
     if(myToken->dtype != LCbracketT) return false;
     if(!CorpusSecondary()) return false;

@@ -12,4 +12,8 @@ bool Expression();
 
 bool Let();
 
+bool Var();
+
 bool IfPrime();
+
+bool While();
