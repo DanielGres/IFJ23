@@ -1,8 +1,21 @@
-let pepek : String = 66
-if 66
-{
-    let pepek : String = 66
-}
-else{
+while
 
+
+
+
+
+
+
+
+
+{
+
+
+
+
+var
+
+
+
+    
 }
