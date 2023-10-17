@@ -243,10 +243,19 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case NEWLINE_STATE: // \n
         {
-            *type = newlineT;
-            b_ex = true;
-            condition = false;
-            eNextState = START_STATE;
+            if(c == 10 || c == 9 || c == 13 || c == 32)
+            {
+                condition = true;
+                b_ex = false;
+                eNextState = NEWLINE_STATE;
+            }
+            else
+            {
+                condition = false;
+                b_ex = true;
+                *type = newlineT;
+                eNextState = START_STATE;
+            }
         }
         break;
         case SEMICOL_STATE: // ;
@@ -676,10 +685,11 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                // *type = ErrT; TODO
-                condition = false;
-                b_ex = true;
-                eNextState = START_STATE;
+                // // *type = ErrT; TODO
+                // condition = false;
+                // b_ex = true;
+                // eNextState = START_STATE;
+                return false;
             }
         }
         break;
@@ -691,10 +701,11 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                // *type = ErrT; TODO
-                condition = false;
-                b_ex = true;
-                eNextState = START_STATE;
+                // // *type = ErrT; TODO
+                // condition = false;
+                // b_ex = true;
+                // eNextState = START_STATE;
+                return false;
             }
         }
         break;
@@ -862,19 +873,29 @@ bool lexer(dyn_string *buffer, token_type *type)
                 b_ex = false;
                 eNextState = STRINGMULTI4_STATE;
             }
+            else if (c == '"')
+            {
+                b_ex = false;
+                eNextState = STRINGMULTI6_STATE;
+            }
         }
         break;
-        case STRINGMULTI3_STATE: // """ \n
+        case STRINGMULTI3_STATE: // """ \n TODO stringy
         {
-        if (c == 10)
+            if (c == 10)
             {
                 b_ex = false;
                 eNextState = STRINGMULTI3_STATE;
             }
-            else if (c > 31)
+            // else if (c > 31)
+            // {
+            //     b_ex = false;
+            //     eNextState = STRINGMULTI4_STATE;
+            // }
+            else
             {
-                b_ex = false;
-                eNextState = STRINGMULTI4_STATE;
+                //TODO ERROR
+                return false;
             }
         }
         break;
