@@ -1,21 +1,4 @@
-while
-
-
-
-
-
-
-
-
-
-{
-
-
-
-
-var
-
-
-
-    
-}
+a = """
+idem "" * ! >? asdodwpao
+hore
+"""
