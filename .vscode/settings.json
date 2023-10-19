@@ -5,6 +5,8 @@
     ],
     "files.associations": {
         "lexer.h": "c",
-        "bin_tree.h": "c"
+        "bin_tree.h": "c",
+        "syntax.h": "c",
+        "stdio.h": "c"
     }
 }

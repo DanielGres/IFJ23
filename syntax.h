@@ -4,16 +4,16 @@
 #include "bin_tree.h"
 #include "lexer.h"
 
-bool CorpusPrime();
+bool EndCommand();
 
-bool CorpusSecondary();
+void EnterSkip();
+
+bool CorpusPrime(struct bst_tok_node **seed);
+
+bool CorpusSecondary(struct bst_tok_node **seed);
 
 bool Expression();
 
-bool Let();
+bool Let(struct bst_tok_node **seed);
 
-bool Var();
-
-bool IfPrime();
-
-bool While();
+bool IfPrime(struct bst_tok_node **seed);

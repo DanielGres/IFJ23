@@ -57,3 +57,16 @@ void Instructions(){
         "RETURN\n"
         );
 }
+
+
+void GenerateSubTree(struct bst_tok_node *curr_root){
+    if(curr_root == NULL) return;
+    printf("%d ",curr_root->T->dtype);
+    GenerateSubTree(curr_root->right);
+}
+
+void Generator(struct bst_tok_node *root){
+    //Instructions();
+    GenerateSubTree((root->right));
+
+}

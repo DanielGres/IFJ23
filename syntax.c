@@ -5,55 +5,6 @@ token *myToken;
 bool TakeToken = true;
 #define GetToken() if (TakeToken) { Get_Token(&myToken);} else {TakeToken = true;}
 
-const char* enumers[] = {
-    "varidT",        // variable and function names
-    "operatorT",     // !  * /  + -  == != < >  <= >=  ??
-    "colonT",        // :
-    "vartypeT",      // Double, Int, String 
-    "vartypeQT",     // Double?, Int?, String?
-    "equalT",        // =
-    "intnumT",      // whole number
-    "doublemumT",   // double/float number
-    "varT",          // var keyword
-    "letT",          // let keyword
-    "ifT",           // if keyword
-    // "doubleT",       // Double keyword
-    // "intT",          // Int keyword
-    "stringT",       // string in the input code
-    "nilT",          // nil keyword
-    "LbracketT",     // (
-    "RbracketT",     // )
-    "LCbracketT",    // {
-    "RCbracketT",    // }
-    "elseT",         // else keyword
-    "funcT",         // func keyword
-    "paramNameT",    // name of the parameter in a function
-    "commaT",        // ,
-    "arrowT",        // ->
-    "whileT",        // while keyword
-    "returnT",       // return keyword
-    "termT",         // TODO realne hocico to moze byt
-    "newlineT",      // \n
-    "semicolonT",    // ;
-    "linecommentT",  // //comment
-    "blockcommentT" //  /* comment */
-};
-
-int main(){
-    // while(Get_Token(&myToken)){
-    //     dynstr_print((myToken->val));
-    //     printf(" %s\n",enumers[myToken->dtype]);
-        
-    // }
-    if(CorpusPrime()){
-        printf("spravne! :DD\n");
-    }
-    else{
-        printf("nespravne! :((\n");
-    }
-}
-
-
 
 bool Expression(){
     GetToken();
@@ -61,26 +12,19 @@ bool Expression(){
     return true;
 }
 
-bool CorpusPrime(){
+bool CorpusPrime(struct bst_tok_node **seed){
     GetToken();
     switch(myToken->dtype){
         case letT:{
-            if(!Let()) return false;
-            return CorpusPrime();
+            *seed = Set_TokNode(myToken);
+            if(!Let(&((*seed)->left))) return false;
+            if(!EndCommand()) return false;
+            return CorpusPrime(&((*seed)->right));
         }
-        case varT:{
-            if(!Var()) return false;
-            return CorpusPrime();
-        }
-        break;
         case ifT:{
-            if(!IfPrime()) return false;
-            return CorpusPrime();
-        }
-        break;
-        case whileT:{
-            if(!While()) return false;
-            return CorpusPrime();
+            *seed = Set_TokNode(myToken);
+            if(!IfPrime(&((*seed)->left))) return false;
+            return CorpusPrime(&((*seed)->right));
         }
         break;
         case eofT:
@@ -88,6 +32,11 @@ bool CorpusPrime(){
             return true;
         }
         break;
+        case newlineT:
+        {
+            return CorpusPrime(&(*seed));
+        }
+        break;
         default:
         {
             return false;
@@ -96,19 +45,25 @@ bool CorpusPrime(){
     }
 }
 
-bool CorpusSecondary(){
+bool CorpusSecondary(struct bst_tok_node **seed){
     GetToken();
-    TakeToken = true;
     switch (myToken->dtype){
         case letT:{
-            if(!Let()) return false;
-            return CorpusSecondary();
+            *seed = Set_TokNode(myToken);
+            if(!Let(&((*seed)->left))) return false;
+            if(!EndCommand()) return false;
+            return CorpusSecondary(&((*seed)->right));
         }
         break;
         case RCbracketT:{
             return true;
         }
         break;
+        case newlineT:
+        {
+            return CorpusSecondary(&((*seed)));
+        }
+        break;
         default:
         {
             return false;
@@ -116,7 +71,41 @@ bool CorpusSecondary(){
     }
 }
 
-bool Let(){
+bool EndCommand(){
+    GetToken();
+    switch(myToken->dtype){
+        case semicolonT:{
+            GetToken();
+            if(myToken->dtype == newlineT) return true;
+            else{
+                TakeToken = false;
+                return true;
+            }
+        }
+        break;
+        case newlineT:{
+            return true;
+        }
+        break;
+        case eofT:
+        {
+            TakeToken = false;
+            return true;
+        }
+        break;
+        default:{
+            return false;
+        }
+    }
+}
+
+void EnterSkip(){
+    if(myToken->dtype == newlineT){
+        GetToken();
+    }
+}
+
+bool Let(struct bst_tok_node **seed){
     GetToken();
     if(myToken->dtype != varidT) return false;
     GetToken();
@@ -145,52 +134,19 @@ bool Let(){
 
 }
 
-bool Var(){
-    GetToken();
-    if(myToken->dtype != varidT) return false;
-    GetToken();
-    switch(myToken->dtype){
-        case colonT:{
-            GetToken();
-            if(myToken->dtype != vartypeT) return false;
-            GetToken();
-            if(myToken->dtype == equalT){
-                return Expression();
-            }
-            else{
-                TakeToken = false;
-                return true;
-            }
-        }
-        break;
-        case equalT:{
-            return Expression();
-        }
-        break;
-        default:{
-            return false;
-        }  
-    }
-
-}
-
-bool IfPrime(){
+bool IfPrime(struct bst_tok_node **seed){
     if(!Expression()) return false;
     GetToken();
+    EnterSkip();
     if(myToken->dtype != LCbracketT) return false;
-    if(!CorpusSecondary()) return false;
+    *seed = Set_TokNode(myToken);
+    if(!CorpusSecondary(&((*seed)->left))) return false;
     GetToken();
+    EnterSkip();
     if(myToken->dtype != elseT) return false;
     GetToken();
+    EnterSkip();
     if(myToken->dtype != LCbracketT) return false;
-    if(!CorpusSecondary()) return false;
-    return true;
-}
-
-bool While(){
-    if(!Expression()) return false;
-    GetToken();
-    if(myToken->dtype != LCbracketT) return false;
-    if(!CorpusSecondary()) return false;
+    if(!CorpusSecondary(&((*seed)->left))) return false;
     return true;
 }

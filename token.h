@@ -40,7 +40,8 @@ typedef enum
     semicolonT, // ; //TODO probably iba ukoncenie riadku netreba token na toto asi
     linecommentT, //comment
     blockcommentT, /* comment */
-    eofT
+    eofT,
+    startT
 } token_type;
 
 typedef struct
