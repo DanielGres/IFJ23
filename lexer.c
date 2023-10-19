@@ -1,21 +1,18 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include "dyn_string.h"
-#include "token.h"
+// Implementace překladače imperativního jazyka IFJ23
+// Daniel Greš --- xgresd00
+// Mário Mihál --- xmihal13
+// Viktor Hančovský --- xhanco00
+// Branislav Kotúč --- xkotuc02
+
 #include "lexer.h"
-#include "errror.h"
 
 bool stop = false;
 bool b_ex = false;
 char c = 'a';
 int stringCounter = 0;
 
-// TODO errory
-// int errType = 0;
-// dyn_string errMSG;
-// dynstr_init(errMSG);
 
-bool Get_Token(token **T)
+bool Get_Token(token **T) // TODO podla mna by toto malo byt v syntaxi
 {
     if (!stop)
     {
@@ -109,6 +106,8 @@ bool lexer(dyn_string *buffer, token_type *type)
     SM_STATE eNextState = START_STATE;
     bool condition = true;
     bool compareWithTable = false;
+    dyn_string errMSG;
+    dynstr_init(&errMSG);
 
     while (condition)
     {
@@ -116,7 +115,6 @@ bool lexer(dyn_string *buffer, token_type *type)
         {
             c = fgetc(stdin);
         }
-        // printf("'%c' is '%d'\n",c,c);
         switch (eNextState)
         {
         case START_STATE:
@@ -216,15 +214,15 @@ bool lexer(dyn_string *buffer, token_type *type)
             {
                 b_ex = false;
                 //shady uprava by xgresd00
-                //eNextState = SEMICOL_STATE;
-                eNextState = START_STATE;
+                eNextState = SEMICOL_STATE;
+                // eNextState = START_STATE;
             }
             else if(c == 10)
             {
                 b_ex = false;
                 //shady uprava by xgresd00
-                //eNextState = NEWLINE_STATE;
-                eNextState = START_STATE;
+                eNextState = NEWLINE_STATE;
+                // eNextState = START_STATE;
             }
             else if (c == 32)
             { // Exitus
@@ -235,12 +233,12 @@ bool lexer(dyn_string *buffer, token_type *type)
             {
                 return false;
             }
-            else // TODO errory
+            else
             {
                 b_ex = false;
                 condition = false;
-                // dynstr_addstr(&errMSG, "expected a valid number, alphanumerical character, operator!\n");
-                // errType = 1;
+                dynstr_addstr(&errMSG, "Invalid input character!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -287,7 +285,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                // TODO error
+                b_ex = false;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected a question mark (?)!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -352,10 +353,12 @@ bool lexer(dyn_string *buffer, token_type *type)
         {
             if (c == '/')
             {
+                b_ex = false;
                 eNextState = LINECOMM_STATE;
             }
             else if (c == '*')
             {
+                b_ex = false;
                 eNextState = BLOCKCOMM_STATE;
             }
             else
@@ -379,11 +382,6 @@ bool lexer(dyn_string *buffer, token_type *type)
                 b_ex = false;
                 eNextState = LINECOMM2_STATE;
             }
-            else
-            {
-                // TODO error BOLO ZAKOMENTOVANE 
-                return false;
-            }
         }
         break;
         case LINECOMM2_STATE: // //comment
@@ -398,17 +396,13 @@ bool lexer(dyn_string *buffer, token_type *type)
         {
             if (c != '*')
             {
+                b_ex = false;
                 eNextState = BLOCKCOMM_STATE;
             }
             else if (c == '*')
             {
                 b_ex = false;
                 eNextState = BLOCKCOMM2_STATE;
-            }
-            else
-            {
-                // TODO error BOLO ZAKOMENTOVANE
-                return false;
             }
         }
         break;
@@ -428,11 +422,6 @@ bool lexer(dyn_string *buffer, token_type *type)
             {
                 b_ex = false;
                 eNextState = BLOCKCOMM_STATE;
-            }
-            else
-            {
-                // TODO error BOLO ZAKOMENTOVANE
-                return false;
             }
         }
         break;
@@ -532,7 +521,7 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        case NOTEQUAL_STATE:
+        case NOTEQUAL_STATE: // !=
         {
             *type = operatorT;
             condition = false;
@@ -581,7 +570,7 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case IDTYPE_STATE:
         {
-            *type = vartypeQT; // tu bolo varidT no idea why + nebol break; na konci lmao KEBY CHYBA TA SEMKA
+            *type = vartypeQT;
             condition = false;
             compareWithTable = true;
             b_ex = true;
@@ -620,18 +609,21 @@ bool lexer(dyn_string *buffer, token_type *type)
             eNextState = START_STATE;
         }
         break;
-        case NUMBER_STATE:
+        case NUMBER_STATE: // [0-9]
         {
             if (c >= '0' && c <= '9')
             {
+                b_ex = false;
                 eNextState = NUMBER_STATE;
             }
             else if (c == '.')
             {
+                b_ex = false;
                 eNextState = DECNUMBER1_STATE;
             }
             else if (c == 'e' || c == 'E')
             {
+                b_ex = false;
                 eNextState = EXPNUMBER1_STATE;
             }
             else
@@ -643,25 +635,28 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        case DECNUMBER1_STATE:
+        case DECNUMBER1_STATE: // [0-9].
         {
             if (c >= '0' && c <= '9')
             {
+                b_ex = false;
                 eNextState = DECNUMBER2_STATE;
             }
             else
             {
-                // *type = ErrT; TODO
-                condition = false;
                 b_ex = true;
-                eNextState = START_STATE;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected a number!\n");
+                errPrint(&errMSG, 1);
+                return false;
             }
         }
         break;
-        case DECNUMBER2_STATE:
+        case DECNUMBER2_STATE: // [0-9].[0-9]
         {
             if (c >= '0' && c <= '9')
             {
+                b_ex = false;
                 eNextState = DECNUMBER2_STATE;
             }
             else if (c == 'e' || c == 'E')
@@ -677,46 +672,50 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        case EXPNUMBER1_STATE:
+        case EXPNUMBER1_STATE: // [0-9]eE or [0-9].[0-9]eE
         {
             if (c >= '0' && c <= '9')
             {
+                b_ex = false;
                 eNextState = EXPNUMBER3_STATE;
             }
             else if (c == '+' || c == '-')
             {
+                b_ex = false;
                 eNextState = EXPNUMBER2_STATE;
             }
             else
             {
-                // // *type = ErrT; TODO
-                // condition = false;
-                // b_ex = true;
-                // eNextState = START_STATE;
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected a number or an operator (+ or -)!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
         break;
-        case EXPNUMBER2_STATE:
+        case EXPNUMBER2_STATE: // [0-9]eE[+-] or [0-9].[0-9]eE[+-]
         {
             if (c >= '0' && c <= '9')
             {
+                b_ex = false;
                 eNextState = EXPNUMBER3_STATE;
             }
             else
             {
-                // // *type = ErrT; TODO
-                // condition = false;
-                // b_ex = true;
-                // eNextState = START_STATE;
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected a number!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
         break;
-        case EXPNUMBER3_STATE:
+        case EXPNUMBER3_STATE: // [0-9]eE[0-9]
         {
             if (c >= '0' && c <= '9')
             {
+                b_ex = false;
                 eNextState = EXPNUMBER3_STATE;
             }
             else
@@ -799,7 +798,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                //TODO ERROR
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected '{'!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -814,7 +816,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                //TODO ERROR
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected [0-9] or [Aa-Ff]!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -836,15 +841,19 @@ bool lexer(dyn_string *buffer, token_type *type)
                 }
                 else
                 {
-                    // TODO error
-                    // printf("neplatne cislo chalan\n");
+                    b_ex = true;
+                    condition = false;
+                    dynstr_addstr(&errMSG, "Expected a number or an operator (+ or -)!\n");
+                    errPrint(&errMSG, 1);
                     return false;
                 }
             }
             else
             {
-                //TODO ERROR
-                // printf("vela cisel chalan\n");
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Too many number in escaped hex string!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -879,7 +888,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                //TODO ERROR
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected new line or double quotes!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -898,7 +910,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                //TODO ERROR
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected newline or character!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -917,7 +932,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                //TODO ERROR
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected newline or character!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -943,7 +961,12 @@ bool lexer(dyn_string *buffer, token_type *type)
         break;
         case STRINGMULTI6_STATE: // """ \n something \n "
         {
-            if (c == '"')
+            if (c == 10)
+            {
+                b_ex = false;
+                eNextState = STRINGMULTI5_STATE;
+            }
+            else if (c == '"')
             {
                 b_ex = false;
                 eNextState = STRINGMULTI7_STATE;
@@ -955,7 +978,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                // TODO ERROR
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected doublequotes or a character!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -974,7 +1000,10 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
             else
             {
-                // TODO ERROR
+                b_ex = true;
+                condition = false;
+                dynstr_addstr(&errMSG, "Expected doublequotes or a character!\n");
+                errPrint(&errMSG, 1);
                 return false;
             }
         }
@@ -991,7 +1020,10 @@ bool lexer(dyn_string *buffer, token_type *type)
         
         default:
         {
+            b_ex = true;
             condition = false;
+            dynstr_addstr(&errMSG, "Invalid input character!\n");
+            errPrint(&errMSG, 1);
             return false;
         }
         }
@@ -1001,8 +1033,6 @@ bool lexer(dyn_string *buffer, token_type *type)
         }
         else
         {
-            //debug print
-            //dynstr_print(buffer);
             if (compareWithTable)
             {
                 if (dynstr_cmp(buffer, "if"))

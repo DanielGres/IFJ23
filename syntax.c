@@ -1,4 +1,7 @@
-#include <stdio.h>
+// Implementace překladače imperativního jazyka IFJ23
+// Daniel Greš --- xgresd00
+// Mário Mihál --- xmihal13
+
 #include "syntax.h"
 
 token *myToken;

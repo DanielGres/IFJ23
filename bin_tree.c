@@ -1,9 +1,8 @@
-// Implementace překladače imperativního jazyka IFJ22
+// Implementace překladače imperativního jazyka IFJ23
 // Daniel Greš --- xgresd00
 // Mário Mihál --- xmihal13
 
 #include "bin_tree.h"
-#include "stdio.h"
 
 void Init_TokTree(struct bst_tok_node *root)
 {
@@ -31,7 +30,7 @@ struct bst_tok_node *Insert_TokTree(struct bst_tok_node *root, bool isleft, toke
     return root;
 }
 
-void Ja(struct bst_tok_node *to, struct bst_tok_node *from)
+void Ja(struct bst_tok_node *to, struct bst_tok_node *from) // TODO ani za boha toto nenechajte JA
 {
     *to = *from;
 }

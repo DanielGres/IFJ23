@@ -1,8 +1,12 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include "token.h"
-#include "bin_tree.h"
+// Implementace překladače imperativního jazyka IFJ23
+// Daniel Greš --- xgresd00
+// Mário Mihál --- xmihal13
+
+#ifndef SYNTAX_H
+#define SYNTAX_H
+
 #include "lexer.h"
+#include "bin_tree.h"
 
 bool EndCommand();
 
@@ -17,3 +21,5 @@ bool Expression();
 bool Let(struct bst_tok_node **seed);
 
 bool IfPrime(struct bst_tok_node **seed);
+
+#endif

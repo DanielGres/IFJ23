@@ -4,11 +4,7 @@
 // Viktor Hančovský --- xhanco00
 // Branislav Kotúč --- xkotuc02
 
-// #include "errror.h"
 #include "token.h"
-#include "lexer.h"
-#include "dyn_string.h"
-#include <stdio.h>
 
 void Token_init(token **T)
 {

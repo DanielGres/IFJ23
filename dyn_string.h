@@ -1,8 +1,16 @@
+// Implementace překladače imperativního jazyka IFJ23
+// Daniel Greš --- xgresd00
+// Mário Mihál --- xmihal13
+// Viktor Hančovský --- xhanco00
+// Branislav Kotúč --- xkotuc02
+
 #ifndef DYN_STRING_H
 #define DYN_STRING_H
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 typedef struct
 {
