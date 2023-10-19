@@ -222,7 +222,9 @@ bool lexer(dyn_string *buffer, token_type *type)
             else if(c == 10)
             {
                 b_ex = false;
-                eNextState = NEWLINE_STATE;
+                //shady uprava by xgresd00
+                //eNextState = NEWLINE_STATE;
+                eNextState = START_STATE;
             }
             else if (c == 32)
             { // Exitus
@@ -870,30 +872,11 @@ bool lexer(dyn_string *buffer, token_type *type)
                 b_ex = false;
                 eNextState = STRINGMULTI3_STATE;
             }
-            else if (c > 31)
-            {
-                b_ex = false;
-                eNextState = STRINGMULTI4_STATE;
-            }
             else if (c == '"')
             {
                 b_ex = false;
                 eNextState = STRINGMULTI6_STATE;
             }
-        }
-        break;
-        case STRINGMULTI3_STATE: // """ \n TODO stringy
-        {
-            if (c == 10)
-            {
-                b_ex = false;
-                eNextState = STRINGMULTI3_STATE;
-            }
-            // else if (c > 31)
-            // {
-            //     b_ex = false;
-            //     eNextState = STRINGMULTI4_STATE;
-            // }
             else
             {
                 //TODO ERROR
@@ -901,9 +884,47 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        case STRINGMULTI4_STATE: // """ something
+        case STRINGMULTI3_STATE: // """ \n
         {
-        if (c == 10)
+            if (c == 10)
+            {
+                b_ex = false;
+                eNextState = STRINGMULTI3_STATE;
+            }
+            else if (c > 31)
+            {
+                b_ex = false;
+                eNextState = STRINGMULTI4_STATE;
+            }
+            else
+            {
+                //TODO ERROR
+                return false;
+            }
+        }
+        break;
+        case STRINGMULTI4_STATE: // """ \n something
+        {
+            if (c == 10)
+            {
+                b_ex = false;
+                eNextState = STRINGMULTI5_STATE;
+            }
+            else if (c > 31)
+            {
+                b_ex = false;
+                eNextState = STRINGMULTI4_STATE;
+            }
+            else
+            {
+                //TODO ERROR
+                return false;
+            }
+        }
+        break;
+        case STRINGMULTI5_STATE: // """ \n something \n
+        {
+            if (c == 10)
             {
                 b_ex = false;
                 eNextState = STRINGMULTI5_STATE;
@@ -920,26 +941,7 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        case STRINGMULTI5_STATE: // """ something \n
-        {
-        if (c == 10)
-            {
-                b_ex = false;
-                eNextState = STRINGMULTI5_STATE;
-            }
-            else if (c == '"')
-            {
-                b_ex = false;
-                eNextState = STRINGMULTI6_STATE;
-            }
-            else if (c > 31)
-            {
-                b_ex = false;
-                eNextState = STRINGMULTI4_STATE;
-            }
-        }
-        break;
-        case STRINGMULTI6_STATE: // """ something "
+        case STRINGMULTI6_STATE: // """ \n something \n "
         {
             if (c == '"')
             {
@@ -958,7 +960,7 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        case STRINGMULTI7_STATE: // """ something ""
+        case STRINGMULTI7_STATE: // """ \n something \n  ""
         {
             if (c == '"')
             {
@@ -977,7 +979,7 @@ bool lexer(dyn_string *buffer, token_type *type)
             }
         }
         break;
-        case STRINGMULTI8_STATE: // """ something """
+        case STRINGMULTI8_STATE: // """ \n something \n """
         {
             replaceUnicodeSequences(buffer);
             *type = stringT;
