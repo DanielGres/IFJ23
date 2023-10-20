@@ -1,7 +1,14 @@
+// Implementace překladače imperativního jazyka IFJ23
+// Daniel Greš --- xgresd00
+// Mário Mihál --- xmihal13
+// Viktor Hančovský --- xhanco00
+// Branislav Kotúč --- xkotuc02
+
 #ifndef TOKEN_H
 #define TOKEN_H
 
 #include "dyn_string.h"
+#include <stdio.h>
 
 /**
  * @brief types of token types
@@ -20,8 +27,6 @@ typedef enum
     varT, // var keyword
     letT, // let keyword
     ifT, // if keyword
-    // doubleT, // Double keyword NETREBA JE TO VARTYPE
-    // intT, // Int keyword NETREBA JE TO V VARTYPE
     stringT, // string in the input code
     nilT, // nil keyword
     LbracketT, // (

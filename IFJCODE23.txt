@@ -1,10 +1,6 @@
-let jaga : Int = 46
-
-if 45 {
-    let penis : String = 55
-}
-else {
-    let gogo : String = 44
-}
-
-let fosat : Double = 6
+return = """
+asdasdfafasf
+stdboolda
+SLASH_STATEd
+    
+"""

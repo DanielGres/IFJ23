@@ -1,9 +1,15 @@
+// Implementace překladače imperativního jazyka IFJ23
+// Daniel Greš --- xgresd00
+// Mário Mihál --- xmihal13
+
 #ifndef BIN_TREE_H
 #define BIN_TREE_H
 
+#include "token.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include "token.h"
+#include "stdio.h"
+
 
 struct bst_tok_node
 {

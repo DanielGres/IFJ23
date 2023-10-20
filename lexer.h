@@ -1,6 +1,15 @@
-#ifndef PARSER_H
-#define PARSER_H
+// Implementace překladače imperativního jazyka IFJ23
+// Daniel Greš --- xgresd00
+// Mário Mihál --- xmihal13
+// Viktor Hančovský --- xhanco00
+// Branislav Kotúč --- xkotuc02
+
+#ifndef LEXER_H
+#define LEXER_H
+
+#include <stdbool.h>
 #include "token.h"
+#include "errror.h"
 
 
 typedef enum

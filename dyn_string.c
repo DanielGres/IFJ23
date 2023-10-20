@@ -5,28 +5,10 @@
 // Branislav Kotúč --- xkotuc02
 
 #include "dyn_string.h"
-#include <stdbool.h>
-#include <string.h>
-#include <stdio.h>
 
-// TO-DO : Poriesit chybu programu
 #define STRING_ALLOC_SIZE 8 // Magic number
 
-void dynstr_init(dyn_string *str)
-{
-    if (str != NULL)
-    {
-        str->s = (char *)malloc(STRING_ALLOC_SIZE);
-        str->len = 0;
-        str->allen = STRING_ALLOC_SIZE;
-        str->s[str->len] = '\0';
-    }
-    else
-    {
-        printf("very bad\n"); // TODO daco s tym urobit nepaci sa mi toto tu
-        exit(99);
-    }
-}
+
 
 void dynstr_add(dyn_string *str, char c)
 {
@@ -44,6 +26,22 @@ void dynstr_addstr(dyn_string *str, char *strtoadd)
     for (int i = 0; i < strlen(strtoadd); i++)
     {
         dynstr_add(str, strtoadd[i]);
+    }
+}
+
+void dynstr_init(dyn_string *str)
+{
+    if (str != NULL)
+    {
+        str->s = (char *)malloc(STRING_ALLOC_SIZE);
+        str->len = 0;
+        str->allen = STRING_ALLOC_SIZE;
+        str->s[str->len] = '\0';
+    }
+    else
+    {
+        printf("Internal error: dynstr_init failed to allocate memory.\n");
+        exit(99);
     }
 }
 
