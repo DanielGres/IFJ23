@@ -213,18 +213,12 @@ bool lexer(dyn_string *buffer, token_type *type)
             else if (c == ';')
             {
                 b_ex = false;
-                //shady uprava by xgresd00
                 eNextState = SEMICOL_STATE;
-                // eNextState = START_STATE;
-                eNextState = SEMICOL_STATE;
-                //eNextState = START_STATE;
             }
             else if(c == 10)
             {
                 b_ex = false;
-                //shady uprava by xgresd00
                 eNextState = NEWLINE_STATE;
-                // eNextState = START_STATE;
             }
             else if (c == 32)
             { // Exitus

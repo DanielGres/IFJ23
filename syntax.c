@@ -138,18 +138,19 @@ bool Let(struct bst_tok_node **seed){
 }
 
 bool IfPrime(struct bst_tok_node **seed){
+    *seed = Set_TokNode(myToken);
     if(!Expression()) return false;
     GetToken();
     EnterSkip();
     if(myToken->dtype != LCbracketT) return false;
-    *seed = Set_TokNode(myToken);
-    if(!CorpusSecondary(&((*seed)->left))) return false;
+    ((*seed)->right)= Set_TokNode(myToken);
+    if(!CorpusSecondary(&((*seed)->right)->left)) return false;
     GetToken();
     EnterSkip();
     if(myToken->dtype != elseT) return false;
     GetToken();
     EnterSkip();
     if(myToken->dtype != LCbracketT) return false;
-    if(!CorpusSecondary(&((*seed)->left))) return false;
+    if(!CorpusSecondary(&((*seed)->right)->right)) return false;
     return true;
 }
