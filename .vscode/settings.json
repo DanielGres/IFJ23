@@ -7,7 +7,12 @@
     "lexer.h": "c",
     "bin_tree.h": "c",
     "syntax.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "token.h": "c",
+    "codegen.h": "c",
+    "dyn_string.h": "c",
+    "errror.h": "c",
+    "ifj23.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
