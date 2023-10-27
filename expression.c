@@ -2,11 +2,10 @@
 // Daniel Greš --- xgresd00
 // Mário Mihál --- xmihal13
 
-//#include "../include/expression.h"
+#include "../include/expression.h"
 
 token *myToken;
 int condition = 0; // 1 if semicolon 2 if bracket
-bool isASS = false;
 
 table_sign_enum prec_table[T_SIZE][T_SIZE] = {
     // 0  1  2  3  4  5  6  7
