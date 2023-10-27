@@ -2,7 +2,7 @@
 // Daniel Greš --- xgresd00
 // Mário Mihál --- xmihal13
 
-#include "bin_tree.h"
+#include "../include/bin_tree.h"
 
 void Init_TokTree(struct bst_tok_node *root)
 {

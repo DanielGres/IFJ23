@@ -4,7 +4,7 @@
 // Viktor Hančovský --- xhanco00
 // Branislav Kotúč --- xkotuc02
 
-#include "ifj23.h"
+#include "../include/ifj23.h"
 
 //TODO na lexer testovanie dik pls nechaj sem abo zakomentuj lem
 const char* enumers[] = {

@@ -4,7 +4,7 @@
 // Viktor Hančovský --- xhanco00
 // Branislav Kotúč --- xkotuc02
 
-#include "dyn_string.h"
+#include "../include/dyn_string.h"
 
 #define STRING_ALLOC_SIZE 8 // Magic number
 

@@ -1,4 +1,4 @@
-#include "codegen.h"
+#include "../include/codegen.h"
 
 void Instructions(){
     printf(
