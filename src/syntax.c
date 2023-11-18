@@ -9,10 +9,23 @@ bool TakeToken = true;
 #define GetToken() if (TakeToken) { Get_Token(&myToken);} else {TakeToken = true;}
 
 
-bool Expression(){
-    GetToken();
-    if(myToken->dtype != intnumT) return false;
-    return true;
+bool Expression_SetUp(struct bst_tok_node **seed, expression_case type ){
+    char EOE[2];
+    switch(type){
+        case IF_CBracket:
+        case IF_Let:
+        EOE[0] = '{';
+        break;
+        case Function:
+        EOE[0] = ',';
+        EOE[1] = ')';
+        break;
+        case Declaration:
+        EOE[0] = ';';
+        EOE[1] = '/n';
+        break;
+    }
+    Expression(seed,EOE);
 }
 
 bool CorpusPrime(struct bst_tok_node **seed){

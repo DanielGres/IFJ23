@@ -7,6 +7,7 @@
 
 #include "lexer.h"
 #include "bin_tree.h"
+#include "expression.h"
 
 bool EndCommand();
 
@@ -16,7 +17,7 @@ bool CorpusPrime(struct bst_tok_node **seed);
 
 bool CorpusSecondary(struct bst_tok_node **seed);
 
-bool Expression();
+bool Expression_SetUp(struct bst_tok_node **seed, expression_case type);
 
 bool Let(struct bst_tok_node **seed);
 

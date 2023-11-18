@@ -10,7 +10,7 @@
 #include "token.h"
 #include ""
 
-#define T_SIZE 8
+#define T_SIZE 9
 
 typedef enum
 {
@@ -32,6 +32,14 @@ typedef enum
     N  // = EQUAL
 } table_sign_enum;
 
+typedef enum
+{
+ IF_CBracket, // IF starting with Brackets, ending with '{'
+ IF_Let,      // IF starting with let, ending with '{'
+ Function,    // Function, ending with ','/')' 
+ Declaration  // Declaration, ending with Error or ';'
+} expression_case;
+
 /**
  * @brief boolean function checks if the next given token is a valid expression
  *
@@ -40,6 +48,6 @@ typedef enum
  * @return true if the token is an expression
  * @return false if it does not fulfill any of the "if" or "switch" conditions
  */
-bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok_node *seed);
+bool Expression(int *condition, bst_node **root, int isCallLater, struct bst_tok_node *seed);
 
 #endif
