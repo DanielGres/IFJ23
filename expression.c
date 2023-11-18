@@ -8,19 +8,24 @@ token *myToken;
 int condition = 0; // 1 if semicolon 2 if bracket
 
 table_sign_enum prec_table[T_SIZE][T_SIZE] = {
-    // 0  1  2  3  4  5  6  7
-    {R, S, S, R, S, R, R, R}, // +-
-    {R, R, S, R, S, R, R, R}, // */
-    {S, S, S, N, S, S, S, E}, // (
-    {R, R, E, R, E, R, R, R}, // )
-    {R, R, E, R, E, R, R, R}, // id
-    {S, S, S, R, S, R, S, R}, // ===
-    {S, S, S, R, S, R, R, R}, // <=
-    {S, S, S, E, S, S, S, E}  // $
+  // 0  1  2  3  4  5  6  7  8
+    {E, R, R, R, R, E, R, E, R}, // !
+    {S, R, R, R, R, S, R, S, R}, // */
+    {S, S, R, R, R, S, R, S, R}, // +-
+    {S, S, S, R, R, S, R, S, R}, // == != <= >= < >
+    {S, S, S, S, S, S, R, S, R}, // ??
+    {S, S, S, S, S, S, N, S, E}, // (
+    {E, R, R, R, R, E, R, E, R}, // )
+    {R, R, R, R, R, E, R, E, R}, // id
+    {S, S, S, S, S, S, E, S, E}  // $
 };
 
 table_symbol_enum get_table_symbol(token *loc_token, bst_node **root)
 {
+    if (dynstr_cmp(loc_token->val, "!")) 
+    {
+        return NOTNIL;
+    }
     if (dynstr_cmp(loc_token->val, "+"))
     {
         return PLUS;
@@ -28,10 +33,6 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root)
     if (dynstr_cmp(loc_token->val, "-"))
     {
         return MINUS;
-    }
-    if (dynstr_cmp(loc_token->val, "."))
-    {
-        return CONC;
     }
     if (dynstr_cmp(loc_token->val, "*"))
     {
@@ -41,11 +42,11 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root)
     {
         return DIV;
     }
-    if (dynstr_cmp(loc_token->val, "==="))
+    if (dynstr_cmp(loc_token->val, "=="))
     {
         return EQ;
     }
-    if (dynstr_cmp(loc_token->val, "!=="))
+    if (dynstr_cmp(loc_token->val, "!="))
     {
         return NEQ;
     }
@@ -77,9 +78,9 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root)
     {
         return DOLLAR;
     }
-    if ((loc_token->dtype == variableT) || (loc_token->dtype == intTypeT) || (loc_token->dtype == strTypeT) || (loc_token->dtype == floatTypeT) || (loc_token->dtype == nullT))
+    if ((loc_token->dtype == varidT) || (loc_token->dtype == vartypeT) || (loc_token->dtype == vartypeQT) || (loc_token->dtype == nilT))
     {
-        if (loc_token->dtype == variableT)
+        if (loc_token->dtype == varidT)
         {
             Insert_BTree(root, myToken->val->s, myToken->dtype, false);
         }
@@ -87,7 +88,6 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root)
     }
     else
     {
-
         exit(9);
         return false;
     }
@@ -97,36 +97,39 @@ int get_index_enum(table_symbol_enum symbolE)
 {
     switch (symbolE)
     {
+    case NOTNIL:
+        return 0;
     case PLUS:
     case MINUS:
-    case CONC:
-        return 0;
+        return 1;
     case MUL:
     case DIV:
-        return 1;
-    case BRACKETS:
         return 2;
-    case BRACKETE:
+    case BRACKETS:
         return 3;
-    case IDENTIFIER:
+    case BRACKETE:
         return 4;
+    case IDENTIFIER:
+        return 5;
     case LEQ:
     case LTN:
     case GEQ:
     case GTN:
-        return 5;
+        return 6;
     case EQ:
     case NEQ:
-        return 6;
-    case DOLLAR:
         return 7;
+    case DOLLAR:
+        return 8;
     default:
+        return;
         break;
     }
 }
 
 token *prevToken;
 
+// NOT TESTED YET
 bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok_node *seed)
 {
     stack *my_stack = malloc(sizeof(stack));
@@ -172,7 +175,6 @@ bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok
 
     if (!Get_Token(&myToken))
     {
-
         exit(1);
     }
     stack_pushT(token_stack, myToken);
@@ -191,45 +193,42 @@ bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok
             top = stack_top(my_stack)->symbol;
         }
         current_symbol = get_table_symbol(myToken, root);
-
         table_symbol = prec_table[get_index_enum(top)][get_index_enum(current_symbol)];
 
         switch (table_symbol)
         {
         case S:
-
             if (my_stack->top->symbol != ENTERPRISE)
             {
-
                 stack_push(my_stack, SHIFT);
                 stack_push(my_stack, current_symbol);
             }
             else
             {
-
                 item_push(my_stack, my_stack->top->next, SHIFT);
                 stack_push(my_stack, current_symbol);
             }
 
             if (!Get_Token(&myToken))
             {
-
                 exit(1);
             }
-            if (myToken->dtype != SbracketT && myToken->dtype != EbracketT && myToken->dtype != DOLLAR)
+            if (myToken->dtype != LbracketT && myToken->dtype != RbracketT && myToken->dtype != DOLLAR)
             {
                 stack_pushT(token_stack, myToken);
             }
-
             break;
         case R:
             top = stack_top(my_stack)->symbol;
             while (top != SHIFT)
             {
-
                 if (top == IDENTIFIER)
                 {
                     dynstr_add(&buffer, 'i');
+                }
+                else if (top == NOTNIL) 
+                {
+                    dynstr_add(&buffer, '!');
                 }
                 else if (top == PLUS)
                 {
@@ -238,10 +237,6 @@ bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok
                 else if (top == MINUS)
                 {
                     dynstr_add(&buffer, '-');
-                }
-                else if (top == CONC)
-                {
-                    dynstr_add(&buffer, '.');
                 }
                 else if (top == ENTERPRISE)
                 {
@@ -257,11 +252,11 @@ bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok
                 }
                 else if (top == EQ)
                 {
-                    dynstr_addstr(&buffer, "===");
+                    dynstr_addstr(&buffer, "==");
                 }
                 else if (top == NEQ)
                 {
-                    dynstr_addstr(&buffer, "!==");
+                    dynstr_addstr(&buffer, "!=");
                 }
                 else if (top == LEQ)
                 {
@@ -289,19 +284,16 @@ bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok
                 }
                 else
                 {
-
                     exit(69);
                 }
 
                 stack_pop(my_stack);
-
                 top = stack_top(my_stack)->symbol;
             }
             stack_pop(my_stack);
 
             if (dynstr_cmp(&buffer, "i"))
             {
-
                 stack_item_of_T *tmpItem;
 
                 if ((current_symbol == BRACKETE))
@@ -310,243 +302,40 @@ bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok
                 }
                 else
                 {
-                    tmpItem = prevKaffee(token_stack);
+                    tmpItem = getItemBelowTop(token_stack); // used to be prevKaffee()
                 }
 
                 struct bst_tok_node *tmpNode = Set_TokNode(&tmpItem->stackToken);
-
                 stack_push_node(node_stack, tmpNode);
-
                 stack_push(my_stack, ENTERPRISE);
             }
-            else if (dynstr_cmp(&buffer, "E+E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, "+");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E-E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, "-");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E.E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, ".");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E*E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, "*");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E/E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, "/");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, ")E("))
-            {
-
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E===E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, "===");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E!==E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, "!==");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E<E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, "<");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E<=E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, "<=");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E>E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, ">");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else if (dynstr_cmp(&buffer, "E>=E"))
-            {
-
-                struct bst_tok_node *tmpNode1 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-                struct bst_tok_node *tmpNode2 = node_stack->top->ptr_to_node;
-
-                stack_pop_node(node_stack);
-
-                token *T;
-                BlackMagic(&T, ">=");
-
-                struct bst_tok_node *tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
-
-                stack_push_node(node_stack, tmpNode3);
-                print_stackT(token_stack);
-                stack_push(my_stack, ENTERPRISE);
-            }
-            else
-            {
-
-                exit(99);
-            }
+            else if (dynstr_cmp(&buffer, "E+E"))  {E_body("+", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, "E-E"))  {E_body("-", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, "E*E"))  {E_body("*", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, "E/E"))  {E_body("/", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, ")E("))  {stack_push(my_stack, ENTERPRISE);}
+            else if (dynstr_cmp(&buffer, "E==E")) {E_body("==", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, "E!=E")) {E_body("!=", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, "E<E"))  {E_body("<", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, "E<=E")) {E_body("<=", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, "E>E"))  {E_body(">", my_stack, node_stack);}
+            else if (dynstr_cmp(&buffer, "E>=E")) {E_body(">=", my_stack, node_stack);}
+            // TODO pridat ?? a !
+            else {exit(99);}
             dynstr_clear(&buffer);
-
             break;
         case N:
-
             stack_push(my_stack, current_symbol);
             if (!Get_Token(&myToken))
             {
-
                 exit(1);
             }
-            if ((myToken->dtype != SbracketT && myToken->dtype != EbracketT && myToken->dtype != DOLLAR))
+            if ((myToken->dtype != LbracketT && myToken->dtype != RbracketT && myToken->dtype != DOLLAR))
             {
                 stack_pushT(token_stack, myToken);
             }
             break;
         case E:
-
             return false;
             break;
         default:
@@ -563,16 +352,27 @@ bool expression(int *condition, bst_node **root, int isCallLater, struct bst_tok
     }
     stack_item_of_node *helper = node_stack->top->next;
 
-    Ja(seed, &(node_stack->top->ptr_to_node));
+    copySRCtoDST(seed, &(node_stack->top->ptr_to_node)); // used to be Ja()
     stack_free_node(node_stack);
     return true;
 }
 
-void BlackMagic(token **T, char *oper)
-{
+void E_body(const char* operator, stack* my_stack, stack_of_node* node_stack) {
+    struct bst_tok_node* tmpNode1 = node_stack->top->ptr_to_node;
+    stack_pop_node(node_stack);
+    struct bst_tok_node* tmpNode2 = node_stack->top->ptr_to_node;
+    stack_pop_node(node_stack);
+
     dyn_string string;
-    Token_init(T);
     dynstr_init(&string);
-    dynstr_addstr(&string, oper);
-    Token_set(T, &string, operatorT);
+    dynstr_addstr(&string, operator);
+
+    token* T;
+    Token_init(&T);
+    Token_set(&T, &string, operatorT);
+
+    struct bst_tok_node* tmpNode3 = Create_TokTree(T, tmpNode2, tmpNode1);
+
+    stack_push_node(node_stack, tmpNode3);
+    stack_push(my_stack, ENTERPRISE);
 }

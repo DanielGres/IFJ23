@@ -5,9 +5,9 @@
 
 typedef enum
 {
+    NOTNIL,     // !
     PLUS,       // +
     MINUS,      // -
-    CONC,       // .
     MUL,        // *
     DIV,        // /
     EQ,         // ===
