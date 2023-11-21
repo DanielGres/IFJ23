@@ -1,32 +1,35 @@
 #ifndef STACK_H
 #define STACK_H
+#include "tok_tree.h"
 #include "token.h"
-#include "bin_tree.h"
 
-typedef enum
-{
-    NOTNIL,     // !
-    PLUS,       // +
-    MINUS,      // -
-    MUL,        // *
-    DIV,        // /
-    EQ,         // ===
-    NEQ,        // !==
-    LEQ,        // <=
-    LTN,        // <
-    GEQ,        // >=
-    GTN,        // >
-    BRACKETS,   //	(
-    BRACKETE,   //	)
-    IDENTIFIER, // ID (variable, number, string, function?)
-    DOLLAR,     // $
-    ENTERPRISE, // E-boy
-    SHIFT       // Shift
+typedef enum {
+    NOTNIL,      // !
+    MUL,         // *
+    DIV,         // /
+    PLUS,        // +
+    MINUS,       // -
+    EQ,          // ==
+    NEQ,         // !=
+    LEQ,         // <=
+    LTN,         // <
+    GEQ,         // >=
+    GTN,         // >
+    DBLQ,        // ??
+    BRACKETS,    // (
+    BRACKETE,    // )
+    VALUE,       // value
+    IDENTIFIER,  // ID (variable, number, string, function?)
+    DOLLAR,      // $
+
+    ENTERPRISE,  // E-boy
+    SHIFT        // Shift
 } table_symbol_enum;
 
 typedef struct
 {
     table_symbol_enum symbol;
+    struct bst_tok_node tok_node;
     struct stack_item *next;
 } stack_item;
 
@@ -36,44 +39,52 @@ typedef struct
 } stack;
 
 /**
- * @brief
+ * @brief initializes stack for bottom up method for syntax analyzer
  *
- * @param precedent_stack
+ * @param precedent_stack pointer to stack
  */
 void stack_init(stack *precedent_stack);
 
 /**
- * @brief
+ * @brief pushes a new item onto the stack
  *
- * @param precedent_stack
- * @param symbol
- * @return true
- * @return false
+ * @param precedent_stack pointer to the stack where the new item will be pushed
+ * @param symbol specific symbol from table of symbols to determine what type of token is pushed onto the stack
+ * @param T token of symbol to be pushed onto the given stack
+ * @return true if the function was successful
+ * @return false if the function cant allocate memory for given
  */
-bool stack_push(stack *precedent_stack, table_symbol_enum symbol);
+bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T);
 
 /**
- * @brief
+ * @brief pushes a new item as the second one right behind the top one
  *
- * @param precedent_stack
+ * @param precedent_stack pointer to the stack where the new item will be pushed
  * @param item_next
- * @param symbol
+ * @param symbol specific symbol from table of symbols to determine what type of token is pushed into the stack
  * @return true
  * @return false
  */
 bool item_push(stack *precedent_stack, stack_item *item_next, table_symbol_enum symbol);
 
-/**
- * @brief
- *
- * @param precedent_stack
- * @return true
- * @return false
- */
+// /**
+//  * @brief pops a stack
+//  *
+//  * @param precedent_stack stack
+//  * @return true successful
+//  * @return false unsuccessful
+//  */
 bool stack_pop(stack *precedent_stack);
 
 /**
- * @brief
+ * @brief prints a stack from item till bottom
+ *
+ * @param the_item item from which, to print
+ */
+void stack_print(stack_item *item);
+
+/**
+ * @brief pops a stuck x [count] times
  *
  * @param precedent_stack
  * @param count
@@ -81,157 +92,28 @@ bool stack_pop(stack *precedent_stack);
 void stack_pop_count(stack *precedent_stack, int count);
 
 /**
- * @brief
+ * @brief compares a item's symbol with symbol
  *
- * @param item1
- * @param symbol
+ * @param item1 item to compare
+ * @param symbol symbol to compare
  * @return true
  * @return false
  */
 bool item_symblcmp(stack_item *item1, table_symbol_enum symbol);
 
 /**
- * @brief
+ * @brief returns pointer item on top
  *
- * @param precedent_stack
- * @return stack_item*
+ * @param precedent_stack stack
+ * @return pointer to item
  */
 stack_item *stack_top(stack *precedent_stack);
 
 /**
- * @brief
+ * @brief frees stack, doesnt have to be empty
  *
  * @param precedent_stack
  */
 void stack_free(stack *precedent_stack);
-
-/**
- * @brief
- *
- * @param the_item
- */
-void print_stack(stack_item *the_item);
-
-// STACKS OF TOKENS
-
-typedef struct
-{
-    token stackToken;
-    struct stack_item_of_T *next;
-} stack_item_of_T;
-
-typedef struct
-{
-    stack_item_of_T *top;
-} stack_of_T;
-
-/**
- * @brief
- *
- * @param token_stack
- */
-void stack_initT(stack_of_T *token_stack);
-
-/**
- * @brief
- *
- * @param token_stack
- * @param myToken
- * @return true
- * @return false
- */
-bool stack_pushT(stack_of_T *token_stack, token *myToken);
-
-/**
- * @brief
- *
- * @param token_stack
- * @return true
- * @return false
- */
-bool stack_popT(stack_of_T *token_stack);
-
-/**
- * @brief
- *
- * @param token_stack
- * @return stack_item_of_T*
- */
-stack_item_of_T *stack_topT(stack_of_T *token_stack);
-
-/**
- * @brief
- *
- * @param token_stack
- */
-void stack_freeT(stack_of_T *token_stack);
-
-/**
- * @brief
- *
- * @param the_item
- */
-void print_stackT(stack_item_of_T *the_item);
-
-// STACK OF TREE POINTERS
-
-typedef struct
-{
-    struct bst_tok_node *ptr_to_node;
-    struct stack_item_of_node *next;
-} stack_item_of_node;
-
-typedef struct
-{
-    stack_item_of_node *top;
-} stack_of_node;
-
-/**
- * @brief
- *
- * @param node_stack
- */
-void stack_init_node(stack_of_node *node_stack);
-
-/**
- * @brief
- *
- * @param node_stack
- * @param node
- * @return true
- * @return false
- */
-bool stack_push_node(stack_of_node *node_stack, struct bst_tok_node *node);
-
-/**
- * @brief
- *
- * @param node_stack
- * @return true
- * @return false
- */
-bool stack_pop_node(stack_of_node *node_stack);
-
-/**
- * @brief
- *
- * @param node_stack
- */
-void stack_free_node(stack_of_node *node_stack);
-
-/**
- * @brief
- *
- * @param the_item
- */
-void print_stack_of_node(stack_item_of_node *the_item);
-
-/**
- * @brief
- *
- * @param my_stack
- * @return stack_item_of_T*
- */
-stack_item_of_T *prevKaffee(stack_of_T *my_stack);
 
 #endif
