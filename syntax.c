@@ -6,6 +6,12 @@
 
 token *myToken;
 bool TakeToken = true;
+
+/**
+ * @brief Function takes token from lexer if TakeToken is true, 
+ * otherwise it returns the same used token
+ * 
+ */
 #define GetToken() if (TakeToken) { Get_Token(&myToken);} else {TakeToken = true;}
 
 
@@ -24,12 +30,21 @@ bool CorpusPrime(struct bst_tok_node **seed){
             if(!EndCommand()) return false;
             return CorpusPrime(&((*seed)->right));
         }
+        break;
+        case varT:{
+            *seed = Set_TokNode(myToken);
+
+        }
+        break;
         case ifT:{
             *seed = Set_TokNode(myToken);
             if(!IfPrime(&((*seed)->left))) return false;
             return CorpusPrime(&((*seed)->right));
         }
         break;
+        case whileT:{
+
+        }
         case eofT:
         {
             return true;
@@ -102,13 +117,45 @@ bool EndCommand(){
     }
 }
 
+
 void EnterSkip(){
     if(myToken->dtype == newlineT){
         GetToken();
     }
 }
 
+// Let will be stored as a constant ( semantics should check if that variable is being modified )
 bool Let(struct bst_tok_node **seed){
+    GetToken();
+    if(myToken->dtype != varidT) return false;
+    GetToken();
+    switch(myToken->dtype){
+        case colonT:{
+            GetToken();
+            if(myToken->dtype != vartypeT) return false;
+            GetToken();
+            if(myToken->dtype == equalT){
+                return Expression();
+            }
+            else{
+                TakeToken = false;
+                return true;
+            }
+        }
+        break;
+        case equalT:{
+            return Expression();
+        }
+        break;
+        default:{
+            return false;
+        }  
+    }
+
+}
+
+// Var will be allowed to change its value ( by semantics )
+bool Var(struct bst_tok_node **seed){
     GetToken();
     if(myToken->dtype != varidT) return false;
     GetToken();
@@ -144,6 +191,7 @@ bool IfPrime(struct bst_tok_node **seed){
     EnterSkip();
     if(myToken->dtype != LCbracketT) return false;
     ((*seed)->right)= Set_TokNode(myToken);
+    // IF part goes to left
     if(!CorpusSecondary(&((*seed)->right)->left)) return false;
     GetToken();
     EnterSkip();
@@ -151,6 +199,13 @@ bool IfPrime(struct bst_tok_node **seed){
     GetToken();
     EnterSkip();
     if(myToken->dtype != LCbracketT) return false;
+    // ELSE part goes to right
     if(!CorpusSecondary(&((*seed)->right)->right)) return false;
     return true;
+}
+
+
+bool FuncDef(struct bst_tok_node **seed){
+    GetToken();
+    *seed = Set_TokNode(myToken);
 }

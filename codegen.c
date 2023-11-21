@@ -1,5 +1,7 @@
 #include "codegen.h"
 
+int IfCounter = 0;
+
 void Instructions(){
     printf(
         "LABEL READSTRING\n"
@@ -68,7 +70,6 @@ void GenerateSubTree(struct bst_tok_node *curr_root){
         }
         break;
         case ifT:{
-            printf("IF\n");
             GenerateIF(curr_root->left);
         }
         break;
@@ -90,8 +91,17 @@ void GenerateExpression(struct bst_tok_node *root){
 }
 
 void GenerateIF(struct bst_tok_node *root){
+    int thisIf = IfCounter;
     GenerateExpression(root->left);
-    printf("JUMPIFNEQ IFELSE GF@var bool@true\n");
-    GenerateSubTree(root->right->left);
+    // Jump IF ...
+    printf("JUMPIFNEQ IF%d GF@var bool@true\n",thisIf);
+    // else part
     GenerateSubTree(root->right->right);
+    // jump end
+    printf("JUMP END%d\n",thisIf);
+    // label if
+    printf("LABEL IF%d\n",thisIf);
+    GenerateSubTree(root->right->left);
+    // label end
+    printf("LABEL END%d\n",thisIf);
 }
