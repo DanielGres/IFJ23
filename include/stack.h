@@ -26,8 +26,7 @@ typedef enum {
     SHIFT        // Shift
 } table_symbol_enum;
 
-typedef struct
-{
+typedef struct stack_item {
     table_symbol_enum symbol;
     struct bst_tok_node tok_node;
     struct stack_item *next;
@@ -65,7 +64,7 @@ bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T);
  * @return true
  * @return false
  */
-bool item_push(stack *precedent_stack, stack_item *item_next, table_symbol_enum symbol);
+bool item_push(stack *precedent_stack, table_symbol_enum symbol, stack_item *item_next);
 
 // /**
 //  * @brief pops a stack

@@ -15,14 +15,14 @@ bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T) {
     }
 
     (new_item)->symbol = symbol;
-    Ja(&(new_item)->tok_node, Set_TokNode(T));
+    Ja(&(new_item)->tok_node, Set_TokNode(T));  // TO~DO RENAME
     (new_item)->next = precedent_stack->top;
 
     precedent_stack->top = new_item;
 
     return true;
 }
-bool item_push(stack *precedent_stack, stack_item *item_next, table_symbol_enum symbol) {
+bool item_push(stack *precedent_stack, table_symbol_enum symbol, stack_item *item_next) {
     stack_item *new_item = (stack_item *)malloc(sizeof(stack_item) + 16);  // PORIESIT NESKOR
 
     if (new_item == NULL)
