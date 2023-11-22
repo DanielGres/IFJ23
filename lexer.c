@@ -87,7 +87,7 @@ void replaceUnicodeSequences(dyn_string *inputString) {
 
             // Convert the hexadecimal sequence to decimal
             int decimalValue = hexToDecimal(&hexSequence);
-            dynstr_destroy(&hexSequence);
+            dynstr_destr(&hexSequence);
 
             // Append the corresponding ASCII character to the result string
             char asciiChar = (char)decimalValue;
@@ -98,7 +98,7 @@ void replaceUnicodeSequences(dyn_string *inputString) {
         }
     }
     dynstr_copy(inputString, &resultString);
-    dynstr_destroy(&resultString);
+    dynstr_destr(&resultString);
 }
 
 bool lexer(dyn_string *buffer, token_type *type)
@@ -235,7 +235,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Invalid input character!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -286,7 +286,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected a question mark (?)!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -646,7 +646,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected a number!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -689,7 +689,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected a number or an operator (+ or -)!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -707,7 +707,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected a number!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -803,7 +803,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected '{'!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -822,7 +822,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected [0-9] or [Aa-Ff]!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -848,7 +848,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                     condition = false;
                     dynstr_addstr(&errMSG, "Expected a number or an operator (+ or -)!\n");
                     errPrint(&errMSG, 1);
-                    dynstr_destroy(&errMSG);
+                    dynstr_destr(&errMSG);
                     return false;
                 }
             }
@@ -858,7 +858,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Too many number in escaped hex string!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -897,7 +897,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected new line or double quotes!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -920,7 +920,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected newline or character!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -943,7 +943,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected newline or character!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -990,7 +990,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected doublequotes or a character!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -1013,7 +1013,7 @@ bool lexer(dyn_string *buffer, token_type *type)
                 condition = false;
                 dynstr_addstr(&errMSG, "Expected doublequotes or a character!\n");
                 errPrint(&errMSG, 1);
-                dynstr_destroy(&errMSG);
+                dynstr_destr(&errMSG);
                 return false;
             }
         }
@@ -1034,7 +1034,7 @@ bool lexer(dyn_string *buffer, token_type *type)
             condition = false;
             dynstr_addstr(&errMSG, "Invalid input character!\n");
             errPrint(&errMSG, 1);
-            dynstr_destroy(&errMSG);
+            dynstr_destr(&errMSG);
             return false;
         }
         }
