@@ -55,12 +55,7 @@ void dynstr_clear(dyn_string *str) {
     str->s[str->len] = '\0';
 }
 
-<<<<<<< HEAD:dyn_string.c
-void dynstr_destr(dyn_string *str)
-{
-=======
 void dynstr_destr(dyn_string *str) {
->>>>>>> 8e09b02 (:art: improve structure of file anarchy):src/dyn_string.c
     str->allen = 0;
     str->len = 0;
     free(str->s);
