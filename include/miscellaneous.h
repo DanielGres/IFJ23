@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "bin_tree.h"
+#include "tok_tree.h"
 
 void treeprint(struct bst_tok_node *root, int level);
 
