@@ -95,12 +95,12 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
     } else if ((loc_token->dtype == varidT)) {
         return IDENTIFIER;
     } else {
-        // SET TOKEN BOOL FALSE
+        TakeToken = false;
         return DOLLAR;
     }
 }
 // TO~DO Strom na semantiku
-bool ExtraVirgin(struct bst_tok_node *seed, char *EOE) {
+bool Expression(struct bst_tok_node *seed, char *EOE) {
     TakeToken = true;
     table_symbol_enum inputed_symbol, top;
     table_sign_enum operation;
