@@ -47,17 +47,9 @@ void inorderTraversal(struct bst_tok_node *root) {
     if (root == NULL) {
         return;
     } else {
-        if (root->left == NULL) {
-            // printf("BAKA\n");
-            return;
-        } else {
-            //dynstr_print(root->T->val);
-            inorderTraversal((&root->left));
-        }
-        // inorderTraversal((root->left));
-        inorderTraversal((root->left));
-        dynstr_print(root->T->val);
         inorderTraversal((root->right));
+        dynstr_print(root->T->val);
+        inorderTraversal((root->left));
     }
 }
 

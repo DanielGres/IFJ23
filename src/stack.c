@@ -15,7 +15,7 @@ bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T) {
     }
 
     (new_item)->symbol = symbol;
-    Ja(&(new_item)->tok_node, Set_TokNode(T));  // TO~DO RENAME
+    (new_item)->tok_node = Set_TokNode(T);  // TO~DO RENAME
     (new_item)->next = precedent_stack->top;
 
     precedent_stack->top = new_item;

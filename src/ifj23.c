@@ -55,23 +55,23 @@ int main() {
     //     printf(" %s\n",enumers[T->dtype]);
     // }
 
-    if(CorpusPrime(&(the_root->right))){
-        printf("spravne! :DD\n");
-        Generator(the_root);
-    }
-    else{
-        printf("nespravne! :((\n");
-    }
-
-    // if (ExtraVirgin(the_root, ";")) {
+    // if(CorpusPrime(&(the_root->right))){
     //     printf("spravne! :DD\n");
-    //     //inorderTraversal(the_root);
-    //     //dynstr_print(&the_root->right->right->T->val);
-
-    // } else {
+    //     Generator(the_root);
+    // }
+    // else{
     //     printf("nespravne! :((\n");
     // }
-    // printf("\n");
+
+    if (Expression(the_root, ";")) {
+        printf("spravne! :DD\n");
+        inorderTraversal(the_root);
+        //dynstr_print(&the_root->right->right->T->val);
+
+    } else {
+        printf("nespravne! :((\n");
+    }
+    printf("\n");
 
     // TEST STACK
     // stack *node_stack = malloc(sizeof(stack));
