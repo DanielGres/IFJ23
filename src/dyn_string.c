@@ -4,16 +4,12 @@
 // Viktor Hančovský --- xhanco00
 // Branislav Kotúč --- xkotuc02
 
-#include "dyn_string.h"
+#include "../include/dyn_string.h"
 
-#define STRING_ALLOC_SIZE 8 // Magic number
+#define STRING_ALLOC_SIZE 8  // Magic number
 
-
-
-void dynstr_add(dyn_string *str, char c)
-{
-    if (str->len + 1 >= str->allen)
-    {
+void dynstr_add(dyn_string *str, char c) {
+    if (str->len + 1 >= str->allen) {
         str->allen += STRING_ALLOC_SIZE;
         str->s = (char *)realloc(str->s, str->allen);
     }
@@ -21,34 +17,26 @@ void dynstr_add(dyn_string *str, char c)
     str->s[str->len] = '\0';
 }
 
-void dynstr_addstr(dyn_string *str, char *strtoadd)
-{
-    for (int i = 0; i < strlen(strtoadd); i++)
-    {
+void dynstr_addstr(dyn_string *str, char *strtoadd) {
+    for (int i = 0; i < strlen(strtoadd); i++) {
         dynstr_add(str, strtoadd[i]);
     }
 }
 
-void dynstr_init(dyn_string *str)
-{
-    if (str != NULL)
-    {
+void dynstr_init(dyn_string *str) {
+    if (str != NULL) {
         str->s = (char *)malloc(STRING_ALLOC_SIZE);
         str->len = 0;
         str->allen = STRING_ALLOC_SIZE;
         str->s[str->len] = '\0';
-    }
-    else
-    {
+    } else {
         printf("Internal error: dynstr_init failed to allocate memory.\n");
         exit(99);
     }
 }
 
-void dynstr_copy(dyn_string *to, dyn_string *from)
-{
-    if (from->len >= to->allen)
-    {
+void dynstr_copy(dyn_string *to, dyn_string *from) {
+    if (from->len >= to->allen) {
         to->allen = from->len + 1;
         to->s = (char *)realloc(to->s, to->allen);
     }
@@ -56,29 +44,29 @@ void dynstr_copy(dyn_string *to, dyn_string *from)
     to->len = from->len;
 }
 
-bool dynstr_cmp(dyn_string *string1, char *string2)
-{
+bool dynstr_cmp(dyn_string *string1, char *string2) {
     // printf("String1 -> %s\n", string1->s);
     // printf("String2 -> %s\n", string2);
     return (strcmp(string1->s, string2) == 0);
 }
 
-void dynstr_clear(dyn_string *str)
-{
+void dynstr_clear(dyn_string *str) {
     str->len = 0;
     str->s[str->len] = '\0';
 }
 
+<<<<<<< HEAD:dyn_string.c
 void dynstr_destr(dyn_string *str)
 {
+=======
+void dynstr_destr(dyn_string *str) {
+>>>>>>> 8e09b02 (:art: improve structure of file anarchy):src/dyn_string.c
     str->allen = 0;
     str->len = 0;
     free(str->s);
 }
-void dynstr_print(dyn_string *str)
-{
-    for (int i = 0; i < str->len; i++)
-    {
+void dynstr_print(dyn_string *str) {
+    for (int i = 0; i < str->len; i++) {
         printf("%c", str->s[i]);
     }
 }

@@ -2,14 +2,12 @@
 // Daniel Greš --- xgresd00
 // Mário Mihál --- xmihal13
 
-#include "bin_tree.h"
+#include "../include/bin_tree.h"
 
-void Init_TokTree(struct bst_tok_node *root)
-{
+void Init_TokTree(struct bst_tok_node *root) {
     (root) = NULL;
 }
-struct bst_tok_node *Set_TokNode(token *T_from)
-{
+struct bst_tok_node *Set_TokNode(token *T_from) {
     struct bst_tok_node *newTokNode = malloc(sizeof(struct bst_tok_node));
     newTokNode->T = T_from;
     newTokNode->left = NULL;
@@ -17,35 +15,29 @@ struct bst_tok_node *Set_TokNode(token *T_from)
     return newTokNode;
 }
 
-struct bst_tok_node *Insert_TokTree(struct bst_tok_node *root, bool isleft, token *T_from)
-{
-    if (isleft)
-    {
+struct bst_tok_node *Insert_TokTree(struct bst_tok_node *root, bool isleft, token *T_from) {
+    if (isleft) {
         root->left = Set_TokNode(T_from);
-    }
-    else
-    {
+    } else {
         root->right = Set_TokNode(T_from);
     }
     return root;
 }
 
-void Ja(struct bst_tok_node *to, struct bst_tok_node *from) // TODO ani za boha toto nenechajte JA
+void Ja(struct bst_tok_node *to, struct bst_tok_node *from)  // TODO ani za boha toto nenechajte JA
 {
     *to = *from;
 }
 
-struct bst_tok_node *Create_TokTree(token *T_from, struct bst_tok_node *Left_root, struct bst_tok_node *Right_root)
-{
+struct bst_tok_node *Create_TokTree(token *T_from, struct bst_tok_node *Left_root, struct bst_tok_node *Right_root) {
     struct bst_tok_node *root = Set_TokNode(T_from);
     root->right = Right_root;
     root->left = Left_root;
-    
+
     return root;
 }
 
-void inorderTraversal(struct bst_tok_node *root)
-{
+void inorderTraversal(struct bst_tok_node *root) {
     if (root == NULL)
         return;
     inorderTraversal(root->left);
@@ -53,12 +45,10 @@ void inorderTraversal(struct bst_tok_node *root)
     inorderTraversal(root->right);
 }
 
-void deleteTree(struct bst_tok_node *root)
-{
-    if (root == NULL)
-    {
+void deleteTree(struct bst_tok_node *root) {
+    if (root == NULL) {
         return;
     }
-    
+
     free(root);
 }
