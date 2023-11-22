@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include "token.h"
 #include "errror.h"
+#include "dyn_string.h"
 
 
 typedef enum

@@ -1,7 +1,8 @@
+let meow : Int = 5
 if 44 {
-    let Pepe : String = 65
+    meow = 6
 }
 else {
 
-    let Pepe : String = 65
+    var Pepe : String = 65
 }

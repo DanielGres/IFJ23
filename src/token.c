@@ -6,22 +6,17 @@
 
 #include "../include/token.h"
 
-void Token_init(token **T)
-{
+void Token_init(token **T) {
     (*T) = NULL;
 }
 
-void Token_set(token **T, dyn_string *string, token_type type)
-{
-    if ((*T) == NULL)
-    {
+void Token_set(token **T, dyn_string *string, token_type type) {
+    if ((*T) == NULL) {
         (*T) = malloc(sizeof(token));
         (*T)->dtype = type;
         (*T)->val = malloc(sizeof(dyn_string));
         dynstr_copy((*T)->val, string);
-    }
-    else
-    {
+    } else {
         (*T)->dtype = type;
         (*T)->val = malloc(sizeof(dyn_string));
         dynstr_copy((*T)->val, string);

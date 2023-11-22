@@ -8,15 +8,15 @@
 #define DYN_STRING_H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 typedef struct
 {
-    char *s;            // string ending with /0
-    unsigned int allen; // allocated length of string
-    unsigned int len;   // length
+    char *s;             // string ending with /0
+    unsigned int allen;  // allocated length of string
+    unsigned int len;    // length
 } dyn_string;
 
 /**
@@ -36,7 +36,7 @@ void dynstr_add(dyn_string *str, char c);
 
 /**
  * @brief function adds string from the second parameter to the first one
- * 
+ *
  * @param str destination dynamic string
  * @param strtoadd string to be added to the first argument
  */
@@ -76,7 +76,7 @@ void dynstr_destr(dyn_string *str);
 
 /**
  * @brief Function prints given dynamic string
- * 
+ *
  * @param str dynamic string to be printed
  */
 void dynstr_print(dyn_string *str);

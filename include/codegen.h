@@ -15,4 +15,6 @@ void GenerateExpression(struct bst_tok_node *root);
 
 void GenerateIF(struct bst_tok_node *root);
 
+void GenerateLet(struct bst_tok_node *root);
+
 #endif
