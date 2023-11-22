@@ -22,6 +22,18 @@ bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T) {
 
     return true;
 }
+bool stack_push_node(stack *precedent_stack, table_symbol_enum symbol, struct bst_tok_node *node) {
+    stack_item *new_item = malloc(sizeof(stack_item) + 16);  ////PORIESIT NESKOR
+    if (new_item == NULL) {
+        return false;
+    }
+    new_item->tok_node = node;
+    new_item->symbol = symbol;
+    new_item->next = precedent_stack->top;
+    precedent_stack->top = new_item;
+    return true;
+}
+
 bool item_push(stack *precedent_stack, table_symbol_enum symbol, stack_item *item_next) {
     stack_item *new_item = (stack_item *)malloc(sizeof(stack_item) + 16);  // PORIESIT NESKOR
 
@@ -52,6 +64,17 @@ void stack_pop_till(stack *precedent_stack, int till) {
     for (int i = 0; i < till; i++) {
         stack_pop(precedent_stack);
     }
+}
+
+bool stack_pop_UndTop(stack *precedent_stack) {
+    if ((precedent_stack->top != NULL) && (precedent_stack->top->next != NULL)) {
+        stack_item *tmp = precedent_stack->top->next;
+        precedent_stack->top->next = tmp->next;
+        free(tmp);
+
+        return true;
+    }
+    return false;
 }
 
 stack_item *stack_top(stack *precedent_stack) {

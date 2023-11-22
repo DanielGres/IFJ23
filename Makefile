@@ -18,7 +18,7 @@ $(EXECUTABLE): $(OBJ_FILES) $(DEPS)
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJ_FILES)
 
 %.o: %.c 
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -ggdb3
 
 clean:
 	rm -f $(EXECUTABLE) $(OBJ_FILES)

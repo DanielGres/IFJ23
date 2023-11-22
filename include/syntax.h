@@ -6,7 +6,7 @@
 #define SYNTAX_H
 
 #include "lexer.h"
-#include "bin_tree.h"
+#include "tok_tree.h"
 #include "expression.h"
 
 bool EndCommand();

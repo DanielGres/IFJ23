@@ -28,7 +28,7 @@ typedef enum {
 
 typedef struct stack_item {
     table_symbol_enum symbol;
-    struct bst_tok_node tok_node;
+    struct bst_tok_node *tok_node;
     struct stack_item *next;
 } stack_item;
 
@@ -54,6 +54,17 @@ void stack_init(stack *precedent_stack);
  * @return false if the function cant allocate memory for given
  */
 bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T);
+
+/**
+ * @brief pushes a new item onto the stack
+ *
+ * @param precedent_stack pointer to the stack where the new item will be pushed
+ * @param symbol specific symbol from table of symbols to determine what type of token is pushed onto the stack
+ * @param node
+ * @return true if the function was successful
+ * @return false if the function cant allocate memory for given
+ */
+bool stack_push_node(stack *precedent_stack, table_symbol_enum symbol, struct bst_tok_node *node);
 
 /**
  * @brief pushes a new item as the second one right behind the top one
@@ -114,5 +125,7 @@ stack_item *stack_top(stack *precedent_stack);
  * @param precedent_stack
  */
 void stack_free(stack *precedent_stack);
+
+bool stack_pop_UndTop(stack *precedent_stack);
 
 #endif
