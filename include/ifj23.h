@@ -5,7 +5,7 @@
 // Branislav Kotúč --- xkotuc02
 
 #include <stdio.h>
-#include "bin_tree.h"
+#include "tok_tree.h"
 #include "syntax.h"
 #include "codegen.h"
 #include "miscellaneous.h"

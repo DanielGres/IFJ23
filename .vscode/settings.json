@@ -7,9 +7,7 @@
     "lexer.h": "c",
     "bin_tree.h": "c",
     "syntax.h": "c",
-    "stdio.h": "c",
-    "token.h": "c",
-    "errror.h": "c"
+    "stdio.h": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",

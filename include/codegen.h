@@ -5,7 +5,7 @@
 #ifndef CODEGEN_H
 #define CODEGEN_H
 
-#include "bin_tree.h"
+#include "tok_tree.h"
 
 void Generator(struct bst_tok_node *root);
 

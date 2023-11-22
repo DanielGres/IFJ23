@@ -2,7 +2,7 @@
 // Daniel Greš --- xgresd00
 // Mário Mihál --- xmihal13
 
-#include "../include/bin_tree.h"
+#include "../include/tok_tree.h"
 
 void Init_TokTree(struct bst_tok_node *root) {
     (root) = NULL;
@@ -36,13 +36,29 @@ struct bst_tok_node *Create_TokTree(token *T_from, struct bst_tok_node *Left_roo
 
     return root;
 }
+struct bst_tok_node *SetChildNodes(struct bst_tok_node *root, struct bst_tok_node *Left_root, struct bst_tok_node *Right_root) {
+    root->right = Right_root;
+    root->left = Left_root;
+
+    return root;
+}
 
 void inorderTraversal(struct bst_tok_node *root) {
-    if (root == NULL)
+    if (root == NULL) {
         return;
-    inorderTraversal(root->left);
-    printf("%s ->", (root->T->val->s));
-    inorderTraversal(root->right);
+    } else {
+        if (root->left == NULL) {
+            // printf("BAKA\n");
+            return;
+        } else {
+            //dynstr_print(root->T->val);
+            inorderTraversal((&root->left));
+        }
+        // inorderTraversal((root->left));
+        inorderTraversal((root->left));
+        dynstr_print(root->T->val);
+        inorderTraversal((root->right));
+    }
 }
 
 void deleteTree(struct bst_tok_node *root) {

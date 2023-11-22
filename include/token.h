@@ -40,7 +40,7 @@ typedef enum
     arrowT, // ->
     whileT, // while keyword
     returnT, // return keyword
-    termT, // TODO realne hocico to moze byt
+    //termT, // TODO realne hocico to moze byt
     newlineT, // \n //TODO probably iba ukoncenie riadku netreba token na toto asi
     semicolonT, // ; //TODO probably iba ukoncenie riadku netreba token na toto asi
     linecommentT, //comment
