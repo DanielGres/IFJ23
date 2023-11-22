@@ -62,15 +62,23 @@ void Instructions(){
 
 void GenerateSubTree(struct bst_tok_node *curr_root){
     if(curr_root == NULL) return;
-    printf("%d ",curr_root->T->dtype);
+    //printf("%d ",curr_root->T->dtype);
     switch(curr_root->T->dtype){
         case letT:{
-            printf("DEFVAR GF@mylet\n");
-            printf("MOVE GF@mylet somevar\n");
+            GenerateLet(curr_root->left);
+        }
+        break;
+        case varT:{
+            printf("DEFVAR GF@myvar\n");
+            printf("MOVE GF@myvar somevar\n");
         }
         break;
         case ifT:{
             GenerateIF(curr_root->left);
+        }
+        break;
+        case varidT:{
+            GenerateAssigment(curr_root);
         }
         break;
         default:{
@@ -80,21 +88,49 @@ void GenerateSubTree(struct bst_tok_node *curr_root){
     GenerateSubTree(curr_root->right);
 }
 
+void GenerateAssigment(struct bst_tok_node *root){
+    printf("MOVE GF@%s int@%s\n", root->T->val->s, root->left->left->T->val->s);
+}
+
 void Generator(struct bst_tok_node *root){
+    printf(".IFJcode23\n");
+    printf("DEFVAR GF@exp\n");
     //Instructions();
     GenerateSubTree((root->right));
+    printf("EXIT int@0\n");
+}
 
+void GenerateExpStack(struct bst_tok_node *root){
+    if(root == NULL) return;
+    printf("PUSHS %s\n",root->T->val->s);}
+
+void ExpressionPostorderTraversal(struct bst_tok_node *root){
+    if(root == NULL) return;
+    ExpressionPostorderTraversal(root->left);
+    ExpressionPostorderTraversal(root->right);
+    GenerateExpression(root);
 }
 
 void GenerateExpression(struct bst_tok_node *root){
-    printf("EXPRESSION GF@var\n");
+    ExpressionPostorderTraversal(root->left);
+}
+
+void GenerateLet(struct bst_tok_node *root){
+    printf("DEFVAR GF@%s\n", root->T->val->s);
+    if(root->left != NULL){
+        printf("MOVE GF@%s int@%s\n", root->T->val->s, root->left->T->val->s);
+    }
 }
 
 void GenerateIF(struct bst_tok_node *root){
+    IfCounter++;
     int thisIf = IfCounter;
-    GenerateExpression(root->left);
+    //GenerateExpression(root->left);
+    // Result of expression will be on top of stack
+    printf("POPS GF@exp\n");
+
     // Jump IF ...
-    printf("JUMPIFNEQ IF%d GF@var bool@true\n",thisIf);
+    printf("JUMPIFNEQ IF%d GF@exp bool@true\n",thisIf);
     // else part
     GenerateSubTree(root->right->right);
     // jump end

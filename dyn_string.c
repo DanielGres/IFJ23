@@ -69,7 +69,7 @@ void dynstr_clear(dyn_string *str)
     str->s[str->len] = '\0';
 }
 
-void dynstr_destr(dyn_string *str)
+void dynstr_destroy(dyn_string *str)
 {
     str->allen = 0;
     str->len = 0;

@@ -72,7 +72,7 @@ void dynstr_clear(dyn_string *str);
  *
  * @param str dynamic string to be freed
  */
-void dynstr_destr(dyn_string *str);
+void dynstr_destroy(dyn_string *str);
 
 /**
  * @brief Function prints given dynamic string

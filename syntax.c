@@ -15,9 +15,10 @@ bool TakeToken = true;
 #define GetToken() if (TakeToken) { Get_Token(&myToken);} else {TakeToken = true;}
 
 
-bool Expression(){
+bool Expression(struct bst_tok_node **seed){
     GetToken();
     if(myToken->dtype != intnumT) return false;
+    *seed = Set_TokNode(myToken);
     return true;
 }
 
@@ -33,7 +34,15 @@ bool CorpusPrime(struct bst_tok_node **seed){
         break;
         case varT:{
             *seed = Set_TokNode(myToken);
-
+            if(!EndCommand()) return false;
+            return CorpusPrime(&((*seed)->right));
+        }
+        break;
+        case varidT:{
+            *seed = Set_TokNode(myToken);
+            if(!assigment(&((*seed)->left))) return false;
+            if(!EndCommand()) return false;
+            return CorpusPrime(&((*seed)->right));
         }
         break;
         case ifT:{
@@ -69,6 +78,20 @@ bool CorpusSecondary(struct bst_tok_node **seed){
         case letT:{
             *seed = Set_TokNode(myToken);
             if(!Let(&((*seed)->left))) return false;
+            if(!EndCommand()) return false;
+            return CorpusSecondary(&((*seed)->right));
+        }
+        break;
+        case varT:{
+            *seed = Set_TokNode(myToken);
+            if(!Var(&((*seed)->left))) return false;
+            if(!EndCommand()) return false;
+            return CorpusSecondary(&((*seed)->right));
+        }
+        break;
+        case varidT:{
+            *seed = Set_TokNode(myToken);
+            if(!assigment(&((*seed)->left))) return false;
             if(!EndCommand()) return false;
             return CorpusSecondary(&((*seed)->right));
         }
@@ -117,16 +140,24 @@ bool EndCommand(){
     }
 }
 
-
 void EnterSkip(){
     if(myToken->dtype == newlineT){
         GetToken();
     }
 }
 
+// Semantics should check if the variable was declared before and if it is modifiable
+bool assigment(struct bst_tok_node **seed){
+    GetToken();
+    *seed = Set_TokNode(myToken);
+    if(myToken->dtype != equalT) return false;
+    return Expression(&((*seed)->left));
+}
+
 // Let will be stored as a constant ( semantics should check if that variable is being modified )
 bool Let(struct bst_tok_node **seed){
     GetToken();
+    *seed = Set_TokNode(myToken);
     if(myToken->dtype != varidT) return false;
     GetToken();
     switch(myToken->dtype){
@@ -135,7 +166,7 @@ bool Let(struct bst_tok_node **seed){
             if(myToken->dtype != vartypeT) return false;
             GetToken();
             if(myToken->dtype == equalT){
-                return Expression();
+                return Expression(&((*seed)->left));
             }
             else{
                 TakeToken = false;
@@ -144,7 +175,7 @@ bool Let(struct bst_tok_node **seed){
         }
         break;
         case equalT:{
-            return Expression();
+            return Expression(&((*seed)->left));
         }
         break;
         default:{
@@ -157,6 +188,7 @@ bool Let(struct bst_tok_node **seed){
 // Var will be allowed to change its value ( by semantics )
 bool Var(struct bst_tok_node **seed){
     GetToken();
+    *seed = Set_TokNode(myToken);
     if(myToken->dtype != varidT) return false;
     GetToken();
     switch(myToken->dtype){
@@ -165,7 +197,7 @@ bool Var(struct bst_tok_node **seed){
             if(myToken->dtype != vartypeT) return false;
             GetToken();
             if(myToken->dtype == equalT){
-                return Expression();
+                return Expression(&((*seed)->left));
             }
             else{
                 TakeToken = false;
@@ -174,7 +206,7 @@ bool Var(struct bst_tok_node **seed){
         }
         break;
         case equalT:{
-            return Expression();
+            return Expression(&((*seed)->left));
         }
         break;
         default:{
@@ -186,7 +218,7 @@ bool Var(struct bst_tok_node **seed){
 
 bool IfPrime(struct bst_tok_node **seed){
     *seed = Set_TokNode(myToken);
-    if(!Expression()) return false;
+    if(!Expression(&((*seed)->left))) return false;
     GetToken();
     EnterSkip();
     if(myToken->dtype != LCbracketT) return false;

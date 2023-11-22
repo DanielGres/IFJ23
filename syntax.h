@@ -30,6 +30,8 @@ bool Let(struct bst_tok_node **seed);
 
 bool Var(struct bst_tok_node **seed);
 
+bool assigment(struct bst_tok_node **seed);
+
 bool IfPrime(struct bst_tok_node **seed);
 
 bool FuncDef(struct bst_tok_node **seed);

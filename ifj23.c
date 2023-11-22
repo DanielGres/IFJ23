@@ -57,13 +57,10 @@ int main() {
     // }
 
     if(CorpusPrime(&(the_root->right))){
-        printf("spravne! :DD\n");
+        //print2D(the_root);
         Generator(the_root);
     }
     else{
         printf("nespravne! :((\n");
     }
-
-
-
 }

@@ -87,7 +87,7 @@ void replaceUnicodeSequences(dyn_string *inputString) {
 
             // Convert the hexadecimal sequence to decimal
             int decimalValue = hexToDecimal(&hexSequence);
-            dynstr_destr(&hexSequence);
+            dynstr_destroy(&hexSequence);
 
             // Append the corresponding ASCII character to the result string
             char asciiChar = (char)decimalValue;
@@ -98,7 +98,7 @@ void replaceUnicodeSequences(dyn_string *inputString) {
         }
     }
     dynstr_copy(inputString, &resultString);
-    dynstr_destr(&resultString);
+    dynstr_destroy(&resultString);
 }
 
 bool lexer(dyn_string *buffer, token_type *type)
