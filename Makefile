@@ -16,6 +16,7 @@ all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJ_FILES) $(DEPS)
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJ_FILES)
+	rm -f $(OBJ_FILES)
 
 %.o: %.c 
 	$(CC) $(CFLAGS) -c $< -o $@ -ggdb3

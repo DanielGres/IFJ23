@@ -164,7 +164,7 @@ bool FunctionCall(struct bst_tok_node **seed) {
     *seed = Set_TokNode(myToken);
     // Check for parameters and set them to the left
     FunctionCallParameters(&((*seed)->left));
-    return true;
+    return  FunctionCallParameters(&((*seed)->left));
 }
 
 bool FunctionCallParameters(struct bst_tok_node **seed) {

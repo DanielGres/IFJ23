@@ -30,7 +30,8 @@ typedef enum {
     S,  // < SHIFT
     R,  // > REDUCE
     E,  // # ERROR/EMPTY
-    N   // = EQUAL
+    N,  // = EQUAL
+    F   // Function call
 } table_sign_enum;
 
 typedef enum {

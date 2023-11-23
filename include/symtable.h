@@ -2,8 +2,9 @@
 #define SYNTABLE_H
 
 #include <stdbool.h>
-#include "token.h"
+
 #include "dyn_string.h"
+#include "token.h"
 
 // typedef struct
 // {
@@ -16,8 +17,9 @@ typedef struct
     char *name;
     token_type type;
     bool declared;
-    struct bst_node *left;  // ľavý potomok
-    struct bst_node *right; // pravý potomok
+    bool function;
+    struct bst_node *left;   // ľavý potomok
+    struct bst_node *right;  // pravý potomok
 } bst_node;
 
 /**
@@ -35,7 +37,7 @@ void Init_BTree(bst_node **root);
  * @return true
  * @return false as a default or if the root has value NULL
  */
-bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration);
+bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration, bool function);
 
 /**
  * @brief preorder read from the given node root

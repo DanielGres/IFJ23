@@ -20,7 +20,7 @@ table_sign_enum prec_table[T_SIZE][T_SIZE] = {
     {S, S, S, S, S, S, N, S, S, E},  // (
     {E, R, R, R, R, E, R, E, E, R},  // )
     {E, R, R, R, R, E, R, E, E, R},  // value
-    {R, R, R, R, R, E, R, E, E, R},  // id
+    {R, R, R, R, R, F, R, E, E, R},  // id
     {S, S, S, S, S, S, E, S, S, E}   // $
 };
 // TREBA PREROBIT NA CUSTOM $
@@ -231,12 +231,16 @@ bool Expression(struct bst_tok_node **seed, char *EOE) {
                 stack_pop_UndTop(prec_stack);
                 dynstr_clear(&buffer);
                 break;
+            case F:
+                TakeToken = false;
+                FunctionCall(&prec_stack->top->tok_node->left);
+                GetToken();
             default:
                 break;
         }
         // DEL stack_push(prec_stack, inputed_symbol, myToken);
 
-        // stack_print(prec_stack->top);
+        stack_print(prec_stack->top);
         iteration++;
 
         if (prec_stack->top->symbol == ENTERPRISE) {
