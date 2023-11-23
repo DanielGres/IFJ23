@@ -1,5 +1,3 @@
-let meow : Int = 0
-meow = readInt()
-write(meow, "\n")
-let hey : String = readString()
-write(hey)
+func ahojda(_ pajzo : String, grc meow : Int){
+    
+}

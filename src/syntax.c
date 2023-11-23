@@ -165,6 +165,21 @@ bool FunctionDef(struct bst_tok_node **seed){
     (*seed)->left = Set_TokNode(myToken);
     if (myToken->dtype != LbracketT) return false;
     if(!FunctionDefParams(&((*seed)->left->left))) return false;
+    GetToken();
+    if(myToken->dtype == arrowT){
+        GetToken();
+        if(myToken->dtype != vartypeT) return false;
+        (*seed)->right = Set_TokNode(myToken);
+        GetToken();
+        if(myToken->dtype != LCbracketT) return false;
+        return CorpusSecondary(&((*seed)->left->right));
+    }
+    else if(myToken->dtype == LCbracketT){
+        return CorpusSecondary(&((*seed)->left->right));
+    }
+    else{
+        return false;
+    }
     return true;
 }
 
@@ -176,7 +191,28 @@ bool FunctionDefParams(struct bst_tok_node **seed){
         return true;
     }
     break;
-    
+    case underscoreT:
+    case varidT:{
+        *seed = Set_TokNode(myToken);
+        GetToken();
+        if(myToken->dtype != varidT){return false;}
+        (*seed)->right = Set_TokNode(myToken);
+        GetToken();
+        if(myToken->dtype != colonT){return false;}
+        GetToken();
+        if(myToken->dtype != vartypeT){return false;}
+        (*seed)->right->right = Set_TokNode(myToken);
+        GetToken();
+        if(myToken->dtype == commaT){
+            return FunctionDefParams(&((*seed)->left));
+        }
+        else if(myToken->dtype == RbracketT){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     break;
     default:{
         return false;
