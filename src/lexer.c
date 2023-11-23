@@ -446,9 +446,8 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     b_ex = false;
                     eNextState = ID2_STATE;
                 } else {
-                    *type = varidT;
+                    *type = underscoreT;
                     condition = false;
-                    compareWithTable = true;
                     b_ex = true;
                     eNextState = START_STATE;
                 }

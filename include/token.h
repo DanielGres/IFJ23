@@ -48,7 +48,8 @@ typedef enum
     blockcommentT, /* comment */
     eofT,
     startT,
-    helpT
+    helpT,
+    underscoreT
 } token_type;
 
 typedef struct
