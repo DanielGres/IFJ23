@@ -1,2 +1,5 @@
-write(5)
-write("meow")
+let meow : Int = 0
+while meow != 20 {
+    write("Meow je: ",meow, "\n")
+    meow = meow + 1
+}
