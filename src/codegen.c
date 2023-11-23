@@ -15,16 +15,27 @@ void Instructions(){
     //     "RETURN\n"
     //     );
     
-    // printf(
-    //     "LABEL READINT\n"
-    //     "CREATEFRAME\n"
-    //     "PUSHFRAME\n"
-    //     "DEFVAR LF@retval\n"
-    //     "MOVE LF@retval nil@nil\n"
-    //     "READ LF@retval int\n"
-    //     "POPFRAME\n"
-    //     "RETURN\n"
-    //     );
+    printf(
+        "LABEL readInt\n"
+        "CREATEFRAME\n"
+        "PUSHFRAME\n"
+        "DEFVAR LF@retval\n"
+        "MOVE LF@retval nil@nil\n"
+        "READ LF@retval int\n"
+        "POPFRAME\n"
+        "RETURN\n"
+        );
+
+    printf(
+        "LABEL readString\n"
+        "CREATEFRAME\n"
+        "PUSHFRAME\n"
+        "DEFVAR LF@retval\n"
+        "MOVE LF@retval nil@nil\n"
+        "READ LF@retval string\n"
+        "POPFRAME\n"
+        "RETURN\n"
+        );
 
     // printf(
     //     "LABEL READDOUBLE\n"
@@ -62,7 +73,6 @@ void Instructions(){
 
 void GenerateSubTree(struct bst_tok_node *curr_root){
     if(curr_root == NULL) return;
-    //printf("%d ",curr_root->T->dtype);
     switch(curr_root->T->dtype){
         case letT:{
             GenerateLet(curr_root->left);
@@ -97,36 +107,65 @@ void CallFuncAssigment(struct bst_tok_node *root){
     }
     else{
         GenerateAssigment(root);
+        printf("POPS GF@%s\n",root->T->val->s);
     }
 }
+
+// Function has passed two roots in order to return value to var
 void GenerateCallFunction(struct bst_tok_node *root){
     if (!strcmp(root->T->val->s, "write")){
+        GenerateCallWrite(root);
+    }
+    else if(!strcmp(root->T->val->s, "readInt")){
+        GenerateCallReadInt(root);
+    }
+    else if(!strcmp(root->T->val->s, "readString")){
+        GenerateCallReadString(root);
+    }
+    else{
+        printf("SOM BOREC\n");
+    };
+}
+
+void GenerateCallReadString(struct bst_tok_node *root){
+    printf("CREATEFRAME\n");
+    printf("DEFVAR TF@retval\n");
+    printf("CALL readString\n");
+    printf("PUSHS TF@retval\n");
+}
+
+void GenerateCallReadInt(struct bst_tok_node *root){
+    printf("CREATEFRAME\n");
+    printf("DEFVAR TF@retval\n");
+    printf("CALL readInt\n");
+    printf("PUSHS TF@retval\n");
+}
+
+void GenerateCallWrite(struct bst_tok_node *root){
+    root = root->left;
+    while(root->left != NULL){
+        printf("CREATEFRAME\n");
+        printf("DEFVAR TF@%1\n");
         root = root->left;
-        while(root->left != NULL){
-            printf("CREATEFRAME\n");
-            printf("DEFVAR TF@%1\n");
-            root = root->left;
-            if(root->T->dtype == varidT){
-                printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
-            }
-            else if(root->T->dtype == intnumT){
-                printf("MOVE TF@%1 int@%s\n", root->T->val->s);
-            }
-            else if(root->T->dtype == doublenumT){
-                printf("MOVE TF@%1 float@%s\n", root->T->val->s);
-            }
-            else if(root->T->dtype == stringT){
-                printf("MOVE TF@%1 string@%s\n", root->T->val->s);
-            }
-            
-            printf("CALL print\n");
+        if(root->T->dtype == varidT){
+            printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
         }
+        else if(root->T->dtype == intnumT){
+            printf("MOVE TF@%1 int@%s\n", root->T->val->s);
+        }
+        else if(root->T->dtype == doublenumT){
+            printf("MOVE TF@%1 float@%s\n", root->T->val->s);
+        }
+        else if(root->T->dtype == stringT){
+            printf("MOVE TF@%1 string@%s\n", root->T->val->s);
+        }
+        
+        printf("CALL print\n");
     }
 }
 
 void GenerateAssigment(struct bst_tok_node *root){
     GenerateExpression(root->left);
-    printf("POPS GF@%s\n", root->T->val->s);
 }
 
 void Generator(struct bst_tok_node *root){
@@ -143,6 +182,7 @@ void Generator(struct bst_tok_node *root){
 void GenerateExprInstruction(struct bst_tok_node *root){
     switch(root->T->dtype){
         case varidT:{
+            
             printf("PUSHS GF@%s\n", root->T->val->s);
         }
         break;
@@ -186,9 +226,14 @@ void GenerateExprInstruction(struct bst_tok_node *root){
 
 void ExpressionPostorderTraversal(struct bst_tok_node *root){
     if(root == NULL) return;
-    ExpressionPostorderTraversal(root->left);
-    ExpressionPostorderTraversal(root->right);
-    GenerateExprInstruction(root);
+    if(root->left != NULL && root->left->T->dtype == LbracketT){
+        GenerateCallFunction(root);
+    }
+    else{
+        ExpressionPostorderTraversal(root->left);
+        ExpressionPostorderTraversal(root->right);
+        GenerateExprInstruction(root);
+    }
 }
 
 void GenerateExpression(struct bst_tok_node *root){

@@ -1,3 +1,5 @@
 let meow : Int = 0
-meow = readInt(meow)
-kokos(5+5);
+meow = readInt()
+write(meow, "\n")
+let hey : String = readString()
+write(hey)

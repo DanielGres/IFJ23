@@ -7,7 +7,7 @@
 #define STRMALCPY(to, from) strcpy(to = malloc(strlen(from) + 1), from)
 
 bool InArray(char *str2) {
-    char arr[11][10] = {"reads", "readi", "readf", "write", "floatval", "intval", "strval", "strlen", "substring", "ord", "chr"};
+    char arr[11][10] = {"reads", "readInt", "readf", "write", "floatval", "intval", "strval", "strlen", "substring", "ord", "chr"};
     for (int i = 0; i < 11; i++) {
         if (strcmp(arr[i], str2) == 0) {
             return true;
@@ -60,6 +60,7 @@ void preorderTraversal(bst_node **root) {
     // {
     //     printf("DEFVAR LF@%s\n", (*root)->name);
     // }
+    printf("Name = %s declared: %d", (*root)->name, (*root)->func_declared);
     preorderTraversal(&(*root)->left);
     preorderTraversal(&(*root)->right);
 }

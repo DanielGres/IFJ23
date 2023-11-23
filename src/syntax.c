@@ -161,7 +161,7 @@ bool FunctionCall(struct bst_tok_node **seed) {
     // This sets up "(" to the left of varidT so code generation knows its funciton call
     *seed = Set_TokNode(myToken);
     // Check for parameters and set them to the left
-    FunctionCallParameters(&((*seed)->left));
+
     return FunctionCallParameters(&((*seed)->left));
 }
 

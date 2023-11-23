@@ -1,6 +1,22 @@
 .IFJcode23
 JUMP MAIN
 
+LABEL readInt
+CREATEFRAME
+PUSHFRAME
+DEFVAR LF@retval
+MOVE LF@retval nil@nil
+READ LF@retval int
+POPFRAME
+RETURN
+LABEL readString
+CREATEFRAME
+PUSHFRAME
+DEFVAR LF@retval
+MOVE LF@retval nil@nil
+READ LF@retval string
+POPFRAME
+RETURN
 LABEL print
 PUSHFRAME
 DEFVAR LF@writeval
@@ -15,11 +31,11 @@ DEFVAR GF@meow
 PUSHS int@0
 POPS GF@exp
 MOVE GF@meow GF@exp
-LABEL WHILE1
 CREATEFRAME
-DEFVAR TF@%1
-MOVE TF@%1 string@Meow\032je: 
-CALL print
+DEFVAR TF@retval
+CALL readInt
+PUSHS TF@retval
+POPS GF@meow
 CREATEFRAME
 DEFVAR TF@%1
 MOVE TF@%1 GF@meow
@@ -28,13 +44,15 @@ CREATEFRAME
 DEFVAR TF@%1
 MOVE TF@%1 string@\010
 CALL print
-PUSHS int@1
-PUSHS GF@meow
-ADDS
-POPS GF@meow
-PUSHS int@20
-PUSHS GF@meow
-EQS
+DEFVAR GF@hey
+CREATEFRAME
+DEFVAR TF@retval
+CALL readString
+PUSHS TF@retval
 POPS GF@exp
-JUMPIFEQ WHILE1 GF@exp bool@false
+MOVE GF@hey GF@exp
+CREATEFRAME
+DEFVAR TF@%1
+MOVE TF@%1 GF@hey
+CALL print
 EXIT int@0

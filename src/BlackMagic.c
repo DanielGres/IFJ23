@@ -232,7 +232,6 @@ bool Expression(struct bst_tok_node **seed, char *EOE) {
                 dynstr_clear(&buffer);
                 break;
             case F:
-                TakeToken = false;
                 FunctionCall(&prec_stack->top->tok_node->left);
                 GetToken();
             default:

@@ -24,4 +24,8 @@ void CallFuncAssigment(struct bst_tok_node *root);
 
 void GenerateCallFunction(struct bst_tok_node *root);
 
+void GenerateCallWrite(struct bst_tok_node *root);
+
+void GenerateCallReadInt(struct bst_tok_node *root);
+
 #endif

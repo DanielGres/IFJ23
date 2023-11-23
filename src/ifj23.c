@@ -52,12 +52,13 @@ int main() {
     Init_BTree(&symtable);
 
     if (CorpusPrime(&(the_root->right), &symtable)) {
+        //PostorderTraversal(the_root);
         Generator(the_root);
-        if (Search_BTree(&symtable)) {
-            printf("Spravne ;) :fire: \n");
-        } else {
-            printf("Nespravne ;_; \n");
-        }
+        // if (Search_BTree(&symtable)) {
+        //     printf("Spravne ;) :fire: \n");
+        // } else {
+        //     printf("Nespravne ;_; \n");
+        // }
     } else {
         printf("nespravne! :((\n");
     }
