@@ -53,7 +53,7 @@ int main() {
     // while(Get_Token(&T)){
     //     dynstr_print((T->val));
     //     printf(" %s\n",enumers[T->dtype]);
-    // }
+    // }d
 
     // if(CorpusPrime(&(the_root->right))){
     //     printf("spravne! :DD\n");
