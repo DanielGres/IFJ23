@@ -100,7 +100,7 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
     }
 }
 // TO~DO Strom na semantiku
-bool Expression(struct bst_tok_node *seed, char *EOE) {
+bool Expression(struct bst_tok_node **seed, char *EOE) {
     TakeToken = true;
     table_symbol_enum inputed_symbol, top;
     table_sign_enum operation;
@@ -245,7 +245,7 @@ bool Expression(struct bst_tok_node *seed, char *EOE) {
             stack_index = prec_stack->top->symbol;
         }
     } while (((inputed_symbol != DOLLAR) || (stack_index != DOLLAR)));
-    Ja(seed, prec_stack->top->tok_node);
+    (*seed) = prec_stack->top->tok_node;
     stack_free(prec_stack);
     return true;
 }
@@ -256,7 +256,6 @@ void T_Body(stack *my_stack) {
         stack_pop_UndTop(my_stack);
     } else {
         struct bst_tok_node *tmpNode1 = my_stack->top->tok_node;
-        dynstr_print((tmpNode1->T->val));
         stack_pop(my_stack);
         struct bst_tok_node *tmpNode2 = my_stack->top->tok_node;
         stack_pop(my_stack);
