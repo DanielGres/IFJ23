@@ -67,6 +67,11 @@ bool CorpusPrime(struct bst_tok_node **seed, bst_node **sym_table) {
             if (!WhilePrime(&((*seed)->left))) return false;
             return CorpusPrime(&((*seed)->right), sym_table);
         } break;
+        case funcT:{
+            *seed = Set_TokNode(myToken);
+            if (!FunctionDef(&((*seed)->left))) return false;
+            return CorpusPrime(&((*seed)->right), sym_table);
+        } break;
         case eofT: {
             return true;
         } break;
@@ -149,6 +154,33 @@ bool EndCommand() {
 void EnterSkip() {
     if (myToken->dtype == newlineT) {
         GetToken();
+    }
+}
+
+bool FunctionDef(struct bst_tok_node **seed){
+    GetToken();
+    *seed = Set_TokNode(myToken);
+    if (myToken->dtype != varidT) return false;
+    GetToken();
+    (*seed)->left = Set_TokNode(myToken);
+    if (myToken->dtype != LbracketT) return false;
+    if(!FunctionDefParams(&((*seed)->left->left))) return false;
+    return true;
+}
+
+bool FunctionDefParams(struct bst_tok_node **seed){
+    GetToken();
+    switch (myToken->dtype)
+    {
+    case RbracketT:{
+        return true;
+    }
+    break;
+    
+    break;
+    default:{
+        return false;
+    }
     }
 }
 

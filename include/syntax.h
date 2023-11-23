@@ -33,6 +33,10 @@ bool Var(struct bst_tok_node **seed);
 
 bool assigment(struct bst_tok_node **seed);
 
+bool FunctionDef(struct bst_tok_node **seed);
+
+bool FunctionDefParams(struct bst_tok_node **seed);
+
 bool FunctionCall(struct bst_tok_node **seed);
 
 bool FunctionCallParameters(struct bst_tok_node **seed);
