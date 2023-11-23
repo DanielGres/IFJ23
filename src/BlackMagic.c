@@ -100,7 +100,7 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
     }
 }
 // TO~DO Strom na semantiku
-bool Expression(struct bst_tok_node **seed, char *EOE,bst_node **sym_table) {
+bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
     TakeToken = true;
     table_symbol_enum inputed_symbol, top;
     table_sign_enum operation;
@@ -200,6 +200,10 @@ bool Expression(struct bst_tok_node **seed, char *EOE,bst_node **sym_table) {
                 // dynstr_print(&buffer);
                 //  Pick Rule
                 if (dynstr_cmp(&buffer, "i")) {
+                    if (prec_stack->top->tok_node->T->dtype == varidT) {
+                        // SEMANTIC~CHECK
+                        Insert_BTree(sym_table, prec_stack->top->tok_node->T->val->s, prec_stack->top->tok_node->T->dtype, false, true);
+                    }
                     stack_top(prec_stack)->symbol = ENTERPRISE;
                 } else if (dynstr_cmp(&buffer, "E+E")) {
                     T_Body(prec_stack);
@@ -232,7 +236,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE,bst_node **sym_table) {
                 dynstr_clear(&buffer);
                 break;
             case F:
-                FunctionCall(&prec_stack->top->tok_node->left,sym_table);
+                FunctionCall(&prec_stack->top->tok_node->left, sym_table);
                 GetToken();
             default:
                 break;

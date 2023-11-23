@@ -30,10 +30,15 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
         (*root)->left = NULL;
         (*root)->right = NULL;
         if (var_type) {
+            if (!declaration) {
+                printf("Chyba pouzita premenna nie je deklarovana\n");
+            }
             (*root)->var_declared = declaration;
             (*root)->variable = true;
+            (*root)->function = false;
         } else {
             (*root)->func_declared = declaration;
+            (*root)->variable = false;
             (*root)->function = true;
         }
         return true;
@@ -43,13 +48,34 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
         } else if (strcmp(name, ((*root)->name)) < 0) {
             return Insert_BTree(&(*root)->right, name, type, declaration, var_type);
         } else {
-            if (!(*root)->func_declared) {
-                (*root)->func_declared = declaration;
+            // IS VARIABLE
+            if (var_type) {
+                if (declaration) {
+                    if (!(*root)->var_declared) {
+                        (*root)->var_declared = declaration;
+                    } else {
+                        printf("Chyba\n");
+                    }
+                } else {
+                    if ((*root)->variable) {
+                        printf("Chyba\n");
+                    } else {
+                        (*root)->variable = true;
+                    }
+                }
             } else {
-                // ERROR 3
+                if (declaration) {
+                    if (!(*root)->var_declared) {
+                        (*root)->var_declared = declaration;
+                    } else {
+                        printf("Chyba\n");
+                    }
+                } else {
+                    (*root)->function = true;
+                }
             }
-            return true;
         }
+        return true;
     }
     return false;
 }
@@ -60,7 +86,7 @@ void preorderTraversal(bst_node **root) {
     // {
     //     printf("DEFVAR LF@%s\n", (*root)->name);
     // }
-    printf("Name = %s declared: %d", (*root)->name, (*root)->func_declared);
+    printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
     preorderTraversal(&(*root)->left);
     preorderTraversal(&(*root)->right);
 }
@@ -79,6 +105,13 @@ bool Search_BTree(bst_node **root) {
                     return false;
                 }
             }
+
+        } else if ((*root)->variable = true) {
+            if (((*root)->var_declared)) {
+                // 3
+                return false;
+            }
+
         } else {
             return (Search_BTree(&((*root)->left)) && Search_BTree(&((*root)->right)));
         }
