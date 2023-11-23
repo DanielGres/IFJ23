@@ -1,2 +1,3 @@
 let meow : Int = 0
 meow = readInt(meow)
+kokos(5+5);

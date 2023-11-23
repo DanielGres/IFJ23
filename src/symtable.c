@@ -19,7 +19,7 @@ bool InArray(char *str2) {
 void Init_BTree(bst_node **root) {
     (*root) = NULL;
 }
-bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration, bool func) {
+bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration, bool var_type) {
     if ((*root) == NULL) {
         (*root) = malloc(sizeof(bst_node));
         if ((*root) == NULL) {
@@ -29,17 +29,24 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
         (*root)->type = type;
         (*root)->left = NULL;
         (*root)->right = NULL;
-        (*root)->declared = declaration;
-        (*root)->declared = func;
+        if (var_type) {
+            (*root)->var_declared = declaration;
+            (*root)->variable = true;
+        } else {
+            (*root)->func_declared = declaration;
+            (*root)->function = true;
+        }
         return true;
     } else {
         if (strcmp(name, ((*root)->name)) > 0) {
-            return Insert_BTree(&(*root)->left, name, type, declaration, func);
+            return Insert_BTree(&(*root)->left, name, type, declaration, var_type);
         } else if (strcmp(name, ((*root)->name)) < 0) {
-            return Insert_BTree(&(*root)->right, name, type, declaration, func);
+            return Insert_BTree(&(*root)->right, name, type, declaration, var_type);
         } else {
-            if (declaration) {
-                (*root)->declared = declaration;
+            if (!(*root)->func_declared) {
+                (*root)->func_declared = declaration;
+            } else {
+                // ERROR 3
             }
             return true;
         }
@@ -59,9 +66,17 @@ void preorderTraversal(bst_node **root) {
 
 bool Search_BTree(bst_node **root) {
     if ((*root) != NULL) {
-        if (!(InArray((*root)->name))) {
-            if (!((*root)->declared)) {
-                return false;
+        if ((*root)->function = true) {
+            if (!(InArray((*root)->name))) {
+                if (!((*root)->func_declared)) {
+                    // 3
+                    return false;
+                }
+            } else {
+                if (((*root)->func_declared)) {
+                    // 3
+                    return false;
+                }
             }
         } else {
             return (Search_BTree(&((*root)->left)) && Search_BTree(&((*root)->right)));

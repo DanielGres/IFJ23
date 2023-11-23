@@ -26,52 +26,52 @@ bool TakeToken = true;
 //     return true;
 // }
 
-bool CorpusPrime(struct bst_tok_node **seed) {
+bool CorpusPrime(struct bst_tok_node **seed, bst_node **sym_table) {
     GetToken();
     switch (myToken->dtype) {
         case letT: {
             *seed = Set_TokNode(myToken);
             if (!Let(&((*seed)->left))) return false;
             if (!EndCommand()) return false;
-            return CorpusPrime(&((*seed)->right));
+            return CorpusPrime(&((*seed)->right), sym_table);
         } break;
         case varT: {
             *seed = Set_TokNode(myToken);
             if (!EndCommand()) return false;
-            return CorpusPrime(&((*seed)->right));
+            return CorpusPrime(&((*seed)->right), sym_table);
         } break;
         case varidT: {
             *seed = Set_TokNode(myToken);
             GetToken();
-            if(myToken->dtype == equalT){
+            if (myToken->dtype == equalT) {
                 if (!assigment(&((*seed)->left))) return false;
-            }
-            else if(myToken->dtype == LbracketT){
+            } else if (myToken->dtype == LbracketT) {
+                // SEMANTIC~CHECK
+                Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, false, false);
+
                 if (!FunctionCall(&((*seed)->left))) return false;
-            }
-            else{
+            } else {
                 return false;
             }
-                
+
             if (!EndCommand()) return false;
-            return CorpusPrime(&((*seed)->right));
+            return CorpusPrime(&((*seed)->right), sym_table);
         } break;
         case ifT: {
             *seed = Set_TokNode(myToken);
             if (!IfPrime(&((*seed)->left))) return false;
-            return CorpusPrime(&((*seed)->right));
+            return CorpusPrime(&((*seed)->right), sym_table);
         } break;
         case whileT: {
             *seed = Set_TokNode(myToken);
             if (!WhilePrime(&((*seed)->left))) return false;
-            return CorpusPrime(&((*seed)->right));
-        }
-        break;
+            return CorpusPrime(&((*seed)->right), sym_table);
+        } break;
         case eofT: {
             return true;
         } break;
         case newlineT: {
-            return CorpusPrime(&(*seed));
+            return CorpusPrime(&(*seed), sym_table);
         } break;
         default: {
             return false;
@@ -98,16 +98,14 @@ bool CorpusSecondary(struct bst_tok_node **seed) {
         case varidT: {
             *seed = Set_TokNode(myToken);
             GetToken();
-            if(myToken->dtype == equalT){
+            if (myToken->dtype == equalT) {
                 if (!assigment(&((*seed)->left))) return false;
-            }
-            else if(myToken->dtype == LbracketT){
+            } else if (myToken->dtype == LbracketT) {
                 if (!FunctionCall(&((*seed)->left))) return false;
-            }
-            else{
+            } else {
                 return false;
             }
-                
+
             if (!EndCommand()) return false;
             return CorpusSecondary(&((*seed)->right));
         } break;
@@ -164,7 +162,7 @@ bool FunctionCall(struct bst_tok_node **seed) {
     *seed = Set_TokNode(myToken);
     // Check for parameters and set them to the left
     FunctionCallParameters(&((*seed)->left));
-    return  FunctionCallParameters(&((*seed)->left));
+    return FunctionCallParameters(&((*seed)->left));
 }
 
 bool FunctionCallParameters(struct bst_tok_node **seed) {
@@ -172,8 +170,7 @@ bool FunctionCallParameters(struct bst_tok_node **seed) {
     switch (myToken->dtype) {
         case RbracketT: {
             return true;
-        }
-        break;
+        } break;
         case intnumT:
         case doublenumT:
         case stringT:
@@ -187,8 +184,7 @@ bool FunctionCallParameters(struct bst_tok_node **seed) {
             } else {
                 return false;
             }
-        }
-        break;
+        } break;
         default: {
             return false;
         }

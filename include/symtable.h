@@ -16,8 +16,10 @@ typedef struct
 {
     char *name;
     token_type type;
-    bool declared;
+    bool func_declared;
     bool function;
+    bool variable;
+    bool var_declared;
     struct bst_node *left;   // ľavý potomok
     struct bst_node *right;  // pravý potomok
 } bst_node;
@@ -34,10 +36,11 @@ void Init_BTree(bst_node **root);
  *
  * @param root @param name @param type parameters for to be created note
  * @param declaration boolean if the node was declared
+ * @param type
  * @return true
  * @return false as a default or if the root has value NULL
  */
-bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration, bool function);
+bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration, bool var_type);
 
 /**
  * @brief preorder read from the given node root
