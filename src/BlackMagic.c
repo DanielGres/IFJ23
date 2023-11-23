@@ -100,7 +100,7 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
     }
 }
 // TO~DO Strom na semantiku
-bool Expression(struct bst_tok_node **seed, char *EOE) {
+bool Expression(struct bst_tok_node **seed, char *EOE,bst_node **sym_table) {
     TakeToken = true;
     table_symbol_enum inputed_symbol, top;
     table_sign_enum operation;
@@ -232,7 +232,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE) {
                 dynstr_clear(&buffer);
                 break;
             case F:
-                FunctionCall(&prec_stack->top->tok_node->left);
+                FunctionCall(&prec_stack->top->tok_node->left,sym_table);
                 GetToken();
             default:
                 break;

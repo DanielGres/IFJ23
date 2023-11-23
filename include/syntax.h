@@ -23,29 +23,27 @@ void EnterSkip();
  */
 bool CorpusPrime(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool CorpusSecondary(struct bst_tok_node **seed);
+bool CorpusSecondary(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool Expression_SetUp(struct bst_tok_node **seed, expression_case type);
+bool Let(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool Let(struct bst_tok_node **seed);
+bool Var(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool Var(struct bst_tok_node **seed);
+bool assigment(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool assigment(struct bst_tok_node **seed);
+bool FunctionDef(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool FunctionDef(struct bst_tok_node **seed);
+bool FunctionDefParams(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool FunctionDefParams(struct bst_tok_node **seed);
+bool FunctionCall(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool FunctionCall(struct bst_tok_node **seed);
+bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool FunctionCallParameters(struct bst_tok_node **seed);
+bool IfPrime(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool IfPrime(struct bst_tok_node **seed);
+bool WhilePrime(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool WhilePrime(struct bst_tok_node **seed);
-
-bool FuncDef(struct bst_tok_node **seed);
+bool FuncDef(struct bst_tok_node **seed, bst_node **sym_table);
 
 #endif  // Implementace překladače imperativního jazyka IFJ23
 // Daniel Greš --- xgresd00
