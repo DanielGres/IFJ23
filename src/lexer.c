@@ -57,7 +57,7 @@ int hexToDecimal(dyn_string *hex) {
     return decimal;
 }
 
-void replaceUnicodeSequences(dyn_string *inputString) { // FIX THIS FOR THE LOVE OF GOD
+void replaceUnicodeSequences(dyn_string *inputString) {
     dyn_string resultString;
     dynstr_init(&resultString);
 
@@ -89,32 +89,31 @@ void replaceUnicodeSequences(dyn_string *inputString) { // FIX THIS FOR THE LOVE
             dynstr_add(&resultString, asciiChar);
         } else if (inputString->s[i] == '\t') {
             // Replace tab with the corresponding escape sequence
-            dynstr_add(&resultString, '\\');
-            dynstr_add(&resultString, 't');
-            i++;
-        } else if (inputString->s[i] == ' ') {
-            // Replace space with the corresponding ASCII value (32)
-            dynstr_add(&resultString, '\\');
-            dynstr_add(&resultString, '0' + (32 / 100) % 10);
-            dynstr_add(&resultString, '0' + (32 / 10) % 10);
-            dynstr_add(&resultString, '0' + 32 % 10);
+            dynstr_addstr(&resultString, "\\t");
             i++;
         } else if (inputString->s[i] == '\n') {
             // Replace newline with the corresponding escape sequence
-            dynstr_add(&resultString, '\\');
-            dynstr_add(&resultString, 'n');
+            dynstr_addstr(&resultString, "\\n");
             i++;
         } else if (inputString->s[i] == '\r') {
             // Replace carriage return with the corresponding escape sequence
-            dynstr_add(&resultString, '\\');
-            dynstr_add(&resultString, 'r');
+            dynstr_addstr(&resultString, "\\r");
+            i++;
+        } else if (inputString->s[i] == ' ') {
+            // Replace space with the corresponding ASCII value (32)
+            dynstr_addstr(&resultString, "\\032");
             i++;
         } else if (inputString->s[i] == '\\' && i + 1 < inputString->len && inputString->s[i + 1] == 'n') {
-            // Replace the actual characters "\\n" with the escape sequence "\010"
-            dynstr_add(&resultString, '\\');
-            dynstr_add(&resultString, '0' + (10 / 100) % 10);
-            dynstr_add(&resultString, '0' + (10 / 10) % 10);
-            dynstr_add(&resultString, '0' + 10 % 10);
+            // Replace the actual characters "\n" with the escape sequence "\010"
+            dynstr_addstr(&resultString, "\\010");
+            i += 2;
+        } else if (inputString->s[i] == '\\' && i + 1 < inputString->len && inputString->s[i + 1] == 't') {
+            // Replace the actual characters "\t" with the escape sequence "\009"
+            dynstr_addstr(&resultString, "\\009");
+            i += 2;
+        } else if (inputString->s[i] == '\\' && i + 1 < inputString->len && inputString->s[i + 1] == 'r') {
+            // Replace the actual characters "\r" with the escape sequence "\013"
+            dynstr_addstr(&resultString, "\\013");
             i += 2;
         } else {
             dynstr_add(&resultString, inputString->s[i]);
