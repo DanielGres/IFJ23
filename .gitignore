@@ -4,3 +4,5 @@ IFJCODE23.txt
 /.vscode
 ifjcomp
 *
+!/src
+!/include
