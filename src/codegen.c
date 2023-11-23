@@ -105,7 +105,6 @@ void GenerateCallFunction(struct bst_tok_node *root){
         while(root->left != NULL){
             printf("CREATEFRAME\n");
             printf("DEFVAR TF@%1\n");
-            printf("%d\n",root->left->T->dtype);
             root = root->left;
             if(root->T->dtype == varidT){
                 printf("MOVE TF@%1 GF@%s\n", root->T->val->s);

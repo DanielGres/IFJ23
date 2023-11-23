@@ -1,1 +1,1 @@
-write("meow")
+write(5)
