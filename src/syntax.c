@@ -42,7 +42,17 @@ bool CorpusPrime(struct bst_tok_node **seed) {
         } break;
         case varidT: {
             *seed = Set_TokNode(myToken);
-            if (!assigment(&((*seed)->left))) return false;
+            GetToken();
+            if(myToken->dtype == equalT){
+                if (!assigment(&((*seed)->left))) return false;
+            }
+            else if(myToken->dtype == LbracketT){
+                if (!FunctionCall(&((*seed)->left))) return false;
+            }
+            else{
+                return false;
+            }
+                
             if (!EndCommand()) return false;
             return CorpusPrime(&((*seed)->right));
         } break;
@@ -52,7 +62,11 @@ bool CorpusPrime(struct bst_tok_node **seed) {
             return CorpusPrime(&((*seed)->right));
         } break;
         case whileT: {
+            *seed = Set_TokNode(myToken);
+            if (!WhilePrime(&((*seed)->left))) return false;
+            return CorpusPrime(&((*seed)->right));
         }
+        break;
         case eofT: {
             return true;
         } break;
@@ -80,9 +94,20 @@ bool CorpusSecondary(struct bst_tok_node **seed) {
             if (!EndCommand()) return false;
             return CorpusSecondary(&((*seed)->right));
         } break;
+        // Either a function call or an assigment
         case varidT: {
             *seed = Set_TokNode(myToken);
-            if (!assigment(&((*seed)->left))) return false;
+            GetToken();
+            if(myToken->dtype == equalT){
+                if (!assigment(&((*seed)->left))) return false;
+            }
+            else if(myToken->dtype == LbracketT){
+                if (!FunctionCall(&((*seed)->left))) return false;
+            }
+            else{
+                return false;
+            }
+                
             if (!EndCommand()) return false;
             return CorpusSecondary(&((*seed)->right));
         } break;
@@ -131,10 +156,43 @@ void EnterSkip() {
 
 // Semantics should check if the variable was declared before and if it is modifiable
 bool assigment(struct bst_tok_node **seed) {
-    GetToken();
+    return Expression(&((*seed)), NULL);
+}
+
+bool FunctionCall(struct bst_tok_node **seed) {
+    // This sets up "(" to the left of varidT so code generation knows its funciton call
     *seed = Set_TokNode(myToken);
-    if (myToken->dtype != equalT) return false;
-    return Expression(&((*seed)->left), NULL);
+    // Check for parameters and set them to the left
+    FunctionCallParameters(&((*seed)->left));
+    return true;
+}
+
+bool FunctionCallParameters(struct bst_tok_node **seed) {
+    GetToken();
+    switch (myToken->dtype) {
+        case RbracketT: {
+            return true;
+        }
+        break;
+        case intnumT:
+        case doublenumT:
+        case stringT:
+        case varidT: {
+            *seed = Set_TokNode(myToken);
+            GetToken();
+            if (myToken->dtype == commaT) {
+                return FunctionCallParameters(&((*seed)->left));
+            } else if (myToken->dtype == RbracketT) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        break;
+        default: {
+            return false;
+        }
+    }
 }
 
 // Let will be stored as a constant ( semantics should check if that variable is being modified )
@@ -211,7 +269,13 @@ bool IfPrime(struct bst_tok_node **seed) {
     return true;
 }
 
-bool FuncDef(struct bst_tok_node **seed) {
-    GetToken();
+bool WhilePrime(struct bst_tok_node **seed) {
     *seed = Set_TokNode(myToken);
+    if (!Expression(&((*seed)->left), NULL)) return false;
+    GetToken();
+    EnterSkip();
+    if (myToken->dtype != LCbracketT) return false;
+    ((*seed)->right) = Set_TokNode(myToken);
+    if (!CorpusSecondary(&((*seed)->right)->right)) return false;
+    return true;
 }

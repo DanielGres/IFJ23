@@ -17,6 +17,7 @@
 typedef enum
 {
     varidT, // variable and function names
+    funcidT, // function names
     operatorT, // !  * /  + -  == != < >  <= >=  ??
     colonT, // :
     vartypeT, //  Double, Int, String

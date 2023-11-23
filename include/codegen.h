@@ -6,6 +6,7 @@
 #define CODEGEN_H
 
 #include "tok_tree.h"
+#include "token.h"
 
 void Generator(struct bst_tok_node *root);
 
@@ -16,5 +17,11 @@ void GenerateExpression(struct bst_tok_node *root);
 void GenerateIF(struct bst_tok_node *root);
 
 void GenerateLet(struct bst_tok_node *root);
+
+void GenerateVar(struct bst_tok_node *root);
+
+void CallFuncAssigment(struct bst_tok_node *root);
+
+void GenerateCallFunction(struct bst_tok_node *root);
 
 #endif
