@@ -48,7 +48,7 @@ typedef enum {
  * @return true if the token is an expression
  * @return false if it does not fulfill any of the "if" or "switch" conditions
  */
-bool Expression(struct bst_tok_node *seed, char *EOE);
+bool Expression(struct bst_tok_node **seed, char *EOE);
 
 void T_Body(stack *my_stack);
 

@@ -69,6 +69,7 @@ struct bst_tok_node *SetChildNodes(struct bst_tok_node *root, struct bst_tok_nod
  */
 void inorderTraversal(struct bst_tok_node *root);
 
+void PostorderTraversal(struct bst_tok_node *root);
 /**
  * @brief function deletes the whole token BST
  *

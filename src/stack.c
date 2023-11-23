@@ -9,7 +9,7 @@ void stack_init(stack *precedent_stack) {
 }
 
 bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T) {
-    stack_item *new_item = malloc(sizeof(stack_item) + 16);  ////PORIESIT NESKOR
+    stack_item *new_item = malloc(sizeof(stack_item) + 32);  ////PORIESIT NESKOR
     if (new_item == NULL) {
         return false;
     }
@@ -17,7 +17,6 @@ bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T) {
     (new_item)->symbol = symbol;
     (new_item)->tok_node = Set_TokNode(T);  // TO~DO RENAME
     (new_item)->next = precedent_stack->top;
-
     precedent_stack->top = new_item;
 
     return true;
