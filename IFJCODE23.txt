@@ -1,3 +1,5 @@
-func ahojda(_ pajzo : String, grc meow : Int){
-    
+func ahojda(_ meow : Int, name secmeow : Int){
+        
 }
+
+ahojda(meow, grc : koks);

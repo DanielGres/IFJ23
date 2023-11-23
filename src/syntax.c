@@ -37,6 +37,7 @@ bool CorpusPrime(struct bst_tok_node **seed, bst_node **sym_table) {
         } break;
         case varT: {
             *seed = Set_TokNode(myToken);
+            if(!Var(&((*seed)->left),sym_table)) return false;
             if (!EndCommand()) return false;
             return CorpusPrime(&((*seed)->right), sym_table);
         } break;
@@ -238,21 +239,53 @@ bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
     switch (myToken->dtype) {
         case RbracketT: {
             return true;
-        } break;
+        } 
+        break;
         case intnumT:
         case doublenumT:
-        case stringT:
-        case varidT: {
+        case stringT:{
             *seed = Set_TokNode(myToken);
             GetToken();
-            if (myToken->dtype == commaT) {
+            if(myToken->dtype == commaT){
                 return FunctionCallParameters(&((*seed)->left),sym_table);
-            } else if (myToken->dtype == RbracketT) {
+            }
+            else if(myToken->dtype == RbracketT){
                 return true;
-            } else {
+            }
+            else{
                 return false;
             }
-        } break;
+        }
+        break;
+        case varidT:{
+            *seed = Set_TokNode(myToken);
+            GetToken();
+            if(myToken->dtype == colonT){
+                GetToken();
+                if(myToken->dtype != varidT){return false;}
+                (*seed)->right = Set_TokNode(myToken);
+                GetToken();
+                if(myToken->dtype == commaT){
+                    return FunctionCallParameters(&((*seed)->left),sym_table);
+                }
+                else if(myToken->dtype == RbracketT){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(myToken->dtype == commaT){
+                return FunctionCallParameters(&((*seed)->left),sym_table);
+            }
+            else if(myToken->dtype == RbracketT){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        break;
         default: {
             return false;
         }
