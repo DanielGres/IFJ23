@@ -57,7 +57,7 @@ int hexToDecimal(dyn_string *hex) {
     return decimal;
 }
 
-void replaceUnicodeSequences(dyn_string *inputString) {
+void replaceUnicodeSequences(dyn_string *inputString) { // FIX THIS FOR THE LOVE OF GOD
     dyn_string resultString;
     dynstr_init(&resultString);
 
@@ -87,6 +87,11 @@ void replaceUnicodeSequences(dyn_string *inputString) {
             // Append the corresponding ASCII character to the result string
             char asciiChar = (char)decimalValue;
             dynstr_add(&resultString, asciiChar);
+        } else if (inputString->s[i] == '\t') {
+            // Replace tab with the corresponding escape sequence
+            dynstr_add(&resultString, '\\');
+            dynstr_add(&resultString, 't');
+            i++;
         } else if (inputString->s[i] == ' ') {
             // Replace space with the corresponding ASCII value (32)
             dynstr_add(&resultString, '\\');
@@ -95,26 +100,22 @@ void replaceUnicodeSequences(dyn_string *inputString) {
             dynstr_add(&resultString, '0' + 32 % 10);
             i++;
         } else if (inputString->s[i] == '\n') {
-            // Replace newline with the corresponding ASCII value (10)
+            // Replace newline with the corresponding escape sequence
+            dynstr_add(&resultString, '\\');
+            dynstr_add(&resultString, 'n');
+            i++;
+        } else if (inputString->s[i] == '\r') {
+            // Replace carriage return with the corresponding escape sequence
+            dynstr_add(&resultString, '\\');
+            dynstr_add(&resultString, 'r');
+            i++;
+        } else if (inputString->s[i] == '\\' && i + 1 < inputString->len && inputString->s[i + 1] == 'n') {
+            // Replace the actual characters "\\n" with the escape sequence "\010"
             dynstr_add(&resultString, '\\');
             dynstr_add(&resultString, '0' + (10 / 100) % 10);
             dynstr_add(&resultString, '0' + (10 / 10) % 10);
             dynstr_add(&resultString, '0' + 10 % 10);
-            i++;
-        } else if (inputString->s[i] == '\t') {
-            // Replace tab with the corresponding ASCII value (9)
-            dynstr_add(&resultString, '\\');
-            dynstr_add(&resultString, '0' + (9 / 100) % 10);
-            dynstr_add(&resultString, '0' + (9 / 10) % 10);
-            dynstr_add(&resultString, '0' + 9 % 10);
-            i++;
-        } else if (inputString->s[i] == '\r') {
-            // Replace carriage return with the corresponding ASCII value (13)
-            dynstr_add(&resultString, '\\');
-            dynstr_add(&resultString, '0' + (13 / 100) % 10);
-            dynstr_add(&resultString, '0' + (13 / 10) % 10);
-            dynstr_add(&resultString, '0' + 13 % 10);
-            i++;
+            i += 2;
         } else {
             dynstr_add(&resultString, inputString->s[i]);
             i++;
