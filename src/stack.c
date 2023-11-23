@@ -15,7 +15,6 @@ bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T) {
     }
 
     (new_item)->symbol = symbol;
-    printf(" NEW PUSH%d\n",symbol);
     (new_item)->tok_node = Set_TokNode(T);  // TO~DO RENAME
     (new_item)->next = precedent_stack->top;
     precedent_stack->top = new_item;
@@ -31,7 +30,6 @@ bool stack_push_node(stack *precedent_stack, table_symbol_enum symbol, struct bs
     new_item->symbol = symbol;
     new_item->next = precedent_stack->top;
     precedent_stack->top = new_item;
-    printf("Stack Node :%d\n", new_item->tok_node->T->dtype);
     return true;
 }
 

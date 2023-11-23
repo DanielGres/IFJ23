@@ -55,11 +55,11 @@ int main() {
     //     printf(" %s\n",enumers[T->dtype]);
     // }
 
-    if(CorpusPrime(&(the_root->right))){
+    if (CorpusPrime(&(the_root->right))) {
         printf("spravne! :DD\n");
-        PostorderTraversal(the_root->right);
-    }
-    else{
+        // PostorderTraversal(the_root->right);
+        Generator(the_root);
+    } else {
         printf("nespravne! :((\n");
     }
 

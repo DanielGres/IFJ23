@@ -10,7 +10,6 @@ void Init_TokTree(struct bst_tok_node *root) {
 struct bst_tok_node *Set_TokNode(token *T_from) {
     struct bst_tok_node *newTokNode = malloc(sizeof(struct bst_tok_node));
     newTokNode->T = T_from;
-    printf("Liar :%d\n", &newTokNode->T->dtype);
     newTokNode->left = NULL;
     newTokNode->right = NULL;
     return newTokNode;
