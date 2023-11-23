@@ -87,6 +87,34 @@ void replaceUnicodeSequences(dyn_string *inputString) {
             // Append the corresponding ASCII character to the result string
             char asciiChar = (char)decimalValue;
             dynstr_add(&resultString, asciiChar);
+        } else if (inputString->s[i] == ' ') {
+            // Replace space with the corresponding ASCII value (32)
+            dynstr_add(&resultString, '\\');
+            dynstr_add(&resultString, '0' + (32 / 100) % 10);
+            dynstr_add(&resultString, '0' + (32 / 10) % 10);
+            dynstr_add(&resultString, '0' + 32 % 10);
+            i++;
+        } else if (inputString->s[i] == '\n') {
+            // Replace newline with the corresponding ASCII value (10)
+            dynstr_add(&resultString, '\\');
+            dynstr_add(&resultString, '0' + (10 / 100) % 10);
+            dynstr_add(&resultString, '0' + (10 / 10) % 10);
+            dynstr_add(&resultString, '0' + 10 % 10);
+            i++;
+        } else if (inputString->s[i] == '\t') {
+            // Replace tab with the corresponding ASCII value (9)
+            dynstr_add(&resultString, '\\');
+            dynstr_add(&resultString, '0' + (9 / 100) % 10);
+            dynstr_add(&resultString, '0' + (9 / 10) % 10);
+            dynstr_add(&resultString, '0' + 9 % 10);
+            i++;
+        } else if (inputString->s[i] == '\r') {
+            // Replace carriage return with the corresponding ASCII value (13)
+            dynstr_add(&resultString, '\\');
+            dynstr_add(&resultString, '0' + (13 / 100) % 10);
+            dynstr_add(&resultString, '0' + (13 / 10) % 10);
+            dynstr_add(&resultString, '0' + 13 % 10);
+            i++;
         } else {
             dynstr_add(&resultString, inputString->s[i]);
             i++;
@@ -568,7 +596,8 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     eNextState = STRINGESCAPE_STATE;
                 } else if (c == '"') {
                     b_ex = false;
-                    eNextState = STRINGMULTI_STATE;
+                    ignore = true;
+                    eNextState = STRINGMULTI_STATE; // TODO ignore multi string quotes for now
                 } else if (c > 31) {
                     b_ex = false;
                     eNextState = STRING2_STATE;
@@ -668,6 +697,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     b_ex = false;
                     eNextState = STRINGMULTI2_STATE;
                 } else {
+                    replaceUnicodeSequences(buffer);
                     *type = stringT;
                     condition = false;
                     b_ex = true;
