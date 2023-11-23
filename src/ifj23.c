@@ -48,10 +48,16 @@ int main() {
     Token_set(&T, &string, startT);
     struct bst_tok_node *the_root;
     the_root = Set_TokNode(T);
+    bst_node *symtable;
+    Init_BTree(&symtable);
 
-    if (CorpusPrime(&(the_root->right))) {
-
+    if (CorpusPrime(&(the_root->right), &symtable)) {
         Generator(the_root);
+        if (Search_BTree(&symtable)) {
+            printf("Spravne ;) :fire: \n");
+        } else {
+            printf("Nespravne ;_; \n");
+        }
     } else {
         printf("nespravne! :((\n");
     }
