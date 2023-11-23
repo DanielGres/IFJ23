@@ -49,48 +49,10 @@ int main() {
     struct bst_tok_node *the_root;
     the_root = Set_TokNode(T);
 
-    // // branov lexing testing fosat geci kod zakomentuj nemaz more TODO
-    // while(Get_Token(&T)){
-    //     dynstr_print((T->val));
-    //     printf(" %s\n",enumers[T->dtype]);
-    // }d
-
     if (CorpusPrime(&(the_root->right))) {
-        printf("spravne! :DD\n");
-        // PostorderTraversal(the_root->right);
+
         Generator(the_root);
     } else {
         printf("nespravne! :((\n");
     }
-
-    // if (Expression(the_root->left, ";")) {
-    //     printf("spravne! :DD\n");
-    //     inorderTraversal(the_root->left);
-    //     // dynstr_print(&the_root->right->right->T->val);
-
-    // } else {
-    //     printf("nespravne! :((\n");
-    // }
-    // printf("\n");
-
-    // TEST STACK
-    // stack *node_stack = malloc(sizeof(stack));
-    // stack_init(node_stack);
-    // while (Get_Token(&T)) {
-    //     dynstr_print(T->val);
-    //     stack_push(node_stack, ENTERPRISE, T);
-    //     // printf("%d\n", node_stack->top->symbol);
-    // }
-    // item_push(node_stack, SHIFT, node_stack->top->next);
-    // stack_print(node_stack->top);
-    // stack_pop_UndTop(node_stack);
-    // stack_pop_UndTop(node_stack);
-    // stack_print(node_stack->top);
-    // printf("\n");
-    // stack_print(node_stack->top);
-    // T_Body(node_stack);
-    // stack_print(node_stack->top);
-    // dynstr_print(&(node_stack->top->tok_node->T->val));
-    // stack_free(node_stack);
-    // stack_print(node_stack->top);
 }

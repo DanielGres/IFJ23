@@ -1,8 +1,1 @@
-let meow : Int = 5
-if 44 {
-    meow = 6
-}
-else {
-
-    var Pepe : String = 65
-}
+write("meow")
