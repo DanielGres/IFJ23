@@ -139,7 +139,10 @@ bool lexer(dyn_string *buffer, token_type *type) {
         ignore = false;
         switch (eNextState) {
             case START_STATE: {
-                if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+                if (c == '_') {
+                    b_ex = false;
+                    eNextState = ID_STATE_0;
+                } else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
                     b_ex = false;
                     eNextState = ID_STATE;
                 } else if (c == '(') {
@@ -440,13 +443,25 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 b_ex = true;
                 eNextState = START_STATE;
             } break;
-            case ID_STATE:  // _
+            case ID_STATE_0:  // _
             {
                 if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
                     b_ex = false;
                     eNextState = ID2_STATE;
                 } else {
                     *type = underscoreT;
+                    condition = false;
+                    b_ex = true;
+                    eNextState = START_STATE;
+                }
+            } break;
+            case ID_STATE:  // _
+            {
+                if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
+                    b_ex = false;
+                    eNextState = ID2_STATE;
+                } else {
+                    *type = varidT;
                     condition = false;
                     b_ex = true;
                     eNextState = START_STATE;
@@ -596,7 +611,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 } else if (c == '"') {
                     b_ex = false;
                     ignore = true;
-                    eNextState = STRINGMULTI_STATE; // TODO ignore multi string quotes for now
+                    eNextState = STRINGMULTI_STATE;  // TODO ignore multi string quotes for now
                 } else if (c > 31) {
                     b_ex = false;
                     eNextState = STRING2_STATE;

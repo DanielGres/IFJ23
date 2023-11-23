@@ -8,15 +8,15 @@
 #define LEXER_H
 
 #include <stdbool.h>
-#include "token.h"
-#include "errror.h"
+
 #include "dyn_string.h"
+#include "errror.h"
+#include "token.h"
 
-
-typedef enum
-{
+typedef enum {
     START_STATE,
 
+    ID_STATE_0,
     ID_STATE,
     ID2_STATE,
     IDTYPE_STATE,

@@ -37,7 +37,7 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
             (*root)->variable = true;
             (*root)->function = false;
         } else {
-            (*root)->func_declared = declaration;
+            (*root)->func_declared = true;
             (*root)->variable = false;
             (*root)->function = true;
         }
@@ -57,7 +57,7 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
                         printf("Chyba\n");
                     }
                 } else {
-                    if ((*root)->variable) {
+                    if (!(*root)->variable) {
                         printf("Chyba\n");
                     } else {
                         (*root)->variable = true;
@@ -93,7 +93,8 @@ void preorderTraversal(bst_node **root) {
 
 bool Search_BTree(bst_node **root) {
     if ((*root) != NULL) {
-        if ((*root)->function = true) {
+       // printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
+        if ((*root)->function == true) {
             if (!(InArray((*root)->name))) {
                 if (!((*root)->func_declared)) {
                     // 3
@@ -106,15 +107,14 @@ bool Search_BTree(bst_node **root) {
                 }
             }
 
-        } else if ((*root)->variable = true) {
-            if (((*root)->var_declared)) {
+        } else if ((*root)->variable == true) {
+            if ((!(*root)->var_declared)) {
                 // 3
                 return false;
             }
 
-        } else {
-            return (Search_BTree(&((*root)->left)) && Search_BTree(&((*root)->right)));
         }
+            return (Search_BTree(&((*root)->left)) && Search_BTree(&((*root)->right)));
     }
     return true;
 }

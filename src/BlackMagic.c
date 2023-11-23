@@ -109,6 +109,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
     stack_init(prec_stack);
     stack_push(prec_stack, DOLLAR, NULL);
     int iteration = 0;
+    bool functi_switch = false;
     table_symbol_enum stack_index;
 
     // buffer for rules
@@ -202,7 +203,8 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                 if (dynstr_cmp(&buffer, "i")) {
                     if (prec_stack->top->tok_node->T->dtype == varidT) {
                         // SEMANTIC~CHECK
-                        Insert_BTree(sym_table, prec_stack->top->tok_node->T->val->s, prec_stack->top->tok_node->T->dtype, false, true);
+                        Insert_BTree(sym_table, prec_stack->top->tok_node->T->val->s, prec_stack->top->tok_node->T->dtype, false, !functi_switch);
+                        functi_switch = false;
                     }
                     stack_top(prec_stack)->symbol = ENTERPRISE;
                 } else if (dynstr_cmp(&buffer, "E+E")) {
@@ -237,6 +239,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                 break;
             case F:
                 FunctionCall(&prec_stack->top->tok_node->left, sym_table);
+                functi_switch = true;
                 GetToken();
             default:
                 break;

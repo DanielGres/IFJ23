@@ -264,7 +264,7 @@ bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
             *seed = Set_TokNode(myToken);
 
             // SEMANTIC~CHECK
-            Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, false, true);
+            Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, true, true);
 
             GetToken();
             if(myToken->dtype == colonT){

@@ -60,7 +60,7 @@ int main() {
             printf("Nespravne ;_; \n");
         }
 
-        preorderTraversal(&symtable);
+        //preorderTraversal(&symtable);
     } else {
         printf("nespravne! :((\n");
     }
