@@ -100,6 +100,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
     SM_STATE eNextState = START_STATE;
     bool condition = true;
     bool compareWithTable = false;
+    bool ignore;
     dyn_string errMSG;
     dynstr_init(&errMSG);
 
@@ -107,6 +108,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
         if (!b_ex) {
             c = fgetc(stdin);
         }
+        ignore = false;
         switch (eNextState) {
             case START_STATE: {
                 if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
@@ -129,6 +131,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     eNextState = NUMBER_STATE;
                 } else if (c == '"') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRING_STATE;
                 } else if (c == ':') {
                     b_ex = false;
@@ -575,6 +578,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if (c == '"') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRING3_STATE;
                 } else if (c == '\\') {
                     b_ex = false;
@@ -667,6 +671,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     *type = stringT;
                     condition = false;
                     b_ex = true;
+                    ignore = true;
                     eNextState = START_STATE;
                 }
             } break;
@@ -789,7 +794,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 return false;
             }
         }
-        if (eNextState != START_STATE) {
+        if ((eNextState != START_STATE) && (!ignore)) {
             dynstr_add(buffer, c);
         } else {
             if (compareWithTable) {

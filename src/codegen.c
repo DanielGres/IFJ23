@@ -2,6 +2,7 @@
 
 int IfCounter = 0;
 int WhileCounter = 0;
+int WhileCounter = 0;
 
 void Instructions(){
     // printf(
