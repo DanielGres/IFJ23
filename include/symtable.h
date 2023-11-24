@@ -24,6 +24,10 @@ typedef struct
     struct bst_node *right;  // pravý potomok
 } bst_node;
 
+bool Search_BTree_Control(bst_node **root);
+
+bool Is_In_BTree(bst_node **root,char *name);
+
 /**
  * @brief function initializer BST to the table of symbols
  *

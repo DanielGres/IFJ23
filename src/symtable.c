@@ -91,9 +91,9 @@ void preorderTraversal(bst_node **root) {
     preorderTraversal(&(*root)->right);
 }
 
-bool Search_BTree(bst_node **root) {
+bool Search_BTree_Control(bst_node **root) {
     if ((*root) != NULL) {
-       // printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
+        // printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
         if ((*root)->function == true) {
             if (!(InArray((*root)->name))) {
                 if (!((*root)->func_declared)) {
@@ -112,9 +112,17 @@ bool Search_BTree(bst_node **root) {
                 // 3
                 return false;
             }
-
         }
-            return (Search_BTree(&((*root)->left)) && Search_BTree(&((*root)->right)));
+        return (Search_BTree_Control(&((*root)->left)) || Search_BTree_Control(&((*root)->right)));
     }
     return true;
+}
+bool Is_In_BTree(bst_node **root, char *name) {
+    if ((*root) != NULL) {
+        if (strcmp((*root)->name, name) == 0) {
+            return true;
+        }
+        return (Is_In_BTree(&((*root)->left), name) || Is_In_BTree(&((*root)->right), name));
+    }
+    return false;
 }

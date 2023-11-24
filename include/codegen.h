@@ -5,24 +5,25 @@
 #ifndef CODEGEN_H
 #define CODEGEN_H
 
+#include "expression.h"
 #include "tok_tree.h"
 #include "token.h"
 
-void Generator(struct bst_tok_node *root);
+void Generator(struct bst_tok_node *root,bst_node **kamisama);
 
 void GenerateSubTree(struct bst_tok_node *curr_root);
 
-void GenerateExpression(struct bst_tok_node *root,bool inFunction);
+void GenerateExpression(struct bst_tok_node *root, bool inFunction);
 
-void GenerateIF(struct bst_tok_node *root,bool inFunction);
+void GenerateIF(struct bst_tok_node *root, bool inFunction);
 
-void GenerateWhile(struct bst_tok_node *root,bool inFunction);
+void GenerateWhile(struct bst_tok_node *root, bool inFunction);
 
-void GenerateLet(struct bst_tok_node *root,bool inFunction);
+void GenerateLet(struct bst_tok_node *root, bool inFunction);
 
-void GenerateVar(struct bst_tok_node *root,bool inFunction);
+void GenerateVar(struct bst_tok_node *root, bool inFunction);
 
-void CallFuncAssigment(struct bst_tok_node *root,bool inFunction);
+void CallFuncAssigment(struct bst_tok_node *root, bool inFunction);
 
 void GenerateCallFunction(struct bst_tok_node *root);
 
