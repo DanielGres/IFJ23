@@ -7,7 +7,7 @@
 #define STRMALCPY(to, from) strcpy(to = malloc(strlen(from) + 1), from)
 
 bool InArray(char *str2) {
-    char arr[11][10] = {"reads", "readInt", "readf", "write", "floatval", "intval", "strval", "strlen", "substring", "ord", "chr"};
+    char arr[11][10] = {"readString", "readInt", "readDouble", "write", "Int2Double", "Double2Int", "length", "substring", "substring", "ord", "chr"};
     for (int i = 0; i < 11; i++) {
         if (strcmp(arr[i], str2) == 0) {
             return true;
@@ -31,13 +31,14 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
         (*root)->right = NULL;
         if (var_type) {
             if (!declaration) {
-                printf("Chyba pouzita premenna nie je deklarovana\n");
+                // printf("Chyba pouzita premenna nie je deklarovana\n");
+                exit(5);
             }
             (*root)->var_declared = declaration;
             (*root)->variable = true;
             (*root)->function = false;
         } else {
-            (*root)->func_declared = true;
+            (*root)->func_declared = declaration;
             (*root)->variable = false;
             (*root)->function = true;
         }
@@ -54,11 +55,13 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
                     if (!(*root)->var_declared) {
                         (*root)->var_declared = declaration;
                     } else {
-                        printf("Chyba\n");
+                        exit(3);
+                        // printf("Chyba\n");
                     }
                 } else {
-                    if (!(*root)->variable) {
-                        printf("Chyba\n");
+                    if (!(*root)->var_declared) {
+                        exit(3);
+                        // printf("Chyba\n");
                     } else {
                         (*root)->variable = true;
                     }
@@ -68,7 +71,8 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
                     if (!(*root)->var_declared) {
                         (*root)->var_declared = declaration;
                     } else {
-                        printf("Chyba\n");
+                        exit(3);
+                        // printf("Chyba\n");
                     }
                 } else {
                     (*root)->function = true;
@@ -86,30 +90,31 @@ void preorderTraversal(bst_node **root) {
     // {
     //     printf("DEFVAR LF@%s\n", (*root)->name);
     // }
-    printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
+    // printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
     preorderTraversal(&(*root)->left);
     preorderTraversal(&(*root)->right);
 }
 
 bool Search_BTree_Control(bst_node **root) {
     if ((*root) != NULL) {
-        // printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
+        //printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
         if ((*root)->function == true) {
             if (!(InArray((*root)->name))) {
                 if (!((*root)->func_declared)) {
                     // 3
+                    exit(3);
                     return false;
                 }
             } else {
                 if (((*root)->func_declared)) {
-                    // 3
+                    exit(3);
                     return false;
                 }
             }
 
         } else if ((*root)->variable == true) {
             if ((!(*root)->var_declared)) {
-                // 3
+                //exit(5);
                 return false;
             }
         }
