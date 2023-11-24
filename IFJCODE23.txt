@@ -1,5 +1,5 @@
 func ahojda(_ meow : Int, name secmeow : Int){
-        
+    let x = 5 + meow
 }
 
 ahojda(meow, grc : koks);

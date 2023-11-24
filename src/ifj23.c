@@ -53,14 +53,14 @@ int main() {
 
     if (CorpusPrime(&(the_root->right), &symtable)) {
         // PostorderTraversal(the_root);
-        //  Generator(the_root);
-        if (Search_BTree(&symtable)) {
-            printf("Spravne ;) :fire: \n");
-        } else {
-            printf("Nespravne ;_; \n");
-        }
+        Generator(the_root);
+        // if (Search_BTree(&symtable)) {
+        //     printf("Spravne ;) :fire: \n");
+        // } else {
+        //     printf("Nespravne ;_; \n");
+        // }
 
-        preorderTraversal(&symtable);
+        // preorderTraversal(&symtable);
     } else {
         printf("nespravne! :((\n");
     }

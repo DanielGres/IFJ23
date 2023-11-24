@@ -96,17 +96,19 @@ bool CorpusSecondary(struct bst_tok_node **seed, bst_node **sym_table) {
         } break;
         case varT: {
             *seed = Set_TokNode(myToken);
-            if (!Var(&((*seed)->left), sym_table)) return false;
+            if(!Var(&((*seed)->left),sym_table)) return false;
             if (!EndCommand()) return false;
             return CorpusSecondary(&((*seed)->right), sym_table);
         } break;
-        // Either a function call or an assigment
         case varidT: {
             *seed = Set_TokNode(myToken);
             GetToken();
             if (myToken->dtype == equalT) {
                 if (!assigment(&((*seed)->left), sym_table)) return false;
             } else if (myToken->dtype == LbracketT) {
+                // SEMANTIC~CHECK
+                Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, false, false);
+
                 if (!FunctionCall(&((*seed)->left), sym_table)) return false;
             } else {
                 return false;
@@ -115,11 +117,21 @@ bool CorpusSecondary(struct bst_tok_node **seed, bst_node **sym_table) {
             if (!EndCommand()) return false;
             return CorpusSecondary(&((*seed)->right), sym_table);
         } break;
+        case ifT: {
+            *seed = Set_TokNode(myToken);
+            if (!IfPrime(&((*seed)->left), sym_table)) return false;
+            return CorpusSecondary(&((*seed)->right), sym_table);
+        } break;
+        case whileT: {
+            *seed = Set_TokNode(myToken);
+            if (!WhilePrime(&((*seed)->left), sym_table)) return false;
+            return CorpusSecondary(&((*seed)->right), sym_table);
+        } break;
         case RCbracketT: {
             return true;
         } break;
         case newlineT: {
-            return CorpusSecondary(&((*seed)), sym_table);
+            return CorpusSecondary(&(*seed), sym_table);
         } break;
         default: {
             return false;
