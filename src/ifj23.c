@@ -59,9 +59,8 @@ int main() {
         // } else {
         //     printf("Nespravne ;_; \n");
         // }
-        printf("IDE TO %d\n", Is_In_BTree(&symtable, "kokot"));
         // preorderTraversal(&symtable);
     } else {
-        printf("nespravne! :((\n");
+        exit(2);
     }
 }

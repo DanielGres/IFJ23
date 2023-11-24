@@ -1,5 +1,12 @@
-func ahojda(_ meow : Int, name secmeow : Int){
-    let x = 5 + meow
+var i = 0 ;
+while( i < 2 ) {
+    var j = 0 ;
+    var a = 1 ;
+    i = i + a ;
+    while( j < 2 ) {
+        j = j + i
+        let i = 9
+        write(i, j, "\n")
+    }
+    write(i, j, "\n")
 }
-
-ahojda(meow, grc : koks);
