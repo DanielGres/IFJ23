@@ -2,13 +2,13 @@ CC = gcc
 CFLAGS = -Wall -g
 
 # Get a list of all .c files in the current directory
-SRC_FILES = $(wildcard src/*.c)
+SRC_FILES = $(wildcard *.c)
 
 # Generate a list of corresponding .o files from .c files
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 # Dependecies
-DEPS = include/$(wildcard *.h)
+DEPS = $(wildcard *.h)
 # Define the executable name
 EXECUTABLE = ifjcomp
 

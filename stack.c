@@ -2,7 +2,7 @@
 // Daniel Greš --- xgresd00
 // Mário Mihál --- xmihal13
 
-#include "../include/stack.h"
+#include "stack.h"
 
 void stack_init(stack *precedent_stack) {
     precedent_stack->top = NULL;

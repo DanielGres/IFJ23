@@ -1,4 +1,4 @@
-#include "../include/miscellaneous.h"
+#include "miscellaneous.h"
 
 #define COUNT 3
 

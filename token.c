@@ -4,7 +4,7 @@
 // Viktor Hančovský --- xhanco00
 // Branislav Kotúč --- xkotuc02
 
-#include "../include/token.h"
+#include "token.h"
 
 void Token_init(token **T) {
     (*T) = NULL;

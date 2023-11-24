@@ -1,6 +1,6 @@
-#include "../include/expression.h"
+#include "expression.h"
 
-#include "../include/syntax.h"
+#include "syntax.h"
 
 // I LOVE BURRITO
 

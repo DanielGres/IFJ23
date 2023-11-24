@@ -4,7 +4,7 @@
 // Viktor Hančovský --- xhanco00
 // Branislav Kotúč --- xkotuc02
 
-#include "../include/ifj23.h"
+#include "ifj23.h"
 
 // TODO na lexer testovanie dik pls nechaj sem abo zakomentuj lem
 const char *enumers[] = {
@@ -53,12 +53,12 @@ int main() {
 
     if (CorpusPrime(&(the_root->right), &symtable)) {
         // PostorderTraversal(the_root);
+        if (Search_BTree_Control(&symtable)) {
+            printf("Spravne ;) :fire: \n");
+        } else {
+            printf("Nespravne ;_; \n");
+        }
         Generator(the_root, &symtable);
-        // if (Search_BTree(&symtable)) {
-        //     printf("Spravne ;) :fire: \n");
-        // } else {
-        //     printf("Nespravne ;_; \n");
-        // }
         // preorderTraversal(&symtable);
     } else {
         exit(2);

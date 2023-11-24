@@ -4,7 +4,7 @@
 // Viktor Hančovský --- xhanco00
 // Branislav Kotúč --- xkotuc02
 
-#include "../include/errror.h"
+#include "errror.h"
 
 /* todo vymazat asi
 UPCOMING FUNCTION

@@ -2,7 +2,7 @@
 // Daniel Greš --- xgresd00
 // Mário Mihál --- xmihal13
 
-#include "../include/syntax.h"
+#include "syntax.h"
 
 token *myToken;
 bool TakeToken = true;

@@ -4,7 +4,7 @@
 // Viktor Hančovský --- xhanco00
 // Branislav Kotúč --- xkotuc02
 
-#include "../include/lexer.h"
+#include "lexer.h"
 
 bool stop = false;
 bool b_ex = false;

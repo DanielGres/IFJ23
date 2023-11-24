@@ -2,7 +2,7 @@
 // Daniel Greš --- xgresd00
 // Mário Mihál --- xmihal13
 
-#include "../include/symtable.h"
+#include "symtable.h"
 
 #define STRMALCPY(to, from) strcpy(to = malloc(strlen(from) + 1), from)
 

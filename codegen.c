@@ -1,4 +1,4 @@
-#include "../include/codegen.h"
+#include "codegen.h"
 
 int IfCounter = 0;
 int WhileCounter = 0;
