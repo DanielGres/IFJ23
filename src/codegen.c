@@ -91,7 +91,7 @@ void GenerateSubTree(struct bst_tok_node *curr_root){
         }
         break;
         case varidT:{
-            CallFuncAssigment(curr_root);
+            CallFuncAssigment(curr_root,false);
         }
         break;
         case funcT:{
@@ -109,23 +109,23 @@ void GenerateSubTreeFunction(struct bst_tok_node *curr_root){
     if(curr_root == NULL) return;
     switch(curr_root->T->dtype){
         case letT:{
-            GenerateLet(curr_root->left,false);
+            GenerateLet(curr_root->left,true);
         }
         break;
         case varT:{
-            GenerateVar(curr_root->left,false);
+            GenerateVar(curr_root->left,true);
         }
         break;
         case ifT:{
-            GenerateIF(curr_root->left,false);
+            GenerateIF(curr_root->left,true);
         }
         break;
         case whileT:{
-            GenerateWhile(curr_root->left,false);
+            GenerateWhile(curr_root->left,true);
         }
         break;
         case varidT:{
-            CallFuncAssigment(curr_root);
+            CallFuncAssigment(curr_root,true);
         }
         break;
         default:{
@@ -156,16 +156,23 @@ void PrepareFuncParams(struct bst_tok_node *root){
         printf("DEFVAR LF@%s\n", root->right->T->val->s);
         printf("MOVE LF@%s TF@%%%d\n", root->right->T->val->s, paramCnt);
         root = root->left;
+        paramCnt++;
     }
 }
 
-void CallFuncAssigment(struct bst_tok_node *root){
+void CallFuncAssigment(struct bst_tok_node *root,bool inFunction){
     if(root->left->T->dtype == LbracketT){
         GenerateCallFunction(root);
     }
     else{
-        GenerateAssigment(root);
-        printf("POPS GF@%s\n",root->T->val->s);
+        GenerateAssigment(root,inFunction);
+        if(inFunction){
+            printf("POPS LF@%s\n",root->T->val->s);
+        }
+        else{
+            printf("POPS GF@%s\n",root->T->val->s);
+
+        }
     }
 }
 
@@ -222,8 +229,8 @@ void GenerateCallWrite(struct bst_tok_node *root){
     }
 }
 
-void GenerateAssigment(struct bst_tok_node *root){
-    GenerateExpression(root->left);
+void GenerateAssigment(struct bst_tok_node *root,bool inFunction){
+    GenerateExpression(root->left,inFunction);
 }
 
 void Generator(struct bst_tok_node *root){
@@ -237,7 +244,7 @@ void Generator(struct bst_tok_node *root){
     printf("EXIT int@0\n");
 }
 
-void GenerateExprInstruction(struct bst_tok_node *root){
+void GenerateExprInstruction(struct bst_tok_node *root,bool inFunction){
     switch(root->T->dtype){
         case varidT:{
             
@@ -282,26 +289,26 @@ void GenerateExprInstruction(struct bst_tok_node *root){
     }
 }
 
-void ExpressionPostorderTraversal(struct bst_tok_node *root){
+void ExpressionPostorderTraversal(struct bst_tok_node *root,bool inFunction){
     if(root == NULL) return;
     if(root->left != NULL && root->left->T->dtype == LbracketT){
         GenerateCallFunction(root);
     }
     else{
-        ExpressionPostorderTraversal(root->left);
-        ExpressionPostorderTraversal(root->right);
-        GenerateExprInstruction(root);
+        ExpressionPostorderTraversal(root->left,inFunction);
+        ExpressionPostorderTraversal(root->right,inFunction);
+        GenerateExprInstruction(root,inFunction);
     }
 }
 
-void GenerateExpression(struct bst_tok_node *root){
-    ExpressionPostorderTraversal(root);
+void GenerateExpression(struct bst_tok_node *root,bool inFunction){
+    ExpressionPostorderTraversal(root,inFunction);
 }
 
 void GenerateLet(struct bst_tok_node *root,bool inFunction){
     printf("DEFVAR GF@%s\n", root->T->val->s);
     // Expression call
-    GenerateExpression(root->left);
+    GenerateExpression(root->left,inFunction);
     // Result of expression will be on top of stack
     printf("POPS GF@exp\n");
     printf("MOVE GF@%s GF@exp\n", root->T->val->s);
@@ -310,7 +317,7 @@ void GenerateLet(struct bst_tok_node *root,bool inFunction){
 void GenerateVar(struct bst_tok_node *root,bool inFunction){
     printf("DEFVAR GF@%s\n", root->T->val->s);
     // Expression call
-    GenerateExpression(root->left);
+    GenerateExpression(root->left,inFunction);
     // Result of expression will be on top of stack
     printf("POPS GF@exp\n");
     printf("MOVE GF@%s GF@exp\n", root->T->val->s);
@@ -326,7 +333,7 @@ void GenerateWhile(struct bst_tok_node *root,bool inFunction){
     // While body
     GenerateSubTree(root->right->right);
 
-    GenerateExpression(root->left);
+    GenerateExpression(root->left,inFunction);
     // Result of expression will be on top of stack
     printf("POPS GF@exp\n");
     // Skip while if not ture
@@ -337,7 +344,7 @@ void GenerateWhile(struct bst_tok_node *root,bool inFunction){
 void GenerateIF(struct bst_tok_node *root,bool inFunction){
     IfCounter++;
     int thisIf = IfCounter;
-    GenerateExpression(root->left);
+    GenerateExpression(root->left,inFunction);
     // Result of expression will be on top of stack
     printf("POPS GF@exp\n");
 

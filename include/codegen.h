@@ -12,7 +12,7 @@ void Generator(struct bst_tok_node *root);
 
 void GenerateSubTree(struct bst_tok_node *curr_root);
 
-void GenerateExpression(struct bst_tok_node *root);
+void GenerateExpression(struct bst_tok_node *root,bool inFunction);
 
 void GenerateIF(struct bst_tok_node *root,bool inFunction);
 
@@ -22,7 +22,7 @@ void GenerateLet(struct bst_tok_node *root,bool inFunction);
 
 void GenerateVar(struct bst_tok_node *root,bool inFunction);
 
-void CallFuncAssigment(struct bst_tok_node *root);
+void CallFuncAssigment(struct bst_tok_node *root,bool inFunction);
 
 void GenerateCallFunction(struct bst_tok_node *root);
 
