@@ -1,0 +1,79 @@
+// Implementace překladače imperativního jazyka IFJ23
+// Daniel Greš --- xgresd00
+// Mário Mihál --- xmihal13
+// Viktor Hančovský --- xhanco00
+// Branislav Kotúč --- xkotuc02
+
+#ifndef LEXER_H
+#define LEXER_H
+
+#include <stdbool.h>
+
+#include "dyn_string.h"
+#include "errror.h"
+#include "token.h"
+
+typedef enum {
+    START_STATE,
+
+    ID_STATE_0,
+    ID_STATE,
+    ID2_STATE,
+    IDTYPE_STATE,
+    LEFTBRACKET_STATE,
+    RIGHTBRACKET_STATE,
+    RIGHTCURLYBRACKET_STATE,
+    LEFTCURLYBRACKET_STATE,
+    NUMBER_STATE,
+    DECNUMBER1_STATE,
+    DECNUMBER2_STATE,
+    EXPNUMBER1_STATE,
+    EXPNUMBER2_STATE,
+    EXPNUMBER3_STATE,
+    STRING_STATE,
+    STRING2_STATE,
+    STRING3_STATE,
+    STRINGESCAPE_STATE,
+    STRINGU_STATE,
+    STRINGU2_STATE,
+    STRINGU3_STATE,
+    STRINGMULTI_STATE,
+    STRINGMULTI2_STATE,
+    STRINGMULTI3_STATE,
+    STRINGMULTI4_STATE,
+    STRINGMULTI5_STATE,
+    STRINGMULTI6_STATE,
+    STRINGMULTI7_STATE,
+    STRINGMULTI8_STATE,
+    STRINGMULTI9_STATE,
+    COLON_STATE,
+    PLUS_STATE,
+    MINUS_STATE,
+    ARROW_STATE,
+    COMPARE_STATE,
+    EXCLAMATION_STATE,
+    EQUAL_STATE,
+    NOTEQUAL_STATE,
+    MULTIP_STATE,
+    SLASH_STATE,
+    LINECOMM_STATE,
+    LINECOMM2_STATE,
+    BLOCKCOMM_STATE,
+    BLOCKCOMM2_STATE,
+    BLOCKCOMM3_STATE,
+    GREATER_STATE,
+    GREATEREQUAL_STATE,
+    LESS_STATE,
+    LESSEQUAL_STATE,
+    QUESTION_STATE,
+    QUESTION2_STATE,
+    COMMA_STATE,
+    SEMICOL_STATE,
+    NEWLINE_STATE,
+} SM_STATE;
+
+bool Get_Token(token **T);
+
+bool lexer(dyn_string *buffer, token_type *type);
+
+#endif

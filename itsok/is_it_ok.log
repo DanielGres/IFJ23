@@ -1,0 +1,189 @@
+Archive:  xmihal13.zip
+  inflating: codegen.c               
+  inflating: codegen.h               
+ extracting: dokumentace.pdf         
+  inflating: dyn_string.c            
+  inflating: dyn_string.h            
+  inflating: errror.c                
+  inflating: errror.h                
+  inflating: expression.c            
+  inflating: expression.h            
+  inflating: ifj23.c                 
+  inflating: ifj23.h                 
+  inflating: lexer.c                 
+  inflating: lexer.h                 
+  inflating: Makefile                
+  inflating: miscellaneous.c         
+  inflating: miscellaneous.h         
+ extracting: rozdeleni               
+  inflating: stack.c                 
+  inflating: stack.h                 
+  inflating: symtable.c              
+  inflating: symtable.h              
+  inflating: syntax.c                
+  inflating: syntax.h                
+  inflating: token.c                 
+  inflating: token.h                 
+  inflating: tok_tree.c              
+  inflating: tok_tree.h              
+gcc -Wall -g -c codegen.c -o codegen.o -ggdb3
+codegen.c: In function ‘Instructions’:
+codegen.c:64:9: warning: unknown conversion type character ‘\x0a’ in format [-Wformat=]
+   64 |         "LABEL print\n"
+      |         ^~~~~~~~~~~~~~~
+codegen.c:67:32: note: format string is defined here
+   67 |         "MOVE LF@writeval LF@%1\n"
+      |                                ^~
+codegen.c: In function ‘CallFuncAssigment’:
+codegen.c:159:9: warning: implicit declaration of function ‘GenerateAssigment’ [-Wimplicit-function-declaration]
+  159 |         GenerateAssigment(root, inFunction);
+      |         ^~~~~~~~~~~~~~~~~
+codegen.c: In function ‘GenerateCallFunction’:
+codegen.c:175:9: warning: implicit declaration of function ‘GenerateCallReadString’; did you mean ‘GenerateCallReadInt’? [-Wimplicit-function-declaration]
+  175 |         GenerateCallReadString(root);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+      |         GenerateCallReadInt
+codegen.c: At top level:
+codegen.c:181:6: warning: conflicting types for ‘GenerateCallReadString’; have ‘void(struct bst_tok_node *)’
+  181 | void GenerateCallReadString(struct bst_tok_node *root) {
+      |      ^~~~~~~~~~~~~~~~~~~~~~
+codegen.c:175:9: note: previous implicit declaration of ‘GenerateCallReadString’ with type ‘void(struct bst_tok_node *)’
+  175 |         GenerateCallReadString(root);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+codegen.c: In function ‘GenerateCallWrite’:
+codegen.c:199:29: warning: unknown conversion type character ‘\x0a’ in format [-Wformat=]
+  199 |         printf("DEFVAR TF@%1\n");
+      |                             ^~
+codegen.c:202:31: warning: unknown conversion type character ‘ ’ in format [-Wformat=]
+  202 |             printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
+      |                               ^
+codegen.c:204:31: warning: unknown conversion type character ‘ ’ in format [-Wformat=]
+  204 |             printf("MOVE TF@%1 int@%s\n", root->T->val->s);
+      |                               ^
+codegen.c:206:31: warning: unknown conversion type character ‘ ’ in format [-Wformat=]
+  206 |             printf("MOVE TF@%1 float@%s\n", root->T->val->s);
+      |                               ^
+codegen.c:208:31: warning: unknown conversion type character ‘ ’ in format [-Wformat=]
+  208 |             printf("MOVE TF@%1 string@%s\n", root->T->val->s);
+      |                               ^
+codegen.c: At top level:
+codegen.c:215:6: warning: conflicting types for ‘GenerateAssigment’; have ‘void(struct bst_tok_node *, _Bool)’
+  215 | void GenerateAssigment(struct bst_tok_node *root, bool inFunction) {
+      |      ^~~~~~~~~~~~~~~~~
+codegen.c:159:9: note: previous implicit declaration of ‘GenerateAssigment’ with type ‘void(struct bst_tok_node *, _Bool)’
+  159 |         GenerateAssigment(root, inFunction);
+      |         ^~~~~~~~~~~~~~~~~
+codegen.c: In function ‘GenerateExprInstruction’:
+codegen.c:233:5: warning: enumeration value ‘funcidT’ not handled in switch [-Wswitch]
+  233 |     switch (root->T->dtype) {
+      |     ^~~~~~
+codegen.c:233:5: warning: enumeration value ‘colonT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘vartypeT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘vartypeQT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘equalT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘doublenumT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘varT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘letT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘ifT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘stringT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘nilT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘LbracketT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘RbracketT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘LCbracketT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘RCbracketT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘elseT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘funcT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘paramNameT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘commaT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘arrowT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘whileT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘returnT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘newlineT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘semicolonT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘linecommentT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘blockcommentT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘eofT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘startT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘helpT’ not handled in switch [-Wswitch]
+codegen.c:233:5: warning: enumeration value ‘underscoreT’ not handled in switch [-Wswitch]
+gcc -Wall -g -c dyn_string.c -o dyn_string.o -ggdb3
+gcc -Wall -g -c errror.c -o errror.o -ggdb3
+gcc -Wall -g -c expression.c -o expression.o -ggdb3
+gcc -Wall -g -c ifj23.c -o ifj23.o -ggdb3
+gcc -Wall -g -c lexer.c -o lexer.o -ggdb3
+gcc -Wall -g -c miscellaneous.c -o miscellaneous.o -ggdb3
+gcc -Wall -g -c stack.c -o stack.o -ggdb3
+gcc -Wall -g -c symtable.c -o symtable.o -ggdb3
+symtable.c: In function ‘Insert_BTree’:
+symtable.c:48:33: warning: passing argument 1 of ‘Insert_BTree’ from incompatible pointer type [-Wincompatible-pointer-types]
+   48 |             return Insert_BTree(&(*root)->left, name, type, declaration, var_type);
+      |                                 ^~~~~~~~~~~~~~
+      |                                 |
+      |                                 struct bst_node **
+symtable.c:22:30: note: expected ‘bst_node **’ but argument is of type ‘struct bst_node **’
+   22 | bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration, bool var_type) {
+      |                   ~~~~~~~~~~~^~~~
+symtable.c:50:33: warning: passing argument 1 of ‘Insert_BTree’ from incompatible pointer type [-Wincompatible-pointer-types]
+   50 |             return Insert_BTree(&(*root)->right, name, type, declaration, var_type);
+      |                                 ^~~~~~~~~~~~~~~
+      |                                 |
+      |                                 struct bst_node **
+symtable.c:22:30: note: expected ‘bst_node **’ but argument is of type ‘struct bst_node **’
+   22 | bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration, bool var_type) {
+      |                   ~~~~~~~~~~~^~~~
+symtable.c: In function ‘preorderTraversal’:
+symtable.c:94:23: warning: passing argument 1 of ‘preorderTraversal’ from incompatible pointer type [-Wincompatible-pointer-types]
+   94 |     preorderTraversal(&(*root)->left);
+      |                       ^~~~~~~~~~~~~~
+      |                       |
+      |                       struct bst_node **
+symtable.c:86:35: note: expected ‘bst_node **’ but argument is of type ‘struct bst_node **’
+   86 | void preorderTraversal(bst_node **root) {
+      |                        ~~~~~~~~~~~^~~~
+symtable.c:95:23: warning: passing argument 1 of ‘preorderTraversal’ from incompatible pointer type [-Wincompatible-pointer-types]
+   95 |     preorderTraversal(&(*root)->right);
+      |                       ^~~~~~~~~~~~~~~
+      |                       |
+      |                       struct bst_node **
+symtable.c:86:35: note: expected ‘bst_node **’ but argument is of type ‘struct bst_node **’
+   86 | void preorderTraversal(bst_node **root) {
+      |                        ~~~~~~~~~~~^~~~
+symtable.c: In function ‘Search_BTree_Control’:
+symtable.c:121:38: warning: passing argument 1 of ‘Search_BTree_Control’ from incompatible pointer type [-Wincompatible-pointer-types]
+  121 |         return (Search_BTree_Control(&((*root)->left)) || Search_BTree_Control(&((*root)->right)));
+      |                                      ^~~~~~~~~~~~~~~~
+      |                                      |
+      |                                      struct bst_node **
+symtable.c:98:38: note: expected ‘bst_node **’ but argument is of type ‘struct bst_node **’
+   98 | bool Search_BTree_Control(bst_node **root) {
+      |                           ~~~~~~~~~~~^~~~
+symtable.c:121:80: warning: passing argument 1 of ‘Search_BTree_Control’ from incompatible pointer type [-Wincompatible-pointer-types]
+  121 |         return (Search_BTree_Control(&((*root)->left)) || Search_BTree_Control(&((*root)->right)));
+      |                                                                                ^~~~~~~~~~~~~~~~~
+      |                                                                                |
+      |                                                                                struct bst_node **
+symtable.c:98:38: note: expected ‘bst_node **’ but argument is of type ‘struct bst_node **’
+   98 | bool Search_BTree_Control(bst_node **root) {
+      |                           ~~~~~~~~~~~^~~~
+symtable.c: In function ‘Is_In_BTree’:
+symtable.c:130:29: warning: passing argument 1 of ‘Is_In_BTree’ from incompatible pointer type [-Wincompatible-pointer-types]
+  130 |         return (Is_In_BTree(&((*root)->left), name) || Is_In_BTree(&((*root)->right), name));
+      |                             ^~~~~~~~~~~~~~~~
+      |                             |
+      |                             struct bst_node **
+symtable.c:125:29: note: expected ‘bst_node **’ but argument is of type ‘struct bst_node **’
+  125 | bool Is_In_BTree(bst_node **root, char *name) {
+      |                  ~~~~~~~~~~~^~~~
+symtable.c:130:68: warning: passing argument 1 of ‘Is_In_BTree’ from incompatible pointer type [-Wincompatible-pointer-types]
+  130 |         return (Is_In_BTree(&((*root)->left), name) || Is_In_BTree(&((*root)->right), name));
+      |                                                                    ^~~~~~~~~~~~~~~~~
+      |                                                                    |
+      |                                                                    struct bst_node **
+symtable.c:125:29: note: expected ‘bst_node **’ but argument is of type ‘struct bst_node **’
+  125 | bool Is_In_BTree(bst_node **root, char *name) {
+      |                  ~~~~~~~~~~~^~~~
+gcc -Wall -g -c syntax.c -o syntax.o -ggdb3
+gcc -Wall -g -c tok_tree.c -o tok_tree.o -ggdb3
+gcc -Wall -g -c token.c -o token.o -ggdb3
+gcc -Wall -g -o ifj23 codegen.o dyn_string.o errror.o expression.o ifj23.o lexer.o miscellaneous.o stack.o symtable.o syntax.o tok_tree.o token.o
+rm -f codegen.o dyn_string.o errror.o expression.o ifj23.o lexer.o miscellaneous.o stack.o symtable.o syntax.o tok_tree.o token.o

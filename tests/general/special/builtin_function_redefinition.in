@@ -1,0 +1,3 @@
+func write (_ a: Int) -> Int {
+    return a
+}

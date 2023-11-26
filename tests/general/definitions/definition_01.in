@@ -1,0 +1,40 @@
+let a : Int? = 1
+let b : Int = 2
+let c = 3
+
+let d : Int? = nil
+
+let e :Int
+
+var f : Int? = 1
+
+var g : Int = 2
+
+var h = 3
+
+var i : Int? = nil
+
+var j :Int
+
+let k : Double? = 1.0
+let l : Double = 2.0
+let m = 3.0
+let n : Double? = nil
+let o : Double
+var p : Double? = 1.0
+var q : Double = 2.0
+var r = 3.0
+var s : Double? = nil
+var t : Double
+
+let u : String? = "1"
+let v : String = "2"
+let w = "3"
+let x : String? = nil
+let y : String
+var z : String? = "1"
+var aa : String = "2"
+var bb = "3"
+var cc : String? = nil
+var dd : String
+

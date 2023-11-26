@@ -1,0 +1,6 @@
+if ( 1 == 1 ){
+    write("good\n")
+}
+else {
+    write("bad\n")
+}

@@ -1,0 +1,8 @@
+BUILD: Oct  4 2023 11:59:26
+Commit: 92bc5121ecf0d5072a971510877eb8147d1b4d96
+Usage: ic23int [options] file
+Options:
+		-h --help		Display this information.
+		-v --verbose		Show debug information.
+		-s --silent		Disable DPRINT and BREAK instructions. Also disable -v flag. 
+Note: 64-bit int is supported.
