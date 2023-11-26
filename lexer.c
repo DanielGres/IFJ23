@@ -214,7 +214,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Invalid input character!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case NEWLINE_STATE:  // \n
@@ -255,7 +255,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected a question mark (?)!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case QUESTION2_STATE:  // ??
@@ -543,7 +543,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected a number!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case DECNUMBER2_STATE:  // [0-9].[0-9]
@@ -574,7 +574,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected a number or an operator (+ or -)!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case EXPNUMBER2_STATE:  // [0-9]eE[+-] or [0-9].[0-9]eE[+-]
@@ -588,7 +588,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected a number!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case EXPNUMBER3_STATE:  // [0-9]eE[0-9]
@@ -660,7 +660,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected '{'!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case STRINGU2_STATE:  // "\u{
@@ -675,7 +675,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected [0-9] or [Aa-Ff]!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case STRINGU3_STATE:  // "\u{NIECO
@@ -694,7 +694,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                         dynstr_addstr(&errMSG, "Expected a number or an operator (+ or -)!\n");
                         errPrint(&errMSG, 1);
                         dynstr_destr(&errMSG);
-                        return false;
+                        exit(1);
                     }
                 } else {
                     b_ex = true;
@@ -702,7 +702,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Too many number in escaped hex string!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case STRINGMULTI_STATE:  // ""
@@ -733,7 +733,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected new line or double quotes!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case STRINGMULTI3_STATE:  // """ \n
@@ -750,7 +750,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected newline or character!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case STRINGMULTI4_STATE:  // """ \n something
@@ -767,7 +767,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected newline or character!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case STRINGMULTI5_STATE:  // """ \n something \n
@@ -800,7 +800,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected doublequotes or a character!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case STRINGMULTI7_STATE:  // """ \n something \n  ""
@@ -817,7 +817,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     dynstr_addstr(&errMSG, "Expected doublequotes or a character!\n");
                     errPrint(&errMSG, 1);
                     dynstr_destr(&errMSG);
-                    return false;
+                    exit(1);
                 }
             } break;
             case STRINGMULTI8_STATE:  // """ \n something \n """
@@ -835,7 +835,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 dynstr_addstr(&errMSG, "Invalid input character!\n");
                 errPrint(&errMSG, 1);
                 dynstr_destr(&errMSG);
-                return false;
+                exit(1);
             }
         }
         if ((eNextState != START_STATE) && (!ignore)) {
