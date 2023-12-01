@@ -242,6 +242,9 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
         case intnumT: {
             printf("PUSHS int@%s\n", root->T->val->s);
         } break;
+        case doublenumT: {
+            printf("PUSHS float@%s\n", root->T->val->s);
+        } break;
         case operatorT: {
             if (!strcmp(root->T->val->s, "+")) {
                 printf("ADDS\n");

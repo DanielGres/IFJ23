@@ -250,7 +250,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
         }
         // DEL stack_push(prec_stack, inputed_symbol, myToken);
 
-        stack_print(prec_stack->top);
+        //stack_print(prec_stack->top);
         iteration++;
 
         if (prec_stack->top->symbol == ENTERPRISE) {
