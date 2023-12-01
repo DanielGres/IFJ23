@@ -154,3 +154,21 @@ struct bst_node *SubTreePointer(bst_node *root, char *name) {
         }
     }
 }
+
+void PrintAllVariablesinScope(bst_node **root, bool GF) {
+    if ((*root) == NULL)
+        return;
+
+    else {
+        if ((*root)->variable) {
+            if (GF) {
+                printf("DEFVAR GF@%s\n", (*root)->name);
+            } else {
+                printf("DEFVAR LF@%s\n", (*root)->name);
+            }
+        }
+        // printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
+        PrintAllVariablesinScope(&(*root)->left, GF);
+        PrintAllVariablesinScope(&(*root)->right, GF);
+    }
+}

@@ -55,4 +55,6 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
 void preorderTraversal(bst_node **root);
 
 struct bst_node *SubTreePointer(bst_node *root, char *name);
+
+void PrintAllVariablesinScope(bst_node **root, bool GF);
 #endif
