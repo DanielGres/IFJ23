@@ -37,7 +37,7 @@ bool CorpusPrime(struct bst_tok_node **seed, bst_node **sym_table) {
         } break;
         case varT: {
             *seed = Set_TokNode(myToken);
-            if(!Var(&((*seed)->left),sym_table)) return false;
+            if (!Var(&((*seed)->left), sym_table)) return false;
             if (!EndCommand()) return false;
             return CorpusPrime(&((*seed)->right), sym_table);
         } break;
@@ -96,7 +96,7 @@ bool CorpusSecondary(struct bst_tok_node **seed, bst_node **sym_table) {
         } break;
         case varT: {
             *seed = Set_TokNode(myToken);
-            if(!Var(&((*seed)->left),sym_table)) return false;
+            if (!Var(&((*seed)->left), sym_table)) return false;
             if (!EndCommand()) return false;
             return CorpusSecondary(&((*seed)->right), sym_table);
         } break;
@@ -254,57 +254,49 @@ bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
     switch (myToken->dtype) {
         case RbracketT: {
             return true;
-        } 
-        break;
+        } break;
         case intnumT:
         case doublenumT:
-        case stringT:{
+        case stringT: {
             *seed = Set_TokNode(myToken);
             GetToken();
-            if(myToken->dtype == commaT){
-                return FunctionCallParameters(&((*seed)->left),sym_table);
-            }
-            else if(myToken->dtype == RbracketT){
+            if (myToken->dtype == commaT) {
+                return FunctionCallParameters(&((*seed)->left), sym_table);
+            } else if (myToken->dtype == RbracketT) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
-        }
-        break;
-        case varidT:{
+        } break;
+        case varidT: {
             *seed = Set_TokNode(myToken);
 
             // SEMANTIC~CHECK
-            Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, true, true);
+            Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, false, true);
 
             GetToken();
-            if(myToken->dtype == colonT){
+            if (myToken->dtype == colonT) {
                 GetToken();
-                if(myToken->dtype != varidT){return false;}
-                (*seed)->right = Set_TokNode(myToken);
-                GetToken();
-                if(myToken->dtype == commaT){
-                    return FunctionCallParameters(&((*seed)->left),sym_table);
-                }
-                else if(myToken->dtype == RbracketT){
-                    return true;
-                }
-                else{
+                if (myToken->dtype != varidT) {
                     return false;
                 }
-            }
-            else if(myToken->dtype == commaT){
-                return FunctionCallParameters(&((*seed)->left),sym_table);
-            }
-            else if(myToken->dtype == RbracketT){
+                (*seed)->right = Set_TokNode(myToken);
+                GetToken();
+                if (myToken->dtype == commaT) {
+                    return FunctionCallParameters(&((*seed)->left), sym_table);
+                } else if (myToken->dtype == RbracketT) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if (myToken->dtype == commaT) {
+                return FunctionCallParameters(&((*seed)->left), sym_table);
+            } else if (myToken->dtype == RbracketT) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
-        }
-        break;
+        } break;
         default: {
             return false;
         }
