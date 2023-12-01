@@ -236,7 +236,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                 }
                 // TODO pridat ?? a !
                 else {
-                    exit(99);
+                    exit(2);
                 }
                 stack_pop_UndTop(prec_stack);
                 dynstr_clear(&buffer);
