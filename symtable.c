@@ -29,6 +29,7 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
         (*root)->type = type;
         (*root)->left = NULL;
         (*root)->right = NULL;
+        (*root)->funcTree = NULL;
         if (var_type) {
             if (!declaration) {
                 // printf("Chyba pouzita premenna nie je deklarovana\n");
@@ -55,13 +56,13 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
                     if (!(*root)->var_declared) {
                         (*root)->var_declared = declaration;
                     } else {
+                        printf("Chyba Anton\n");
                         exit(3);
-                        // printf("Chyba\n");
                     }
                 } else {
                     if (!(*root)->var_declared) {
+                        printf("Chyba Bernolak\n");
                         exit(3);
-                        // printf("Chyba\n");
                     } else {
                         (*root)->variable = true;
                     }
@@ -90,14 +91,14 @@ void preorderTraversal(bst_node **root) {
     // {
     //     printf("DEFVAR LF@%s\n", (*root)->name);
     // }
-    // printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
+    printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
     preorderTraversal(&(*root)->left);
     preorderTraversal(&(*root)->right);
 }
 
 bool Search_BTree_Control(bst_node **root) {
     if ((*root) != NULL) {
-        //printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
+        // printf("Name = %s IsVar: %d declared: %d | Isfunc: %d declared: %d\n", (*root)->name, (*root)->variable, (*root)->var_declared, (*root)->function, (*root)->func_declared);
         if ((*root)->function == true) {
             if (!(InArray((*root)->name))) {
                 if (!((*root)->func_declared)) {
@@ -114,7 +115,7 @@ bool Search_BTree_Control(bst_node **root) {
 
         } else if ((*root)->variable == true) {
             if ((!(*root)->var_declared)) {
-                //exit(5);
+                // exit(5);
                 return false;
             }
         }
@@ -130,4 +131,26 @@ bool Is_In_BTree(bst_node **root, char *name) {
         return (Is_In_BTree(&((*root)->left), name) || Is_In_BTree(&((*root)->right), name));
     }
     return false;
+}
+bool Insert_FuncSubTree(bst_node **root, char *funcName, char *newName, token_type type, bool declaration, bool var_type) {
+    if ((*root) != NULL) {
+        if (strcmp((*root)->name, funcName) == 0) {
+            return Insert_BTree(&(*root)->funcTree, newName, type, declaration, var_type);
+        }
+        return (Insert_FuncSubTree(&((*root)->left), funcName, newName, type, declaration, var_type) || Insert_FuncSubTree(&((*root)->right), funcName, newName, type, declaration, var_type));
+    }
+    return false;
+}
+
+struct bst_node *SubTreePointer(bst_node *root, char *name) {
+    bst_node *ptr = root;
+    while (ptr != NULL) {
+        if (strcmp(ptr->name, name) == 0) {
+            return ptr;
+        } else if (strcmp(name, ((root)->name)) > 0) {
+            ptr = ptr->left;
+        } else if (strcmp(name, ((root)->name)) < 0) {
+            ptr = ptr->right;
+        }
+    }
 }
