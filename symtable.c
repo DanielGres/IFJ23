@@ -147,9 +147,9 @@ struct bst_node *SubTreePointer(bst_node *root, char *name) {
     while (ptr != NULL) {
         if (strcmp(ptr->name, name) == 0) {
             return ptr;
-        } else if (strcmp(name, ((root)->name)) > 0) {
+        } else if (strcmp(name, ((ptr)->name)) > 0) {
             ptr = ptr->left;
-        } else if (strcmp(name, ((root)->name)) < 0) {
+        } else if (strcmp(name, ((ptr)->name)) < 0) {
             ptr = ptr->right;
         }
     }
