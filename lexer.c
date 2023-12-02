@@ -336,10 +336,10 @@ bool lexer(dyn_string *buffer, token_type *type) {
             } break;
             case LINECOMM_STATE:  // //
             {
-                if (c != '\n') {
+                if ((c != '\n') && (c != EOF)) {
                     b_ex = false;
                     eNextState = LINECOMM_STATE;
-                } else if (c == '\n') {
+                } else if ((c == '\n') || (c == EOF)) {
                     b_ex = false;
                     eNextState = LINECOMM2_STATE;
                 }
