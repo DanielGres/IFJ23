@@ -50,16 +50,7 @@ void Instructions() {
         "POPFRAME\n"
         "RETURN\n");
 
-    // printf(
-    //     "LABEL READBOOL\n"
-    //     "CREATEFRAME\n"
-    //     "PUSHFRAME\n"
-    //     "DEFVAR LF@retval\n"
-    //     "MOVE LF@retval nil@nil\n"
-    //     "READ LF@retval bool\n"
-    //     "POPFRAME\n"
-    //     "RETURN\n"
-    //     );
+
 
     printf(
         "LABEL print\n"
