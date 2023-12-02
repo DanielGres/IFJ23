@@ -235,6 +235,34 @@ void Generator(struct bst_tok_node *root, bst_node **kamisama) {
 }
 
 
+void convertToFloat(){
+    DivJumpCounter++;
+    printf("POPS GF@floathelp1\n");
+    printf("TYPE GF@typeresult GF@floathelp1\n");
+    // if second operand is float jump to check if second operand is float
+    printf("JUMPIFEQ firstFloat%d GF@typeresult string@float\n", DivJumpCounter);
+    printf("POPS GF@floathelp2\n");
+    printf("TYPE GF@typeresult GF@floathelp2\n");
+    // if second operand is float jump to convert first operand to float
+    printf("JUMPIFEQ secondFloat%d GF@typeresult string@float\n", DivJumpCounter);
+    printf("PUSHS GF@floathelp1\n");
+    printf("PUSHS GF@floathelp2\n");
+    printf("JUMP endDiv%d\n", DivJumpCounter);
+    printf("LABEL firstFloat%d\n", DivJumpCounter);
+    printf("POPS GF@floathelp2\n");
+    printf("TYPE GF@typeresult GF@floathelp2\n");
+    // if second operand is float jump to DIVS
+    printf("JUMPIFEQ normalDiv%d GF@typeresult string@float\n", DivJumpCounter);
+    printf("INT2FLOAT GF@floathelp2 GF@floathelp2\n");
+    printf("JUMP normalDiv%d\n", DivJumpCounter);
+    printf("LABEL secondFloat%d\n", DivJumpCounter);
+    printf("INT2FLOAT GF@floathelp1 GF@floathelp1\n");
+    printf("LABEL normalDiv%d\n", DivJumpCounter);
+    printf("PUSHS GF@floathelp1\n");
+    printf("PUSHS GF@floathelp2\n");
+    printf("LABEL endDiv%d\n", DivJumpCounter);
+}
+
 void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
     switch (root->T->dtype) {
         case varidT: {
@@ -249,34 +277,61 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
             printf("PUSHS int@%s\n", root->T->val->s);
         } break;
         case doublenumT: {
-            printf("PUSHS float@%a\n", root->T->val->s);
+            //printf("HALO HALO PUSHS float@%s\n", root->T->val->s);
+            printf("PUSHS float@%a\n", atof(root->T->val->s));
 
         } break;
         case operatorT: {
             if (!strcmp(root->T->val->s, "+")) {
+                convertToFloat();
                 printf("ADDS\n");
             }
             if (!strcmp(root->T->val->s, "-")) {
+                convertToFloat();
                 printf("SUBS\n");
             }
             if (!strcmp(root->T->val->s, "*")) {
+                convertToFloat();
                 printf("MULS\n");
             }
             if (!strcmp(root->T->val->s, ".")) {
+                printf("POPS GF@floathelp1\n");
+                printf("POPS GF@floathelp2\n");
+                printf("PUSHS GF@floathelp1\n");
+                printf("PUSHS GF@floathelp2\n");
                 printf("CONCATS\n");
             }
             if (!strcmp(root->T->val->s, "/")) {
+                //printf("IDIVS\n");
+                convertToFloat();
+                DivJumpCounter++;
                 printf("POPS GF@floathelp1\n");
                 printf("TYPE GF@typeresult GF@floathelp1\n");
-                printf("JUMPIFEQ divjump%d",DivJumpCounter);
+                printf("JUMPIFEQ firstFloat%d GF@typeresult string@float\n", DivJumpCounter);
+                printf("PUSHS GF@floathelp1\n");
                 printf("IDIVS\n");
+                printf("JUMP endDiv%d\n", DivJumpCounter);
+                printf("LABEL firstFloat%d\n", DivJumpCounter);
+                printf("PUSHS GF@floathelp1\n");
+                printf("DIVS\n");
+                printf("LABEL endDiv%d\n", DivJumpCounter);
             
             }
             if (!strcmp(root->T->val->s, "==")) {
+                convertToFloat();
                 printf("EQS\n");
             }
             if (!strcmp(root->T->val->s, "!=")) {
+                convertToFloat();
                 printf("EQS\n");
+            }
+            if (!strcmp(root->T->val->s, ">")) {
+                convertToFloat();
+                printf("GTS\n");
+            }
+            if (!strcmp(root->T->val->s, "<")) {
+                convertToFloat();
+                printf("LTS\n");
             }
         } break;
     }
