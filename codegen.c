@@ -1,8 +1,10 @@
 #include "codegen.h"
 
 int IfCounter = 0;
+int DivJumpCounter = 0;
 int WhileCounter = 0;
 int FuncCounter = 0;
+bool isDouble = false;
 
 bst_node **god;
 
@@ -224,10 +226,14 @@ void Generator(struct bst_tok_node *root, bst_node **kamisama) {
     Instructions();
     printf("LABEL MAIN\n");
     printf("DEFVAR GF@exp\n");
+    printf("DEFVAR GF@floathelp1\n");
+    printf("DEFVAR GF@floathelp2\n");
+    printf("DEFVAR GF@typeresult\n");
     // Instructions();
     GenerateSubTree((root->right));
     printf("EXIT int@0\n");
 }
+
 
 void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
     switch (root->T->dtype) {
@@ -243,7 +249,8 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
             printf("PUSHS int@%s\n", root->T->val->s);
         } break;
         case doublenumT: {
-            printf("PUSHS float@%s\n", root->T->val->s);
+            printf("PUSHS float@%a\n", root->T->val->s);
+
         } break;
         case operatorT: {
             if (!strcmp(root->T->val->s, "+")) {
@@ -259,7 +266,11 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
                 printf("CONCATS\n");
             }
             if (!strcmp(root->T->val->s, "/")) {
-                printf("DIVS\n");
+                printf("POPS GF@floathelp1\n");
+                printf("TYPE GF@typeresult GF@floathelp1\n");
+                printf("JUMPIFEQ divjump%d",DivJumpCounter);
+                printf("IDIVS\n");
+            
             }
             if (!strcmp(root->T->val->s, "==")) {
                 printf("EQS\n");
