@@ -8,35 +8,39 @@
 
 // TODO na lexer testovanie dik pls nechaj sem abo zakomentuj lem
 const char *enumers[] = {
-    "varidT",        // variable and function names
-    "operatorT",     // !  * /  + -  == != < >  <= >=  ??
-    "colonT",        // :
-    "vartypeT",      // Double, Int, String or same with ? on the end
-    "vartypeQT",     // Double?, Int?, String?
-    "equalT",        // =
-    "intnumT",       // whole number
-    "doublemumT",    // double/float number
-    "varT",          // var keyword
-    "letT",          // let keyword
-    "ifT",           // if keyword
-    "stringT",       // string in the input code
-    "nilT",          // nil keyword
-    "LbracketT",     // (
-    "RbracketT",     // )
-    "LCbracketT",    // {
-    "RCbracketT",    // }
-    "elseT",         // else keyword
-    "funcT",         // func keyword
-    "paramNameT",    // name of the parameter in a function
-    "commaT",        // ,
-    "arrowT",        // ->
-    "whileT",        // while keyword
-    "returnT",       // return keyword
-    "termT",         // TODO realne hocico to moze byt
-    "newlineT",      // \n
-    "semicolonT",    // ;
-    "linecommentT",  // //comment
-    "blockcommentT"  //  /* comment */
+    "varidT",
+    "funcidT",
+    "operatorT",
+    "colonT",
+    "vartypeT",
+    "vartypeQT",
+    "equalT",
+    "intnumT",
+    "doublenumT",
+    "varT",
+    "letT",
+    "ifT",
+    "stringT",
+    "nilT",
+    "LbracketT",
+    "RbracketT",
+    "LCbracketT",
+    "RCbracketT",
+    "elseT",
+    "funcT",
+    "paramNameT",
+    "commaT",
+    "arrowT",
+    "whileT",
+    "returnT",
+    "newlineT",
+    "semicolonT",
+    "linecommentT",
+    "blockcommentT",
+    "eofT",
+    "startT",
+    "helpT",
+    "underscoreT"
 };
 
 int main() {
@@ -51,13 +55,25 @@ int main() {
     bst_node *symtable;
     Init_BTree(&symtable);
 
+    // TODO lexer testing potom vymazat
+    // while(Get_Token(&T)){
+    //     dynstr_print(T->val);
+    //     printf(" %s\n",enumers[T->dtype]);
+    // }
+
     if (CorpusPrime(&(the_root->right), &symtable)) {
         // PostorderTraversal(the_root);
         if (Search_BTree_Control(&symtable)) {
-            //printf("Spravne ;) :fire: \n");
-            Generator(the_root, &symtable);
+            // printf("Spravne ;) :fire: \n");
+            // Generator(the_root, &symtable);
         }
+        bst_node *ptr = SubTreePointer(symtable, "kokos");
+        // inorderTraversal(the_root);
+        // printf("\n");
         // preorderTraversal(&symtable);
+        //preorderTraversal(&ptr->funcTree);
+        PrintAllVariablesinScope(&symtable, true);
+        PrintAllVariablesinScope(&(ptr)->funcTree, false);
     } else {
         exit(2);
     }

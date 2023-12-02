@@ -20,13 +20,14 @@ typedef struct
     bool function;
     bool variable;
     bool var_declared;
+    struct bst_node *funcTree;
     struct bst_node *left;   // ľavý potomok
     struct bst_node *right;  // pravý potomok
 } bst_node;
 
 bool Search_BTree_Control(bst_node **root);
 
-bool Is_In_BTree(bst_node **root,char *name);
+bool Is_In_BTree(bst_node **root, char *name);
 
 /**
  * @brief function initializer BST to the table of symbols
@@ -53,4 +54,7 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
  */
 void preorderTraversal(bst_node **root);
 
+struct bst_node *SubTreePointer(bst_node *root, char *name);
+
+void PrintAllVariablesinScope(bst_node **root, bool GF);
 #endif

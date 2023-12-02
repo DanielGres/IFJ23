@@ -11,7 +11,7 @@ bool b_ex = false;
 char c = 'a';
 int stringCounter = 0;
 
-bool Get_Token(token **T)  // TODO podla mna by toto malo byt v syntaxi
+bool Get_Token(token **T)
 {
     if (!stop) {
         dyn_string buffer;
@@ -122,6 +122,23 @@ void replaceUnicodeSequences(dyn_string *inputString) {
     }
     dynstr_copy(inputString, &resultString);
     dynstr_destr(&resultString);
+}
+
+// Function to convert scientific notation to floating point decimal notation
+void dynstr_sci_to_dec(dyn_string *str) {
+    char *endptr;
+    double value = strtod(str->s, &endptr);
+
+    if (endptr != str->s) {
+        // Conversion successful
+        dynstr_clear(str);
+        char buffer[50];  // Buffer to hold the decimal representation
+        sprintf(buffer, "%.5f", value);
+        dynstr_addstr(str, buffer);
+    } else {
+        // Conversion failed
+        printf("Failed to convert string to double.\n");
+    }
 }
 
 bool lexer(dyn_string *buffer, token_type *type) {
@@ -597,6 +614,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     b_ex = false;
                     eNextState = EXPNUMBER3_STATE;
                 } else {
+                    dynstr_sci_to_dec(buffer);
                     *type = doublenumT;
                     condition = false;
                     b_ex = true;
@@ -874,5 +892,8 @@ bool lexer(dyn_string *buffer, token_type *type) {
             }
         }
     }
+    // printf("buffer: ");
+    // dynstr_print(buffer);
+    // printf("\n");
     return true;
 }
