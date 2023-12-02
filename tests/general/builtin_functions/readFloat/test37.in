@@ -1,6 +1,0 @@
-// DOBRE
-if let a = readDouble() -> Double {
-    write("The value of 'a' is: ", a)
-} else {
-    write("Error reading input");
-}

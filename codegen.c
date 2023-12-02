@@ -235,7 +235,7 @@ void Generator(struct bst_tok_node *root, bst_node **kamisama) {
 }
 
 
-void convertToFloat(){
+void convertToFloatAndSwap(){
     DivJumpCounter++;
     printf("POPS GF@floathelp1\n");
     printf("TYPE GF@typeresult GF@floathelp1\n");
@@ -283,15 +283,15 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
         } break;
         case operatorT: {
             if (!strcmp(root->T->val->s, "+")) {
-                convertToFloat();
+                convertToFloatAndSwap();
                 printf("ADDS\n");
             }
             if (!strcmp(root->T->val->s, "-")) {
-                convertToFloat();
+                convertToFloatAndSwap();
                 printf("SUBS\n");
             }
             if (!strcmp(root->T->val->s, "*")) {
-                convertToFloat();
+                convertToFloatAndSwap();
                 printf("MULS\n");
             }
             if (!strcmp(root->T->val->s, ".")) {
@@ -303,7 +303,7 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
             }
             if (!strcmp(root->T->val->s, "/")) {
                 //printf("IDIVS\n");
-                convertToFloat();
+                convertToFloatAndSwap();
                 DivJumpCounter++;
                 printf("POPS GF@floathelp1\n");
                 printf("TYPE GF@typeresult GF@floathelp1\n");
@@ -318,19 +318,19 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
             
             }
             if (!strcmp(root->T->val->s, "==")) {
-                convertToFloat();
+                convertToFloatAndSwap();
                 printf("EQS\n");
             }
             if (!strcmp(root->T->val->s, "!=")) {
-                convertToFloat();
+                convertToFloatAndSwap();
                 printf("EQS\n");
             }
             if (!strcmp(root->T->val->s, ">")) {
-                convertToFloat();
+                convertToFloatAndSwap();
                 printf("GTS\n");
             }
             if (!strcmp(root->T->val->s, "<")) {
-                convertToFloat();
+                convertToFloatAndSwap();
                 printf("LTS\n");
             }
         } break;

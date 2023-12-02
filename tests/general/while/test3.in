@@ -1,7 +1,0 @@
-// NEM DOBRE
-// zle zatvorky v while
-var a = 0
-while (a < 5)){
-    a = a + 1
-    write(a, "\n")
-}

@@ -1,9 +1,0 @@
-// DOBRE
-/* OUTPUT: 
-    4 5 7.0 ddd
-*/
-var a: Int = 4
-var b: String = "5"
-let c: Double = 7
-let d: String? = "ddd"
-write(a, b, c, d)

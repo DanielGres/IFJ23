@@ -1,6 +1,0 @@
-// DOBRE
-if let a = readInt() -> Int {
-    write("The value of 'a' is: ", a)
-} else {
-    write("Error reading input");
-}
