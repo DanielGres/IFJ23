@@ -1,0 +1,6 @@
+// DOBRE
+func need_tabak(_ input: Double) {
+    write("go to trafika ", input);
+}
+
+need_tabak(631.4615846816865)

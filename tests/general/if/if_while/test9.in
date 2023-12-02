@@ -1,0 +1,11 @@
+// NEM DOBRE
+// missing { vo while loope
+var a = 8
+var b = 12
+if (a < b) {
+    while (a < b) 
+        a = a 
+        + 1;
+        write("a: ", a)
+    }
+}
