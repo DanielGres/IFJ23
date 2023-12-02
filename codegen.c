@@ -258,7 +258,7 @@ void GenerateCallWrite(struct bst_tok_node *root) {
 void GenerateAssigment(struct bst_tok_node *root, bool inFunction) {
     GenerateExpression(root->left, inFunction);
 }
-
+// boi
 void Generator(struct bst_tok_node *root, bst_node **kamisama) {
     god = (kamisama);
     //preorderTraversal(god);
