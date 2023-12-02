@@ -140,7 +140,7 @@ void PrepareFuncParams(struct bst_tok_node *root) {
     int paramCnt = 1;
     while (root != NULL) {
         printf("DEFVAR LF@%s\n", root->right->T->val->s);
-        printf("MOVE LF@%s TF@%%%d\n", root->right->T->val->s, paramCnt);
+        printf("MOVE LF@%s LF@%%%d\n", root->right->T->val->s, paramCnt);
         root = root->left;
         paramCnt++;
     }
@@ -159,6 +159,36 @@ void CallFuncAssigment(struct bst_tok_node *root, bool inFunction) {
     }
 }
 
+void PrepareFuncCallParams(struct bst_tok_node *root) {
+    root = root->left;
+    int paramCnt = 1;
+    while (root != NULL) {
+        printf("DEFVAR TF@%%%d\n", paramCnt);
+        if(root->right != NULL){
+            if(Is_In_BTree(god, root->right->T->val->s))
+            {
+                printf("MOVE TF@%%%d GF@%s\n", paramCnt, root->right->T->val->s);
+            }
+            else{
+                printf("MOVE TF@%%%d LF@%s\n", paramCnt, root->right->T->val->s);
+
+            }
+        }
+        else{
+            if(Is_In_BTree(god, root->T->val->s))
+            {
+                printf("MOVE TF@%%%d GF@%s\n", paramCnt, root->T->val->s);
+            }
+            else{
+                printf("MOVE TF@%%%d LF@%s\n", paramCnt, root->T->val->s);
+
+            }
+        }
+        root = root->left;
+        paramCnt++;
+    }
+}
+
 // Function has passed two roots in order to return value to var
 void GenerateCallFunction(struct bst_tok_node *root) {
     if (!strcmp(root->T->val->s, "write")) {
@@ -172,6 +202,7 @@ void GenerateCallFunction(struct bst_tok_node *root) {
     } else {
         printf("CREATEFRAME\n");
         printf("DEFVAR TF@retval\n");
+        PrepareFuncCallParams(root->left);
         printf("CALL %s\n",root->T->val->s);
     };
 }
@@ -204,7 +235,14 @@ void GenerateCallWrite(struct bst_tok_node *root) {
         printf("DEFVAR TF@%1\n");
         root = root->left;
         if (root->T->dtype == varidT) {
-            printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
+            if(Is_In_BTree(god, root->T->val->s))
+            {
+                printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
+            }
+            else{
+                printf("MOVE TF@%1 LF@%s\n", root->T->val->s);
+            }
+            //printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
         } else if (root->T->dtype == intnumT) {
             printf("MOVE TF@%1 int@%s\n", root->T->val->s);
         } else if (root->T->dtype == doublenumT) {
@@ -227,7 +265,7 @@ void Generator(struct bst_tok_node *root, bst_node **kamisama) {
     printf(".IFJcode23\n");
     printf("JUMP MAIN\n\n");
     Instructions();
-    PrintAllVariablesinScope(god, true);
+    //PrintAllVariablesinScope(god, true);
     printf("LABEL MAIN\n");
     printf("DEFVAR GF@exp\n");
     printf("DEFVAR GF@floathelp1\n");

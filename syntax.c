@@ -128,6 +128,11 @@ bool CorpusSecondary(struct bst_tok_node **seed, bst_node **sym_table) {
             if (!WhilePrime(&((*seed)->left), sym_table)) return false;
             return CorpusSecondary(&((*seed)->right), sym_table);
         } break;
+        case returnT:
+            // Chytit variable dat ju do return stroma
+            GetToken();
+            if(myToken->dtype != varidT) return false;
+            return CorpusSecondary(&(*seed), sym_table);
         case RCbracketT: {
             return true;
         } break;
