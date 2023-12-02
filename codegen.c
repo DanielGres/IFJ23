@@ -40,16 +40,15 @@ void Instructions() {
         "POPFRAME\n"
         "RETURN\n");
 
-    // printf(
-    //     "LABEL READDOUBLE\n"
-    //     "CREATEFRAME\n"
-    //     "PUSHFRAME\n"
-    //     "DEFVAR LF@retval\n"
-    //     "MOVE LF@retval nil@nil\n"
-    //     "READ LF@retval double\n"
-    //     "POPFRAME\n"
-    //     "RETURN\n"
-    //     );
+    printf(
+        "LABEL readFloat\n"
+        "CREATEFRAME\n"
+        "PUSHFRAME\n"
+        "DEFVAR LF@retval\n"
+        "MOVE LF@retval nil@nil\n"
+        "READ LF@retval float\n"
+        "POPFRAME\n"
+        "RETURN\n");
 
     // printf(
     //     "LABEL READBOOL\n"
@@ -175,8 +174,8 @@ void GenerateCallFunction(struct bst_tok_node *root) {
         GenerateCallReadInt(root);
     } else if (!strcmp(root->T->val->s, "readString")) {
         GenerateCallReadString(root);
-    } else if (!strcmp(root->T->val->s, "readFloat")) {
-        GenerateCallReadInt(root);
+    } else if (!strcmp(root->T->val->s, "readDouble")) {
+        GenerateCallReadFloat(root);
     } else {
         printf("CALL %s\n",root->T->val->s);
     };
@@ -193,6 +192,13 @@ void GenerateCallReadInt(struct bst_tok_node *root) {
     printf("CREATEFRAME\n");
     printf("DEFVAR TF@retval\n");
     printf("CALL readInt\n");
+    printf("PUSHS TF@retval\n");
+}
+
+void GenerateCallReadFloat(struct bst_tok_node *root) {
+    printf("CREATEFRAME\n");
+    printf("DEFVAR TF@retval\n");
+    printf("CALL readFloat\n");
     printf("PUSHS TF@retval\n");
 }
 

@@ -1,3 +1,5 @@
-let a : String? = readString()
+let x = 5
 
-write(a)
+func increase(){
+    write(5)
+}

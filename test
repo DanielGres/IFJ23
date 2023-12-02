@@ -1,0 +1,45 @@
+.IFJcode23
+JUMP MAIN
+
+LABEL readInt
+CREATEFRAME
+PUSHFRAME
+DEFVAR LF@retval
+MOVE LF@retval nil@nil
+READ LF@retval int
+POPFRAME
+RETURN
+LABEL readString
+CREATEFRAME
+PUSHFRAME
+DEFVAR LF@retval
+MOVE LF@retval nil@nil
+READ LF@retval string
+POPFRAME
+RETURN
+LABEL print
+PUSHFRAME
+DEFVAR LF@writeval
+MOVE LF@writeval LF@%1
+WRITE LF@writeval
+POPFRAME
+RETURN
+
+DEFVAR GF@a
+LABEL MAIN
+DEFVAR GF@exp
+DEFVAR GF@floathelp1
+DEFVAR GF@floathelp2
+DEFVAR GF@typeresult
+DEFVAR GF@a
+CREATEFRAME
+DEFVAR TF@retval
+CALL readString
+PUSHS TF@retval
+POPS GF@exp
+MOVE GF@a GF@exp
+CREATEFRAME
+DEFVAR TF@%1
+MOVE TF@%1 GF@a
+CALL print
+EXIT int@0
