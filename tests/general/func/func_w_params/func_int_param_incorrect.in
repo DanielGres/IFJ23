@@ -1,0 +1,8 @@
+// NEM DOBRE
+// Int input nezobere "buzerant"
+func need_tabak(_ input: Int) {
+    write("go to trafika ", input);
+}
+
+need_tabak(631)
+need_tabak(input: "buzerant")

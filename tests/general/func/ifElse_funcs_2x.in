@@ -1,0 +1,27 @@
+// DOBRE
+/* OUTPUT:
+    fabia = popicozny crep tbh
+*/
+var a = 4 
+var b = 2
+func felicia() {
+    var a = 5
+    if (a <= b) {
+        write("felda = popicozne auto btw");
+        write("a: ", a);
+    }
+}
+
+func fabia() {
+    var b = 3
+    var c = "fabia = popicozny crep tbh"
+    if (a >= b) {
+        write(c);
+    }
+}
+if (a == 7) {
+    felicia();
+}
+else {
+    fabia();
+}

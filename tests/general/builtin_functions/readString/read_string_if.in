@@ -1,0 +1,7 @@
+// DOBRE
+let a: String? = readString()
+if let a {
+    write("The value of 'a' is: ", a)
+} else {
+    write("Error reading input");
+}

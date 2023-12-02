@@ -1,0 +1,16 @@
+// NEM DOBRE
+// deklaracia premennej s rovnakym menom (2x "var b" v ELSE)
+var a = 8
+var b = 12
+if (a > b) {
+    write("gae");
+}
+else {
+    var b = 3
+    var b = 4
+    while (a > b) {
+        b = b 
+        + 1;
+        write("b: ", b)
+    }
+}

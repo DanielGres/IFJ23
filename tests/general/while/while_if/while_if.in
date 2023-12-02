@@ -1,0 +1,20 @@
+// DOBRE
+/* OUTPUT:
+    c: 15
+    a: 1
+    a: 4
+    a: 5
+*/
+var a = 0
+while (a < 5) {
+    var b = a + 5
+    if (b == 5) {
+        var c = 15
+        write("c:", c)
+    } else {
+        a = a + 3
+        write("a: ", a)
+    }
+    a = a + 1
+    write("a: ", a)
+}

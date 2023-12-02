@@ -1,0 +1,14 @@
+// DOBRE
+/* OUTPUT:
+    a:  1
+*/
+func zecmiryby() -> Double {
+    var a = 1
+    var b = 5;
+    if (a <= b) {
+        write("a: ", a);
+    }
+    return 0
+}
+
+zecmiryby()

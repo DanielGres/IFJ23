@@ -1,0 +1,11 @@
+// DOBRE
+/* OUTPUT:
+    a: 47
+*/
+let a: Int? = 47
+if let a {
+    write("a: ", a)
+} 
+else {
+    write("a je nil")
+}
