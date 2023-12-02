@@ -127,9 +127,11 @@ void GenerateFunctionDefinition(struct bst_tok_node *root) {
     }
     // nacitanie parametrov
     PrepareFuncParams(root->left);
-    // body
+    // Body of function
     GenerateSubTreeFunction(root->left->right);
     // popripade return
+    printf("POPFRAME\n");
+    printf("RETURN\n");
     printf("LABEL ENDFUNC%d\n", count);
 }
 
@@ -168,6 +170,8 @@ void GenerateCallFunction(struct bst_tok_node *root) {
     } else if (!strcmp(root->T->val->s, "readDouble")) {
         GenerateCallReadFloat(root);
     } else {
+        printf("CREATEFRAME\n");
+        printf("DEFVAR TF@retval\n");
         printf("CALL %s\n",root->T->val->s);
     };
 }

@@ -1,5 +1,9 @@
 let x = 5
+let g = 10
 
-func increase(){
-    write(5)
+func increase(this n : Int, by y : Int ){
+    let p = n + y
+    write(p)
 }
+
+increase(this x, by g)
