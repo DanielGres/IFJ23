@@ -319,7 +319,7 @@ bool Let(struct bst_tok_node **seed, bst_node **sym_table) {
     switch (myToken->dtype) {
         case colonT: {
             GetToken();
-            if (myToken->dtype != vartypeT) return false;
+            if (myToken->dtype != vartypeT || myToken->dtype != vartypeQT) return false;
             GetToken();
             if (myToken->dtype == equalT) {
                 return Expression(&((*seed)->left), NULL, sym_table);
@@ -350,7 +350,7 @@ bool Var(struct bst_tok_node **seed, bst_node **sym_table) {
     switch (myToken->dtype) {
         case colonT: {
             GetToken();
-            if (myToken->dtype != vartypeT) return false;
+            if (myToken->dtype != vartypeT || myToken->dtype != vartypeQT) return false;
             GetToken();
             if (myToken->dtype == equalT) {
                 return Expression(&((*seed)->left), NULL, sym_table);
