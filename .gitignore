@@ -1,6 +1,5 @@
 IFJCODE23.txt
 *.o
-*.out
 /.vscode
 ifj23
 !/src/
