@@ -186,7 +186,7 @@ bool FunctionDef(struct bst_tok_node **seed, bst_node **sym_table) {
     GetToken();
     (*seed)->left = Set_TokNode(myToken);
     if (myToken->dtype != LbracketT) return false;
-    if (!FunctionDefParams(&((*seed)->left->left), sym_table)) return false;
+    if (!FunctionDefParams(&((*seed)->left->left), sym_table, (*seed)->T->val->s)) return false;
     GetToken();
     if (myToken->dtype == arrowT) {
         GetToken();
@@ -203,7 +203,7 @@ bool FunctionDef(struct bst_tok_node **seed, bst_node **sym_table) {
     return true;
 }
 
-bool FunctionDefParams(struct bst_tok_node **seed, bst_node **sym_table) {
+bool FunctionDefParams(struct bst_tok_node **seed, bst_node **sym_table, char *name) {
     GetToken();
     switch (myToken->dtype) {
         case RbracketT: {
@@ -225,10 +225,12 @@ bool FunctionDefParams(struct bst_tok_node **seed, bst_node **sym_table) {
             if (myToken->dtype != vartypeT) {
                 return false;
             }
+            Insert_FuncSubTree(sym_table, name, (*seed)->right->T->val->s, (*seed)->right->T->dtype, true, true);
             (*seed)->right->right = Set_TokNode(myToken);
+
             GetToken();
             if (myToken->dtype == commaT) {
-                return FunctionDefParams(&((*seed)->left), sym_table);
+                return FunctionDefParams(&((*seed)->left), sym_table, name);
             } else if (myToken->dtype == RbracketT) {
                 return true;
             } else {

@@ -57,4 +57,6 @@ void preorderTraversal(bst_node **root);
 struct bst_node *SubTreePointer(bst_node *root, char *name);
 
 void PrintAllVariablesinScope(bst_node **root, bool GF);
+
+bool Insert_FuncSubTree(bst_node **root, char *funcName, char *newName, token_type type, bool declaration, bool var_type);
 #endif

@@ -33,7 +33,7 @@ bool assigment(struct bst_tok_node **seed, bst_node **sym_table);
 
 bool FunctionDef(struct bst_tok_node **seed, bst_node **sym_table);
 
-bool FunctionDefParams(struct bst_tok_node **seed, bst_node **sym_table);
+bool FunctionDefParams(struct bst_tok_node **seed, bst_node **sym_table, char *name);
 
 bool FunctionCall(struct bst_tok_node **seed, bst_node **sym_table);
 
