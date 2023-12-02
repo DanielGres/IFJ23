@@ -175,6 +175,8 @@ void GenerateCallFunction(struct bst_tok_node *root) {
         GenerateCallReadInt(root);
     } else if (!strcmp(root->T->val->s, "readString")) {
         GenerateCallReadString(root);
+    } else if (!strcmp(root->T->val->s, "readFloat")) {
+        GenerateCallReadInt(root);
     } else {
         printf("CALL %s\n",root->T->val->s);
     };
@@ -205,7 +207,7 @@ void GenerateCallWrite(struct bst_tok_node *root) {
         } else if (root->T->dtype == intnumT) {
             printf("MOVE TF@%1 int@%s\n", root->T->val->s);
         } else if (root->T->dtype == doublenumT) {
-            printf("MOVE TF@%1 float@%s\n", root->T->val->s);
+            printf("MOVE TF@%1 float@%a\n", atof(root->T->val->s));
         } else if (root->T->dtype == stringT) {
             printf("MOVE TF@%1 string@%s\n", root->T->val->s);
         }
