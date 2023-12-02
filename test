@@ -25,23 +25,13 @@ WRITE LF@writeval
 POPFRAME
 RETURN
 
-DEFVAR GF@i
 LABEL MAIN
 DEFVAR GF@exp
 DEFVAR GF@floathelp1
 DEFVAR GF@floathelp2
 DEFVAR GF@typeresult
-DEFVAR GF@i
-PUSHS int@0
-POPS GF@exp
-MOVE GF@i GF@exp
-LABEL WHILE1
-CREATEFRAME
-DEFVAR TF@%1
-MOVE TF@%1 GF@i
-CALL print
-PUSHS int@1
-PUSHS GF@i
+PUSHS string@bye
+PUSHS string@hi
 POPS GF@floathelp1
 TYPE GF@typeresult GF@floathelp1
 JUMPIFEQ firstFloat1 GF@typeresult string@float
@@ -63,32 +53,18 @@ LABEL normalDiv1
 PUSHS GF@floathelp1
 PUSHS GF@floathelp2
 LABEL endDiv1
-ADDS
-POPS GF@i
-PUSHS int@10
-PUSHS GF@i
-POPS GF@floathelp1
-TYPE GF@typeresult GF@floathelp1
-JUMPIFEQ firstFloat2 GF@typeresult string@float
-POPS GF@floathelp2
-TYPE GF@typeresult GF@floathelp2
-JUMPIFEQ secondFloat2 GF@typeresult string@float
-PUSHS GF@floathelp1
-PUSHS GF@floathelp2
-JUMP endDiv2
-LABEL firstFloat2
-POPS GF@floathelp2
-TYPE GF@typeresult GF@floathelp2
-JUMPIFEQ normalDiv2 GF@typeresult string@float
-INT2FLOAT GF@floathelp2 GF@floathelp2
-JUMP normalDiv2
-LABEL secondFloat2
-INT2FLOAT GF@floathelp1 GF@floathelp1
-LABEL normalDiv2
-PUSHS GF@floathelp1
-PUSHS GF@floathelp2
-LABEL endDiv2
-LTS
+EQS
 POPS GF@exp
-JUMPIFEQ WHILE1 GF@exp bool@true
+JUMPIFEQ IF1 GF@exp bool@true
+CREATEFRAME
+DEFVAR TF@%1
+MOVE TF@%1 string@good\010
+CALL print
+JUMP END1
+LABEL IF1
+CREATEFRAME
+DEFVAR TF@%1
+MOVE TF@%1 string@bad\010
+CALL print
+LABEL END1
 EXIT int@0

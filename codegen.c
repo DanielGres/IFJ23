@@ -282,6 +282,9 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
             printf("PUSHS float@%a\n", atof(root->T->val->s));
 
         } break;
+        case stringT: {
+            printf("PUSHS string@%s\n", root->T->val->s);
+        } break;
         case operatorT: {
             if (!strcmp(root->T->val->s, "+")) {
                 convertToFloatAndSwap();

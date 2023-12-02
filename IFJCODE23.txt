@@ -1,5 +1,6 @@
-var i = 0 ;
-while( i < 10 ) {
-    write(i) ;
-    i = i + 1;
+if ("hi" == "bye"){
+    write("bad\n")
+}
+else {
+    write("good\n")
 }
