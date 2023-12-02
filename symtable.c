@@ -7,7 +7,7 @@
 #define STRMALCPY(to, from) strcpy(to = malloc(strlen(from) + 1), from)
 
 bool InArray(char *str2) {
-    char arr[11][10] = {"readString", "readInt", "readDouble", "write", "Int2Double", "Double2Int", "length", "substring", "substring", "ord", "chr"};
+    char arr[11][12] = {"readString", "readInt", "readDouble", "write", "Int2Double", "Double2Int", "length", "substring", "substring", "ord", "chr"};
     for (int i = 0; i < 11; i++) {
         if (strcmp(arr[i], str2) == 0) {
             return true;
