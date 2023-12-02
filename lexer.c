@@ -152,11 +152,6 @@ bool lexer(dyn_string *buffer, token_type *type) {
         if (!b_ex) {
             c = fgetc(stdin);
         }
-        if (c == EOF) {
-            *type = eofT;
-            //my bad
-            break;
-        }
         ignore = false;
         switch (eNextState) {
             case START_STATE: {
