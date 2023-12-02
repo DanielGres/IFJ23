@@ -76,6 +76,7 @@ bool CorpusPrime(struct bst_tok_node **seed, bst_node **sym_table) {
         case eofT: {
             return true;
         } break;
+        case linecommentT:
         case newlineT: {
             return CorpusPrime(&(*seed), sym_table);
         } break;
@@ -130,6 +131,7 @@ bool CorpusSecondary(struct bst_tok_node **seed, bst_node **sym_table) {
         case RCbracketT: {
             return true;
         } break;
+        case linecommentT:
         case newlineT: {
             return CorpusSecondary(&(*seed), sym_table);
         } break;
