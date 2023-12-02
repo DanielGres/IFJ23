@@ -1,0 +1,12 @@
+// NEM DOBRE
+// else ma podmienku
+var a = 0
+while (a < 5) {
+    var b = a + 5
+    if (b == 5) {
+        var c = 15
+    } else (c > 2) {
+        a = a + 3
+    }
+    a = a + 1
+}

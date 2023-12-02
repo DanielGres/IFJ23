@@ -1,0 +1,35 @@
+// DOBRE
+/* OUTPUT: 
+   while/if/while/d:  1.0
+   while/if/while/d:  2.0
+   while/if/while/d:  3.0
+   while/if/d:  3.0
+   while/a:  1
+   while/else/a:  2
+   while/else/b:  6
+   while/a:  3
+   while/else/a:  4
+   while/else/b:  8
+   while/a:  5
+*/
+
+var a: Int = 0;
+var d: Double = 0;
+while(a < 5){
+   var b: Int = a + 5;
+   if (b == 5){
+      var c: Double = 15;
+      while(d < 3){
+         var e = d;
+         d = d + 1;
+         write("while/if/while/d: ", d)
+      }
+      write("while/if/d: ", d)
+   }else{
+      a = a + 1;
+      write("while/else/a: ", a)
+      write("while/else/b: ", b)
+   }
+   a = a + 1;
+   write("while/a: ", a)
+}

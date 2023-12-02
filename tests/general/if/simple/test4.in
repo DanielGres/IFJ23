@@ -1,0 +1,13 @@
+// DOBRE
+/* OUTPUT: 
+    a: 5 
+*/
+var a = 0;
+if (a == 0) 
+{
+    a = a + 5
+    write("a: ", a);
+}
+else {
+    write("a is not zero")
+}

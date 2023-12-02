@@ -1,0 +1,9 @@
+// DOBRE
+/* OUTPUT:
+    go to trafika  631
+*/
+func need_tabak(_ input: Int) {
+    write("go to trafika ", input);
+}
+
+need_tabak(631)
