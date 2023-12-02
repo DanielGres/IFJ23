@@ -224,6 +224,7 @@ void Generator(struct bst_tok_node *root, bst_node **kamisama) {
     printf(".IFJcode23\n");
     printf("JUMP MAIN\n\n");
     Instructions();
+    PrintAllVariablesinScope(god, true);
     printf("LABEL MAIN\n");
     printf("DEFVAR GF@exp\n");
     printf("DEFVAR GF@floathelp1\n");
@@ -396,7 +397,7 @@ void GenerateWhile(struct bst_tok_node *root, bool inFunction) {
     // Result of expression will be on top of stack
     printf("POPS GF@exp\n");
     // Skip while if not ture
-    printf("JUMPIFEQ WHILE%d GF@exp bool@false\n", thisWhile);
+    printf("JUMPIFEQ WHILE%d GF@exp bool@true\n", thisWhile);
 }
 
 void GenerateIF(struct bst_tok_node *root, bool inFunction) {
