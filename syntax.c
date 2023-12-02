@@ -178,6 +178,9 @@ bool FunctionDef(struct bst_tok_node **seed, bst_node **sym_table) {
     // SEMANTIC~CHECK
     Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, true, false);
 
+    // MAJKOV HOKUS POKUS
+    bst_node *ptr = SubTreePointer((*sym_table), (*seed)->T->val->s);
+
     GetToken();
     (*seed)->left = Set_TokNode(myToken);
     if (myToken->dtype != LbracketT) return false;
@@ -189,9 +192,9 @@ bool FunctionDef(struct bst_tok_node **seed, bst_node **sym_table) {
         (*seed)->right = Set_TokNode(myToken);
         GetToken();
         if (myToken->dtype != LCbracketT) return false;
-        return CorpusSecondary(&((*seed)->left->right), sym_table);
+        return CorpusSecondary(&((*seed)->left->right), &ptr->funcTree);
     } else if (myToken->dtype == LCbracketT) {
-        return CorpusSecondary(&((*seed)->left->right), sym_table);
+        return CorpusSecondary(&((*seed)->left->right), &ptr->funcTree);
     } else {
         return false;
     }

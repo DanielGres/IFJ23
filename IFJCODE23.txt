@@ -1,6 +1,7 @@
 let a = 5
 
-while a != 20 {
-    write("a is ",a,"\n")
-    a = a + 1
+func kokos(){
+    write();
+    let a = 6;
+    let c = 7;
 }

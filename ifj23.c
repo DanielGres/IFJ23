@@ -64,10 +64,16 @@ int main() {
     if (CorpusPrime(&(the_root->right), &symtable)) {
         // PostorderTraversal(the_root);
         if (Search_BTree_Control(&symtable)) {
-            //printf("Spravne ;) :fire: \n");
-            Generator(the_root, &symtable);
+            // printf("Spravne ;) :fire: \n");
+            // Generator(the_root, &symtable);
         }
+        bst_node *ptr = SubTreePointer(symtable, "kokos");
+        // inorderTraversal(the_root);
+        // printf("\n");
         // preorderTraversal(&symtable);
+        //preorderTraversal(&ptr->funcTree);
+        PrintAllVariablesinScope(&symtable, true);
+        PrintAllVariablesinScope(&(ptr)->funcTree, false);
     } else {
         exit(2);
     }
