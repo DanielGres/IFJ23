@@ -11,8 +11,7 @@ bool b_ex = false;
 char c = 'a';
 int stringCounter = 0;
 
-bool Get_Token(token **T)
-{
+bool Get_Token(token **T) {
     if (!stop) {
         dyn_string buffer;
         token_type tdt;
@@ -153,8 +152,9 @@ bool lexer(dyn_string *buffer, token_type *type) {
         if (!b_ex) {
             c = fgetc(stdin);
         }
-        if (c == EOF){
-            type = eofT;
+        if (c == EOF) {
+            *type = eofT;
+            //my bad
             break;
         }
         ignore = false;
