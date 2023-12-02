@@ -9,16 +9,6 @@ bool isDouble = false;
 bst_node **god;
 
 void Instructions() {
-    // printf(
-    //     "LABEL READSTRING\n"
-    //     "CREATEFRAME\n"
-    //     "PUSHFRAME\n"
-    //     "DEFVAR LF@retval\n"
-    //     "MOVE LF@retval nil@nil\n"
-    //     "READ LF@retval string\n"
-    //     "POPFRAME\n"
-    //     "RETURN\n"
-    //     );
 
     printf(
         "LABEL readInt\n"
@@ -50,8 +40,6 @@ void Instructions() {
         "POPFRAME\n"
         "RETURN\n");
 
-
-
     printf(
         "LABEL print\n"
         "PUSHFRAME\n"
@@ -60,6 +48,7 @@ void Instructions() {
         "WRITE LF@writeval\n"
         "POPFRAME\n"
         "RETURN\n\n");
+
 }
 
 void GenerateSubTree(struct bst_tok_node *curr_root) {
@@ -82,6 +71,12 @@ void GenerateSubTree(struct bst_tok_node *curr_root) {
         } break;
         case funcT: {
             GenerateFunctionDefinition(curr_root->left);
+        } break;
+        case returnT: {
+            GenerateExpression(curr_root->left, false);
+            printf("POPS LF@retval\n");
+            printf("POPFRAME\n");
+            printf("RETURN\n");
         } break;
         default: {
             return;
@@ -122,7 +117,7 @@ void GenerateFunctionDefinition(struct bst_tok_node *root) {
     printf("LABEL %s\n", root->T->val->s);
     printf("PUSHFRAME\n");
     if (root->right != NULL) {
-        printf("DEFVAR LF@retval");
+        //printf("DEFVAR LF@retval\n");
         printf("MOVE LF@retval nil@nil\n");
     }
     // nacitanie parametrov
@@ -204,6 +199,7 @@ void GenerateCallFunction(struct bst_tok_node *root) {
         printf("DEFVAR TF@retval\n");
         PrepareFuncCallParams(root->left);
         printf("CALL %s\n",root->T->val->s);
+        printf("PUSHS TF@retval\n");
     };
 }
 
@@ -258,7 +254,6 @@ void GenerateCallWrite(struct bst_tok_node *root) {
 void GenerateAssigment(struct bst_tok_node *root, bool inFunction) {
     GenerateExpression(root->left, inFunction);
 }
-// boi
 void Generator(struct bst_tok_node *root, bst_node **kamisama) {
     god = (kamisama);
     //preorderTraversal(god);
@@ -422,7 +417,7 @@ void GenerateVar(struct bst_tok_node *root, bool inFunction) {
     } else {
         printf("DEFVAR LF@%s\n", root->T->val->s);
         GenerateExpression(root->left, inFunction);
-        printf("POPS LF@exp\n");
+        printf("POPS GF@exp\n");
         printf("MOVE LF@%s GF@exp\n", root->T->val->s);
     }
 }
