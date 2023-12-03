@@ -126,6 +126,9 @@ void GenerateFunctionDefinition(struct bst_tok_node *root) {
     GenerateSubTreeFunction(root->left->right);
     // popripade return
     printf("POPFRAME\n");
+    if (root->right != NULL){
+        printf("PUSHS TF@retval\n");
+    }
     printf("RETURN\n");
     printf("LABEL ENDFUNC%d\n", count);
 }
@@ -165,7 +168,21 @@ void PrepareFuncCallParams(struct bst_tok_node *root) {
                 printf("MOVE TF@%%%d GF@%s\n", paramCnt, root->right->T->val->s);
             }
             else{
-                printf("MOVE TF@%%%d LF@%s\n", paramCnt, root->right->T->val->s);
+                if(root->right->T->dtype == doublenumT)
+                {
+                    printf("MOVE TF@%%%d float@%a\n", paramCnt, atof(root->right->T->val->s));
+                }
+                else if(root->right->T->dtype == intnumT)
+                {
+                    printf("MOVE TF@%%%d int@%s\n", paramCnt, root->right->T->val->s);
+                }
+                else if(root->right->T->dtype == stringT)
+                {
+                    printf("MOVE TF@%%%d string@%s\n", paramCnt, root->right->T->val->s);
+                }
+                else{
+                    printf("MOVE TF@%%%d LF@%s\n", paramCnt, root->right->T->val->s);
+                }
 
             }
         }
@@ -175,8 +192,21 @@ void PrepareFuncCallParams(struct bst_tok_node *root) {
                 printf("MOVE TF@%%%d GF@%s\n", paramCnt, root->T->val->s);
             }
             else{
-                printf("MOVE TF@%%%d LF@%s\n", paramCnt, root->T->val->s);
-
+                if(root->T->dtype == doublenumT)
+                {
+                    printf("MOVE TF@%%%d float@%a\n", paramCnt, atof(root->T->val->s));
+                }
+                else if(root->T->dtype == intnumT)
+                {
+                    printf("MOVE TF@%%%d int@%s\n", paramCnt, root->T->val->s);
+                }
+                else if(root->T->dtype == stringT)
+                {
+                    printf("MOVE TF@%%%d string@%s\n", paramCnt, root->T->val->s);
+                }
+                else{
+                    printf("MOVE TF@%%%d LF@%s\n", paramCnt, root->T->val->s);
+                }
             }
         }
         root = root->left;
@@ -199,7 +229,7 @@ void GenerateCallFunction(struct bst_tok_node *root) {
         printf("DEFVAR TF@retval\n");
         PrepareFuncCallParams(root->left);
         printf("CALL %s\n",root->T->val->s);
-        printf("PUSHS TF@retval\n");
+        // printf("PUSHS TF@retval\n");
     };
 }
 

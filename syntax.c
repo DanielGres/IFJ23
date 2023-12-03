@@ -288,12 +288,12 @@ bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
             GetToken();
             if (myToken->dtype == colonT) {
                 GetToken();
-                if (myToken->dtype != varidT) {
-                    return false;
-                }
                 (*seed)->right = Set_TokNode(myToken);
+                if (myToken->dtype == varidT) {
+                    //return false;
+                    Insert_BTree(sym_table, (*seed)->right->T->val->s, (*seed)->right->T->dtype, false, true);
+                }
                 // SEMANTIC~CHECK
-                Insert_BTree(sym_table, (*seed)->right->T->val->s, (*seed)->right->T->dtype, false, true);
                 GetToken();
                 if (myToken->dtype == commaT) {
                     return FunctionCallParameters(&((*seed)->left), sym_table);
