@@ -6,6 +6,8 @@
 
 #define STRMALCPY(to, from) strcpy(to = malloc(strlen(from) + 1), from)
 
+bst_node **zeus;
+
 bool InArray(char *str2) {
     char arr[11][12] = {"readString", "readInt", "readDouble", "write", "Int2Double", "Double2Int", "length", "substring", "substring", "ord", "chr"};
     for (int i = 0; i < 11; i++) {
@@ -17,6 +19,7 @@ bool InArray(char *str2) {
 }
 
 void Init_BTree(bst_node **root) {
+    zeus = (root);
     (*root) = NULL;
 }
 bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration, bool var_type) {
@@ -25,13 +28,14 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
         if ((*root) == NULL) {
             return false;
         }
+        //printf("Name = %s IsVar: %d declared: %d\n", name, var_type, declaration);
         STRMALCPY(((*root)->name), name);
         (*root)->type = type;
         (*root)->left = NULL;
         (*root)->right = NULL;
         (*root)->funcTree = NULL;
         if (var_type) {
-            if (!declaration) {
+            if ((!declaration) && (!Is_In_BTree(zeus, name))) {
                 // printf("Chyba pouzita premenna nie je deklarovana\n");
                 exit(5);
             }
@@ -125,6 +129,7 @@ bool Search_BTree_Control(bst_node **root) {
 }
 bool Is_In_BTree(bst_node **root, char *name) {
     if ((*root) != NULL) {
+        // printf("Name = %s Looking for = %s\n", (*root)->name, name);
         if (strcmp((*root)->name, name) == 0) {
             return true;
         }
