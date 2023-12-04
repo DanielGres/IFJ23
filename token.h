@@ -49,7 +49,8 @@ typedef enum
     eofT,
     startT,
     helpT,
-    underscoreT
+    underscoreT,
+    boolT
 } token_type;
 
 typedef struct
