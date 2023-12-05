@@ -395,11 +395,12 @@ bool lexer(dyn_string *buffer, token_type *type) {
             } break;
             case BLOCKCOMM_STATE:  // /* comment
             {
-                if (c == EOF) {
+                if (c == EOF){
                     condition = false;
                     b_ex = true;
                     exit(1);
-                } else if (c != '*') {
+                }
+                else if (c != '*') {
                     b_ex = false;
                     eNextState = BLOCKCOMM_STATE;
                 } else if (c == '*') {
@@ -665,11 +666,12 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 } else if (c == '"') {
                     b_ex = false;
                     ignore = true;
-                    eNextState = STRINGMULTI_STATE;  // TODO ignore multi string quotes for now
+                    eNextState = STRINGMULTI_STATE;
                 } else if (c > 31) {
                     b_ex = false;
                     eNextState = STRING2_STATE;
                 }
+                
             } break;
             case STRING2_STATE:  // "something
             {
@@ -767,14 +769,9 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 if (c == 10) {
                     b_ex = false;
                     eNextState = STRINGMULTI3_STATE;
-                } else if (c == '"') {
+                } else if (c == 32){
                     b_ex = false;
-                    ignore = true;
-                    eNextState = STRINGMULTI6_STATE;
-                    if (c == 32) {
-                        b_ex = false;
-                        eNextState = STRINGMULTI2_STATE;
-                    }
+                    eNextState = STRINGMULTI2_STATE;
                 } else {
                     b_ex = true;
                     condition = false;
@@ -786,6 +783,10 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 if (c == 10) {
                     b_ex = false;
                     eNextState = STRINGMULTI3_STATE;
+                } else if (c == '"') {
+                    b_ex = false;
+                    ignore = true;
+                    eNextState = STRINGMULTI6_STATE;
                 } else if (c > 31) {
                     b_ex = false;
                     eNextState = STRINGMULTI4_STATE;
@@ -818,7 +819,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     b_ex = false;
                     ignore = true;
                     eNextState = STRINGMULTI6_STATE;
-                } else if (c == 32) {
+                } else if (c == 32){
                     b_ex = false;
                     eNextState = STRINGMULTI5_STATE;
                 } else if (c > 31) {
