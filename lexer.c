@@ -25,6 +25,12 @@ bool Get_Token(token **T) {
             Token_set(T, &buffer, eofT);
             return false;
         }
+    } else {
+        dyn_string buffer;
+        token_type tdt;
+        Token_init(T);
+        dynstr_init(&buffer);
+        Token_set(T, &buffer, eofT);
     }
     return false;
 }
@@ -138,7 +144,7 @@ void dynstr_sci_to_dec(dyn_string *str) {
         dynstr_addstr(str, buffer);
     } else {
         // Conversion failed
-        printf("Failed to convert string to double.\n");
+        // printf("Failed to convert string to double.\n");
     }
 }
 
@@ -147,8 +153,11 @@ bool lexer(dyn_string *buffer, token_type *type) {
     bool condition = true;
     bool compareWithTable = false;
     bool ignore;
+    int indentCnt = 0;
+    int quoteIndentCnt = 0;
+    bool stopIndentCnt = false;
 
-    while (condition) {
+    while (condition && c != EOF) {
         if (!b_ex) {
             c = fgetc(stdin);
         }
@@ -671,7 +680,6 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     b_ex = false;
                     eNextState = STRING2_STATE;
                 }
-                
             } break;
             case STRING2_STATE:  // "something
             {
@@ -685,6 +693,10 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 } else if (c > 31) {
                     b_ex = false;
                     eNextState = STRING2_STATE;
+                } else if (c == '\n') {
+                    b_ex = true;
+                    condition = false;
+                    exit(1);
                 }
             } break;
             case STRING3_STATE: {
@@ -768,6 +780,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if (c == 10) {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRINGMULTI3_STATE;
                 } else if (c == 32){
                     b_ex = false;
@@ -787,6 +800,10 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     b_ex = false;
                     ignore = true;
                     eNextState = STRINGMULTI6_STATE;
+                } else if (c == 32){
+                    indentCnt++;
+                    b_ex = false;
+                    eNextState = STRINGMULTI4_STATE;
                 } else if (c > 31) {
                     b_ex = false;
                     eNextState = STRINGMULTI4_STATE;
@@ -800,8 +817,16 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if (c == 10) {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRINGMULTI5_STATE;
+                } else if (c == 32){
+                    if(stopIndentCnt == false){
+                        indentCnt++;
+                    }
+                    b_ex = false;
+                    eNextState = STRINGMULTI4_STATE;
                 } else if (c > 31) {
+                    stopIndentCnt = true;
                     b_ex = false;
                     eNextState = STRINGMULTI4_STATE;
                 } else {
@@ -813,6 +838,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
             case STRINGMULTI5_STATE:  // """ \n something \n
             {
                 if (c == 10) {
+                    quoteIndentCnt = 0;
                     b_ex = false;
                     eNextState = STRINGMULTI5_STATE;
                 } else if (c == '"') {
@@ -820,9 +846,11 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     ignore = true;
                     eNextState = STRINGMULTI6_STATE;
                 } else if (c == 32){
+                    quoteIndentCnt++;
                     b_ex = false;
                     eNextState = STRINGMULTI5_STATE;
                 } else if (c > 31) {
+                    quoteIndentCnt = 0;
                     b_ex = false;
                     eNextState = STRINGMULTI4_STATE;
                 }
@@ -831,12 +859,14 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if (c == 10) {
                     b_ex = false;
+                    quoteIndentCnt = 0;
                     eNextState = STRINGMULTI5_STATE;
                 } else if (c == '"') {
                     b_ex = false;
                     ignore = true;
                     eNextState = STRINGMULTI7_STATE;
                 } else if (c > 31) {
+                    quoteIndentCnt = 0;
                     b_ex = false;
                     eNextState = STRINGMULTI4_STATE;
                 } else {
@@ -852,6 +882,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     ignore = true;
                     eNextState = STRINGMULTI8_STATE;
                 } else if (c > 31) {
+                    quoteIndentCnt = 0;
                     b_ex = false;
                     eNextState = STRINGMULTI4_STATE;
                 } else {
@@ -862,12 +893,20 @@ bool lexer(dyn_string *buffer, token_type *type) {
             } break;
             case STRINGMULTI8_STATE:  // """ \n something \n """
             {
-                replaceUnicodeSequences(buffer);
-                *type = stringT;
-                condition = false;
-                b_ex = true;
-                ignore = true;
-                eNextState = START_STATE;
+                if(quoteIndentCnt <= indentCnt){
+                    quoteIndentCnt = 0;
+                    indentCnt = 0;
+                    replaceUnicodeSequences(buffer);
+                    *type = stringT;
+                    condition = false;
+                    b_ex = true;
+                    ignore = true;
+                    eNextState = START_STATE;
+                } else {
+                    b_ex = true;
+                    condition = false;
+                    exit(1);
+                }
             } break;
 
             default: {
@@ -916,6 +955,15 @@ bool lexer(dyn_string *buffer, token_type *type) {
             }
         }
     }
+
+    if (eNextState != START_STATE) {
+        exit(1);
+    }
+
+    if(c == EOF){
+        stop = true;
+    }
+    
 
     return true;
 }
