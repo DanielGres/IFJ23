@@ -93,7 +93,7 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
         return BRACKETS;
     } else if (dynstr_cmp(loc_token->val, ")")) {
         return BRACKETE;
-    } else if ((loc_token->dtype == intnumT) || (loc_token->dtype == doublenumT) || (loc_token->dtype == stringT)) {
+    } else if ((loc_token->dtype == intnumT) || (loc_token->dtype == doublenumT) || (loc_token->dtype == stringT) || (loc_token->dtype == nilT)) {
         return VALUE;
     } else if ((loc_token->dtype == varidT)) {
         return IDENTIFIER;
@@ -233,6 +233,22 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                     T_Body(prec_stack);
                 } else if (dynstr_cmp(&buffer, "E>=E")) {
                     T_Body(prec_stack);
+                } else if (dynstr_cmp(&buffer, "E??E")) {
+                    T_Body(prec_stack);
+                }
+                // NOTNIL
+                else if (dynstr_cmp(&buffer, "!E")) {
+                    stack_pop(prec_stack);
+                }
+                // NEGATION
+                else if (dynstr_cmp(&buffer, "E!")) {
+                    struct bst_tok_node *parent = prec_stack->top->tok_node;
+                    stack_pop(prec_stack);
+                    struct bst_tok_node *LeftChild = prec_stack->top->tok_node;
+                    stack_pop(prec_stack);
+                    struct bst_tok_node *root = SetChildNodes(parent, LeftChild, NULL);
+                    stack_push_node(prec_stack, ENTERPRISE, root);
+
                 }
                 // TODO pridat ?? a !
                 else {
@@ -250,7 +266,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
         }
         // DEL stack_push(prec_stack, inputed_symbol, myToken);
 
-        //stack_print(prec_stack->top);
+        // stack_print(prec_stack->top);
         iteration++;
 
         if (prec_stack->top->symbol == ENTERPRISE) {
