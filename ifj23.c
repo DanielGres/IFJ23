@@ -55,12 +55,6 @@ int main() {
     bst_node *symtable;
     Init_BTree(&symtable);
 
-    // TODO lexer testing potom vymazat
-    // while(Get_Token(&T)){
-    //     dynstr_print(T->val);
-    //     printf(" %s\n",enumers[T->dtype]);
-    // }
-
     if (CorpusPrime(&(the_root->right), &symtable)) {
         // PostorderTraversal(the_root);
         if (Search_BTree_Control(&symtable)) {

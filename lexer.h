@@ -10,7 +10,6 @@
 #include <stdbool.h>
 
 #include "dyn_string.h"
-#include "errror.h"
 #include "token.h"
 
 /**

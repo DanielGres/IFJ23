@@ -380,7 +380,19 @@ bool Var(struct bst_tok_node **seed, bst_node **sym_table) {
 
 bool IfPrime(struct bst_tok_node **seed, bst_node **sym_table) {
     *seed = Set_TokNode(myToken);
-    if (!Expression(&((*seed)->left), NULL, sym_table)) return false;
+    GetToken();
+    if(myToken->dtype == letT){
+        (*seed)->right = Set_TokNode(myToken);
+        GetToken();
+        if(myToken->dtype != varidT) return false;
+        (*seed)->right->left = Set_TokNode(myToken);
+        
+    }
+    else{
+        TakeToken = false;
+        if (!Expression(&((*seed)->left), NULL, sym_table)) return false;
+    }
+
     GetToken();
     EnterSkip();
     if (myToken->dtype != LCbracketT) return false;
