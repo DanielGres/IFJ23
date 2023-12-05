@@ -31,7 +31,7 @@ execTest () {
 }
 
 execTest "Empty program" "input/empty.swift" "output/empty.txt" 0
-#execTest "Unfinished multiline comment" "input/multiline_comment_unfinished.swift" "output/empty.txt" 1
+execTest "Unfinished multiline comment" "input/multiline_comment_unfinished.swift" "output/empty.txt" 1
 execTest "Legal variable names" "input/variable_name.swift" "output/empty.txt" 0
 execTest "Variable names starting with numbers" "input/variable_name_number.swift" "output/empty.txt" 2
 execTest "Variable name as single underscore" "input/variable_name_underscore.swift" "output/empty.txt" 2
@@ -114,12 +114,12 @@ execTest "Illegal token instead of data type" "input/illegal_typename.swift" "ou
 execTest "String literal with newline character" "input/string_literal_newline.swift" "output/empty.txt" 1
 execTest "Init Double variable with int literal" "input/double_int_init.swift" "output/empty.txt" 0
 execTest "Basic multiline string" "input/multiline_string.swift" "output/multiline_string.txt" 0
-#execTest "Multiline string with indent" "input/multiline_string_indent.swift" "output/multiline_string_indent.txt" 0
-#execTest "Empty multiline string" "input/multiline_string_empty.swift" "output/multiline_string_empty.txt" 0
-#execTest "Multiline string with empty line" "input/multiline_string_empty_line.swift" "output/multiline_string_empty_line.txt" 0
-#execTest "Multiline string with indent and empty line" "input/multiline_string_indent_empty_line.swift" "output/multiline_string_indent_empty_line.txt" 0
-#execTest "Multiline string with bad indent" "input/multiline_string_indent_illegal.swift" "output/empty.txt" 1
-#execTest "Multiline string with closing quotes not on unique line" "input/multiline_string_wrong_close.swift" "output/empty.txt" 1
+execTest "Multiline string with indent" "input/multiline_string_indent.swift" "output/multiline_string_indent.txt" 0
+execTest "Empty multiline string" "input/multiline_string_empty.swift" "output/multiline_string_empty.txt" 0
+execTest "Multiline string with empty line" "input/multiline_string_empty_line.swift" "output/multiline_string_empty_line.txt" 0
+execTest "Multiline string with indent and empty line" "input/multiline_string_indent_empty_line.swift" "output/multiline_string_indent_empty_line.txt" 0
+execTest "Multiline string with bad indent" "input/multiline_string_indent_illegal.swift" "output/empty.txt" 1
+execTest "Multiline string with closing quotes not on unique line" "input/multiline_string_wrong_close.swift" "output/empty.txt" 1
 execTest "Equality comparison with nil literal" "input/nil_eq.swift" "output/nil_eq.txt" 0
 execTest "Example - concat" "input/example_concat.swift" "output/example_concat.txt" 0
 execTest "Example - factorial (iterative)" "input/example_factorial_iter.swift" "output/example_factorial_iter.txt" 0

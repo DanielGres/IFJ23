@@ -10,21 +10,7 @@
 #include "tok_tree.h"
 #include "token.h"
 
-#define T_SIZE 10
-
-// TO~DELETE
-// typedef enum
-// {
-//     I_NOTNIL,       // 0 !
-//     I_MUL_DIV,      // 1 */
-//     I_PLUS_MINUS,   // 2 +-
-//     I_EN_OP,        // 3 == != < > <= >=
-//     I_DBLQST,       // 4 ??
-//     I_BRACKETS,     // 5 (
-//     I_BRACKETE,     // 6 )
-//     I_DATA,         // 7 id
-//     I_DOLLAR        // 8 dollar
-// } table_index_enum;
+#define T_SIZE 12
 
 typedef enum {
     S,  // < SHIFT
