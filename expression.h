@@ -46,10 +46,11 @@ typedef enum {
  *
  * @param condition changes if current symbol is either "$" sign or brackete which sets the condition variable to 1 for ";" or 2 for brackete
  * @param root link to the table of symbols
- * @return true if the token is an expression
- * @return false if it does not fulfill any of the "if" or "switch" conditions
+ * @return if > 0 then [1 - int, 2 - float, 3 - string]
+ * @return if < 0 then [-1 intNill, -2 floatNill, -3 stringNill]
+ * @return 0 -> bad expression
  */
-bool Expression(struct bst_tok_node **seed, char *EOE,bst_node **sym_table);
+int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table);
 
 void T_Body(stack *my_stack);
 
