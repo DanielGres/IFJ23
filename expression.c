@@ -105,7 +105,7 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
         return BRACKETE;
     } else if (loc_token->dtype == boolT) {
         return BOOLVAR;
-    } else if ((loc_token->dtype == intnumT) || (loc_token->dtype == doublenumT) || (loc_token->dtype == stringT)) {
+    } else if ((loc_token->dtype == intnumT) || (loc_token->dtype == doublenumT) || (loc_token->dtype == stringT) || (loc_token->dtype == nilT)) {
         return VALUE;
     } else if ((loc_token->dtype == varidT)) {
         return IDENTIFIER;
@@ -116,7 +116,6 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
 }
 // TO~DO Strom na semantiku
 int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
-
     table_symbol_enum inputed_symbol, top;
     table_sign_enum operation;
     stack_item *ptr;
@@ -311,6 +310,7 @@ void T_Body(stack *my_stack) {
         stack_pop(my_stack);
         struct bst_tok_node *tmpNode3 = my_stack->top->tok_node;
         stack_pop(my_stack);
+        
         struct bst_tok_node *root = SetChildNodes(tmpNode2, tmpNode1, tmpNode3);
         stack_push_node(my_stack, ENTERPRISE, root);
     }

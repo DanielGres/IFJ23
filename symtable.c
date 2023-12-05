@@ -61,7 +61,7 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
                         (*root)->var_declared = declaration;
                     } else {
                         // printf("Chyba Anton\n");
-                        exit(47);
+                        exit(3);
                     }
                 } else {
                     if (!(*root)->var_declared) {
