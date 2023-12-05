@@ -538,12 +538,21 @@ void GenerateWhile(struct bst_tok_node *root, bool inFunction) {
 void GenerateIF(struct bst_tok_node *root, bool inFunction) {
     IfCounter++;
     int thisIf = IfCounter;
-    GenerateExpression(root->left, inFunction);
-    // Result of expression will be on top of stack
-    printf("POPS GF@exp\n");
+    //printf("%s\n",root->left->T->val->s);
+    if(root->left->T->dtype == letT){
+        printf("JUMPIFNEQ IF%d nil@nil ",thisIf);
+        Is_In_BTree(god, root->left->left->T->val->s)?printf("GF@"):printf("LF@");
+        printf("%s\n",root->left->left->T->val->s);
+    }
+    else{
+        GenerateExpression(root->left, inFunction);
+        // Result of expression will be on top of stack
+        printf("POPS GF@exp\n");
 
-    // Jump IF ...
-    printf("JUMPIFEQ IF%d GF@exp bool@true\n", thisIf);
+        // Jump IF ...
+        printf("JUMPIFEQ IF%d GF@exp bool@true\n", thisIf);
+    }
+
     // else part
     GenerateSubTree(root->right->right);
     // jump end
