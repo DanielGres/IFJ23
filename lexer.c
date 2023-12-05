@@ -751,6 +751,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if (c == '"') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRINGMULTI2_STATE;
                 } else {
                     replaceUnicodeSequences(buffer);
@@ -768,6 +769,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     eNextState = STRINGMULTI3_STATE;
                 } else if (c == '"') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRINGMULTI6_STATE;
                     if (c == 32) {
                         b_ex = false;
@@ -814,6 +816,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     eNextState = STRINGMULTI5_STATE;
                 } else if (c == '"') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRINGMULTI6_STATE;
                 } else if (c == 32) {
                     b_ex = false;
@@ -830,6 +833,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     eNextState = STRINGMULTI5_STATE;
                 } else if (c == '"') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRINGMULTI7_STATE;
                 } else if (c > 31) {
                     b_ex = false;
@@ -844,6 +848,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if (c == '"') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = STRINGMULTI8_STATE;
                 } else if (c > 31) {
                     b_ex = false;
@@ -860,6 +865,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 *type = stringT;
                 condition = false;
                 b_ex = true;
+                ignore = true;
                 eNextState = START_STATE;
             } break;
 
