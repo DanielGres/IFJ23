@@ -353,7 +353,11 @@ bool lexer(dyn_string *buffer, token_type *type) {
             } break;
             case BLOCKCOMM_STATE:  // /* comment
             {
-                if (c != '*') {
+                if (c == EOF) {
+                    condition = false;
+                    b_ex = true;
+                    exit(1);
+                } else if (c != '*') {
                     b_ex = false;
                     eNextState = BLOCKCOMM_STATE;
                 } else if (c == '*') {
@@ -361,6 +365,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     eNextState = BLOCKCOMM2_STATE;
                 }
             } break;
+
             case BLOCKCOMM2_STATE:  // /* comment *
             {
                 if (c == '/') {
