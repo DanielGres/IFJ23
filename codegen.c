@@ -18,7 +18,7 @@ void Instructions() {
         "MOVE LF@retval nil@nil\n"
         "READ LF@retval int\n"
         "POPFRAME\n"
-        "RETURN\n");
+        "RETURN\n\n");
 
     printf(
         "LABEL readString\n"
@@ -28,7 +28,7 @@ void Instructions() {
         "MOVE LF@retval nil@nil\n"
         "READ LF@retval string\n"
         "POPFRAME\n"
-        "RETURN\n");
+        "RETURN\n\n");
 
     printf(
         "LABEL readFloat\n"
@@ -38,7 +38,7 @@ void Instructions() {
         "MOVE LF@retval nil@nil\n"
         "READ LF@retval float\n"
         "POPFRAME\n"
-        "RETURN\n");
+        "RETURN\n\n");
 
     printf(
         "LABEL print\n"
@@ -48,6 +48,26 @@ void Instructions() {
         "WRITE LF@writeval\n"
         "POPFRAME\n"
         "RETURN\n\n");
+
+    printf(
+        "LABEL intToDouble\n"
+        "PUSHFRAME\n"
+        "DEFVAR LF@intval\n"
+        "MOVE LF@intval LF@%1\n"
+        "INT2FLOAT LF@retval LF@intval\n"
+        "POPFRAME\n"
+        "RETURN\n\n"
+    );
+
+    printf(
+        "LABEL doubleToInt\n"
+        "PUSHFRAME\n"
+        "DEFVAR LF@intval\n"
+        "MOVE LF@intval LF@%1\n"
+        "FLOAT2INT LF@retval LF@intval\n"
+        "POPFRAME\n"
+        "RETURN\n\n\n"
+    );
 
 }
 
@@ -224,6 +244,10 @@ void GenerateCallFunction(struct bst_tok_node *root) {
         GenerateCallReadString(root);
     } else if (!strcmp(root->T->val->s, "readDouble")) {
         GenerateCallReadFloat(root);
+    } else if (!strcmp(root->T->val->s, "Int2Double")) {
+        GenerateInt2Double(root->left);
+    } else if (!strcmp(root->T->val->s, "Double2Int")) {
+        GenerateDouble2Int(root->left);
     } else {
         printf("CREATEFRAME\n");
         printf("DEFVAR TF@retval\n");
@@ -231,6 +255,48 @@ void GenerateCallFunction(struct bst_tok_node *root) {
         printf("CALL %s\n",root->T->val->s);
         // printf("PUSHS TF@retval\n");
     };
+}
+
+void GenerateInt2Double(struct bst_tok_node *root) {
+    printf("CREATEFRAME\n");
+    printf("DEFVAR TF@retval\n");
+    printf("DEFVAR TF@%1\n");
+    //printf("TOTO TU MAM HAHAHAHHA %s\n", root->left->T->val->s);
+    if (root->left->T->dtype == varidT) {
+        if(Is_In_BTree(god, root->left->T->val->s))
+        {
+            printf("MOVE TF@%1 GF@%s\n", root->left->T->val->s);
+        }
+        else{
+            printf("MOVE TF@%1 LF@%s\n", root->left->T->val->s);
+        }
+        //printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
+    } else  {
+        printf("MOVE TF@%1 int@%s\n", root->left->T->val->s);
+    }
+    printf("CALL intToDouble\n");
+    printf("PUSHS TF@retval\n");
+}
+
+void GenerateDouble2Int(struct bst_tok_node *root) {
+    printf("CREATEFRAME\n");
+    printf("DEFVAR TF@retval\n");
+    printf("DEFVAR TF@%1\n");
+    //printf("TOTO TU MAM HAHAHAHHA %s\n", root->left->T->val->s);
+    if (root->left->T->dtype == varidT) {
+        if(Is_In_BTree(god, root->left->T->val->s))
+        {
+            printf("MOVE TF@%1 GF@%s\n", root->left->T->val->s);
+        }
+        else{
+            printf("MOVE TF@%1 LF@%s\n", root->left->T->val->s);
+        }
+        //printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
+    } else  {
+        printf("MOVE TF@%1 int@%s\n", root->left->T->val->s);
+    }
+    printf("CALL doubleToInt\n");
+    printf("PUSHS TF@retval\n");
 }
 
 void GenerateCallReadString(struct bst_tok_node *root) {
@@ -284,6 +350,7 @@ void GenerateCallWrite(struct bst_tok_node *root) {
 void GenerateAssigment(struct bst_tok_node *root, bool inFunction) {
     GenerateExpression(root->left, inFunction);
 }
+
 void Generator(struct bst_tok_node *root, bst_node **kamisama) {
     god = (kamisama);
     //preorderTraversal(god);
@@ -300,7 +367,6 @@ void Generator(struct bst_tok_node *root, bst_node **kamisama) {
     GenerateSubTree((root->right));
     printf("EXIT int@0\n");
 }
-
 
 void convertToFloatAndSwap(){
     DivJumpCounter++;
@@ -472,12 +538,21 @@ void GenerateWhile(struct bst_tok_node *root, bool inFunction) {
 void GenerateIF(struct bst_tok_node *root, bool inFunction) {
     IfCounter++;
     int thisIf = IfCounter;
-    GenerateExpression(root->left, inFunction);
-    // Result of expression will be on top of stack
-    printf("POPS GF@exp\n");
+    //printf("%s\n",root->left->T->val->s);
+    if(root->left->T->dtype == letT){
+        printf("JUMPIFNEQ IF%d nil@nil ",thisIf);
+        Is_In_BTree(god, root->left->left->T->val->s)?printf("GF@"):printf("LF@");
+        printf("%s\n",root->left->left->T->val->s);
+    }
+    else{
+        GenerateExpression(root->left, inFunction);
+        // Result of expression will be on top of stack
+        printf("POPS GF@exp\n");
 
-    // Jump IF ...
-    printf("JUMPIFEQ IF%d GF@exp bool@true\n", thisIf);
+        // Jump IF ...
+        printf("JUMPIFEQ IF%d GF@exp bool@true\n", thisIf);
+    }
+
     // else part
     GenerateSubTree(root->right->right);
     // jump end

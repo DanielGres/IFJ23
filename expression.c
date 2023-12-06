@@ -116,7 +116,7 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
 }
 // TO~DO Strom na semantiku
 int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
-    TakeToken = true;
+
     table_symbol_enum inputed_symbol, top;
     table_sign_enum operation;
     stack_item *ptr;

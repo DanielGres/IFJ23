@@ -79,44 +79,45 @@ typedef enum {
     OR2_STATE,
 } SM_STATE;
 
+
 /**
  * @brief Function to initialize the token with the parsed value and type from lexer
- *
+ * 
  * @param T token which will be initialized with the parsed correct value and type
  */
 bool Get_Token(token **T);
 
 /**
  * @brief Function to convert a single hexadecimal character to an integer
- *
+ * 
  * @param c hexadecimal character to be converted
  */
 int hexCharToInt(char c);
 
 /**
  * @brief Function to convert a hexadecimal string to its decimal representation
- *
+ * 
  * @param hex hexadecimal string to be converted
  */
 int hexToDecimal(dyn_string *hex);
 
 /**
  * @brief // Function that replaces unicode sequences in the input string with their corresponding ASCII characters and also replaces escape sequences
- *
+ * 
  * @param inputString string to be processed
  */
 void replaceUnicodeSequences(dyn_string *inputString);
 
 /**
  * @brief Function to convert scientific notation to floating point decimal notation
- *
+ * 
  * @param str string to be processed
  */
 void dynstr_sci_to_dec(dyn_string *str);
 
 /**
  * @brief function that parses the input code and finds the token type and value
- *
+ * 
  * @param buffer found tokens value will be stored here
  * @param type found tokens type will be stored here
  */

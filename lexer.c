@@ -964,6 +964,5 @@ bool lexer(dyn_string *buffer, token_type *type) {
         stop = true;
     }
     
-
     return true;
 }
