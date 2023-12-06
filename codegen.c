@@ -4,6 +4,7 @@ int IfCounter = 0;
 int DivJumpCounter = 0;
 int WhileCounter = 0;
 int FuncCounter = 0;
+int doubleMarker = 0;
 bool isDouble = false;
 
 bst_node **god;
@@ -341,6 +342,8 @@ void GenerateCallWrite(struct bst_tok_node *root) {
             printf("MOVE TF@%1 float@%a\n", atof(root->T->val->s));
         } else if (root->T->dtype == stringT) {
             printf("MOVE TF@%1 string@%s\n", root->T->val->s);
+        } else if (root->T->dtype == nilT) {
+            printf("MOVE TF@%1 nil@nil\n");
         }
 
         printf("CALL print\n");
@@ -417,6 +420,9 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
         case stringT: {
             printf("PUSHS string@%s\n", root->T->val->s);
         } break;
+        case nilT: {
+            printf("PUSHS nil@nil\n");
+        } break;
         case operatorT: {
             if (!strcmp(root->T->val->s, "+")) {
                 convertToFloatAndSwap();
@@ -468,6 +474,20 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
             if (!strcmp(root->T->val->s, "<")) {
                 convertToFloatAndSwap();
                 printf("LTS\n");
+            }
+            if(!strcmp(root->T->val->s, "??")){
+                convertToFloatAndSwap();
+                printf("POPS GF@floathelp1\n");
+                printf("POPS GF@floathelp2\n");
+                doubleMarker++;
+                printf("TYPE GF@typeresult GF@floathelp2\n");
+                printf("JUMPIFEQ doubleMarker%d string@nil GF@typeresult\n",doubleMarker);
+                printf("PUSHS GF@floathelp2\n");
+                printf("JUMP endDoubleMarker%d\n",doubleMarker);
+                printf("LABEL doubleMarker%d\n",doubleMarker);
+                printf("PUSHS GF@floathelp1\n");
+                printf("LABEL endDoubleMarker%d\n",doubleMarker);
+
             }
         } break;
     }

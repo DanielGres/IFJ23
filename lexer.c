@@ -144,7 +144,6 @@ void dynstr_sci_to_dec(dyn_string *str) {
         dynstr_addstr(str, buffer);
     } else {
         // Conversion failed
-        // printf("Failed to convert string to double.\n");
     }
 }
 
@@ -374,9 +373,13 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if (c == '/') {
                     b_ex = false;
+                    ignore = true;
+                    dynstr_clear(buffer);
                     eNextState = LINECOMM_STATE;
                 } else if (c == '*') {
                     b_ex = false;
+                    ignore = true;
+                    dynstr_clear(buffer);
                     eNextState = BLOCKCOMM_STATE;
                 } else {
                     *type = operatorT;
@@ -389,17 +392,17 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if ((c != '\n') && (c != EOF)) {
                     b_ex = false;
+                    ignore = true;
                     eNextState = LINECOMM_STATE;
                 } else if ((c == '\n') || (c == EOF)) {
                     b_ex = false;
+                    ignore = true; 
                     eNextState = LINECOMM2_STATE;
                 }
             } break;
             case LINECOMM2_STATE:  // //comment
             {
                 *type = linecommentT;
-                b_ex = true;
-                condition = false;
                 eNextState = START_STATE;
             } break;
             case BLOCKCOMM_STATE:  // /* comment
@@ -411,9 +414,11 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 }
                 else if (c != '*') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = BLOCKCOMM_STATE;
                 } else if (c == '*') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = BLOCKCOMM2_STATE;
                 }
             } break;
@@ -421,20 +426,21 @@ bool lexer(dyn_string *buffer, token_type *type) {
             {
                 if (c == '/') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = BLOCKCOMM3_STATE;
                 } else if (c == '*') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = BLOCKCOMM2_STATE;
                 } else if (c != '*') {
                     b_ex = false;
+                    ignore = true;
                     eNextState = BLOCKCOMM_STATE;
                 }
             } break;
             case BLOCKCOMM3_STATE:  // /* comment */
             {
                 *type = blockcommentT;
-                condition = false;
-                b_ex = true;
                 eNextState = START_STATE;
             } break;
             case MULTIP_STATE:  // *
@@ -915,6 +921,9 @@ bool lexer(dyn_string *buffer, token_type *type) {
                 exit(1);
             }
         }
+        if ((eNextState == START_STATE) && (*type == linecommentT)){
+            dynstr_add(buffer, c);
+        }
         if ((eNextState != START_STATE) && (!ignore)) {
             dynstr_add(buffer, c);
         } else {
@@ -963,6 +972,6 @@ bool lexer(dyn_string *buffer, token_type *type) {
     if(c == EOF){
         stop = true;
     }
-    
+
     return true;
 }
