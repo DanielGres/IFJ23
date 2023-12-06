@@ -1,8 +1,15 @@
 // Implementace překladače imperativního jazyka IFJ23
-// Daniel Greš --- xgresd00
-// Mário Mihál --- xmihal13
-// Viktor Hančovský --- xhanco00
-// Branislav Kotúč --- xkotuc02
+
+/**
+ * @file ifj23.h
+ * @authors Daniel Greš, Mário Mihál, Branislav Kotúč, Viktor Hančovský
+ * @brief 
+ * @version 0.1
+ * @date 2023-12-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #ifndef LEXER_H
 #define LEXER_H

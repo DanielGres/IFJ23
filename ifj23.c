@@ -1,49 +1,19 @@
-// Implementace překladače imperativního jazyka IFJ23
-// Daniel Greš --- xgresd00
-// Mário Mihál --- xmihal13
-// Viktor Hančovský --- xhanco00
-// Branislav Kotúč --- xkotuc02
+// Implementace překladače imperativního jazyka IFJ23.
 
+/**
+ * @file ifj23.c
+ * @author xgresd00, xmihal13, xkotuc02, xhanco00
+ * @brief 
+ * @version 0.1
+ * @date 2023-12-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "ifj23.h"
 
-// TODO na lexer testovanie dik pls nechaj sem abo zakomentuj lem
-const char *enumers[] = {
-    "varidT",
-    "funcidT",
-    "operatorT",
-    "colonT",
-    "vartypeT",
-    "vartypeQT",
-    "equalT",
-    "intnumT",
-    "doublenumT",
-    "varT",
-    "letT",
-    "ifT",
-    "stringT",
-    "nilT",
-    "LbracketT",
-    "RbracketT",
-    "LCbracketT",
-    "RCbracketT",
-    "elseT",
-    "funcT",
-    "paramNameT",
-    "commaT",
-    "arrowT",
-    "whileT",
-    "returnT",
-    "newlineT",
-    "semicolonT",
-    "linecommentT",
-    "blockcommentT",
-    "eofT",
-    "startT",
-    "helpT",
-    "underscoreT"
-};
-
 int main() {
+    // Inicialization of the token tree
     dyn_string string;
     token *T;
     Token_init(&T);
@@ -55,19 +25,13 @@ int main() {
     bst_node *symtable;
     Init_BTree(&symtable);
 
+    // Syntax analysis
     if (CorpusPrime(&(the_root->right), &symtable)) {
-        // PostorderTraversal(the_root);
+        // Semantic analysis
         if (Search_BTree_Control(&symtable)) {
-            // printf("Spravne ;) :fire: \n");
+           // Code generation
            Generator(the_root, &symtable);
         }
-        //bst_node *ptr = SubTreePointer(symtable, "kokos");
-        // inorderTraversal(the_root);
-        // printf("\n");
-        // preorderTraversal(&symtable);
-        //preorderTraversal(&ptr->funcTree);
-        // PrintAllVariablesinScope(&symtable, true);
-        //PrintAllVariablesinScope(&(ptr)->funcTree, false);
     } else {
         exit(2);
     }

@@ -1,6 +1,15 @@
-// Implementace překladače imperativního jazyka IFJ23
-// Daniel Greš --- xgresd00
-// Mário Mihál --- xmihal13
+// Implementace překladače imperativního jazyka IFJ23.
+
+/**
+ * @file syntax.c
+ * @author xgresd00, xmihal13
+ * @brief 
+ * @version 0.1
+ * @date 2023-12-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #include "syntax.h"
 

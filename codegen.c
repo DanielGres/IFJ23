@@ -1,3 +1,16 @@
+// Implementace překladače imperativního jazyka IFJ23.
+
+/**
+ * @file codegen.c
+ * @author xgresd00
+ * @brief 
+ * @version 0.1
+ * @date 2023-12-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "codegen.h"
 
 int IfCounter = 0;

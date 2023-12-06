@@ -1,6 +1,9 @@
+// Implementace překladače imperativního jazyka IFJ23.
+
+
 /**
  * @file codegen.h
- * @authors Daniel Greš, Mario Mihál
+ * @authors Daniel Greš
  * @brief 
  * @version 0.1
  * @date 2023-12-06
