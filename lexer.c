@@ -154,6 +154,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
     bool ignore;
     int indentCnt = 0;
     int quoteIndentCnt = 0;
+    int commentCnt = 0;
     bool stopIndentCnt = false;
 
     while (condition && c != EOF) {
@@ -380,6 +381,7 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     b_ex = false;
                     ignore = true;
                     dynstr_clear(buffer);
+                    commentCnt++;
                     eNextState = BLOCKCOMM_STATE;
                 } else {
                     *type = operatorT;
@@ -412,6 +414,11 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     b_ex = true;
                     exit(1);
                 }
+                else if (c == '/'){
+                    b_ex = false;
+                    ignore = true;
+                    eNextState = BLOCKCOMMPOM_STATE;
+                }
                 else if (c != '*') {
                     b_ex = false;
                     ignore = true;
@@ -422,9 +429,28 @@ bool lexer(dyn_string *buffer, token_type *type) {
                     eNextState = BLOCKCOMM2_STATE;
                 }
             } break;
+            case BLOCKCOMMPOM_STATE: // /* comment /
+            {
+                if (c == EOF){
+                    condition = false;
+                    b_ex = true;
+                    exit(1);
+                }
+                else if (c != '*') {
+                    b_ex = false;
+                    ignore = true;
+                    eNextState = BLOCKCOMM_STATE;
+                } else if (c == '*') {
+                    commentCnt++;
+                    b_ex = false;
+                    ignore = true;
+                    eNextState = BLOCKCOMM2_STATE;
+                }
+            } break;
             case BLOCKCOMM2_STATE:  // /* comment *
             {
                 if (c == '/') {
+                    commentCnt--;
                     b_ex = false;
                     ignore = true;
                     eNextState = BLOCKCOMM3_STATE;
@@ -440,8 +466,24 @@ bool lexer(dyn_string *buffer, token_type *type) {
             } break;
             case BLOCKCOMM3_STATE:  // /* comment */
             {
-                *type = blockcommentT;
-                eNextState = START_STATE;
+                if(c == EOF){
+                    b_ex = true;
+                    condition = false;
+                    *type = eofT;
+                    eNextState = START_STATE;
+
+                } else if((commentCnt == 0) && (c != EOF)){
+                    *type = blockcommentT;
+                    eNextState = START_STATE;
+                } else if (c == '*'){
+                    b_ex = false;
+                    ignore = true;
+                    eNextState = BLOCKCOMM2_STATE;
+                } else {
+                    b_ex = false;
+                    ignore = true;
+                    eNextState = BLOCKCOMM_STATE;
+                }
             } break;
             case MULTIP_STATE:  // *
             {

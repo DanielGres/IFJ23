@@ -14,7 +14,7 @@ execTest () {
 	returnCode=$?
 	touch tmp_output2.txt
 	if [ "$returnCode" = "0" ]; then
-		ic23int tmp_output.txt > tmp_output2.txt
+		../ic23int tmp_output.txt > tmp_output2.txt
 	fi
 	printf "\n" >> tmp_output2.txt
 	if [ $returnCode -ne $4 ]; then

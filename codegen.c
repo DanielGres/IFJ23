@@ -67,6 +67,16 @@ void Instructions() {
         "MOVE LF@intval LF@%1\n"
         "FLOAT2INT LF@retval LF@intval\n"
         "POPFRAME\n"
+        "RETURN\n\n"
+    );
+
+    printf(
+        "LABEL length\n"
+        "PUSHFRAME\n"
+        "DEFVAR LF@string\n"
+        "MOVE LF@string LF@%1\n"
+        "STRLEN LF@retval LF@string\n"
+        "POPFRAME\n"
         "RETURN\n\n\n"
     );
 
@@ -249,6 +259,8 @@ void GenerateCallFunction(struct bst_tok_node *root) {
         GenerateInt2Double(root->left);
     } else if (!strcmp(root->T->val->s, "Double2Int")) {
         GenerateDouble2Int(root->left);
+    }else if (!strcmp(root->T->val->s, "length")) {
+        GenerateLength(root->left);
     } else {
         printf("CREATEFRAME\n");
         printf("DEFVAR TF@retval\n");
@@ -258,11 +270,10 @@ void GenerateCallFunction(struct bst_tok_node *root) {
     };
 }
 
-void GenerateInt2Double(struct bst_tok_node *root) {
+void GenerateLength(struct bst_tok_node *root) {
     printf("CREATEFRAME\n");
     printf("DEFVAR TF@retval\n");
     printf("DEFVAR TF@%1\n");
-    //printf("TOTO TU MAM HAHAHAHHA %s\n", root->left->T->val->s);
     if (root->left->T->dtype == varidT) {
         if(Is_In_BTree(god, root->left->T->val->s))
         {
@@ -271,7 +282,26 @@ void GenerateInt2Double(struct bst_tok_node *root) {
         else{
             printf("MOVE TF@%1 LF@%s\n", root->left->T->val->s);
         }
-        //printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
+    } else  {
+        printf("MOVE TF@%1 string@%s\n", root->left->T->val->s);
+    }
+    printf("CALL length\n");
+    printf("PUSHS TF@retval\n");
+}
+
+void GenerateInt2Double(struct bst_tok_node *root) {
+    printf("CREATEFRAME\n");
+    printf("DEFVAR TF@retval\n");
+    printf("DEFVAR TF@%1\n");
+
+    if (root->left->T->dtype == varidT) {
+        if(Is_In_BTree(god, root->left->T->val->s))
+        {
+            printf("MOVE TF@%1 GF@%s\n", root->left->T->val->s);
+        }
+        else{
+            printf("MOVE TF@%1 LF@%s\n", root->left->T->val->s);
+        }
     } else  {
         printf("MOVE TF@%1 int@%s\n", root->left->T->val->s);
     }
@@ -294,7 +324,7 @@ void GenerateDouble2Int(struct bst_tok_node *root) {
         }
         //printf("MOVE TF@%1 GF@%s\n", root->T->val->s);
     } else  {
-        printf("MOVE TF@%1 int@%s\n", root->left->T->val->s);
+        printf("MOVE TF@%1 float@%a\n", atof(root->left->T->val->s));
     }
     printf("CALL doubleToInt\n");
     printf("PUSHS TF@retval\n");
@@ -363,9 +393,12 @@ void Generator(struct bst_tok_node *root, bst_node **kamisama) {
     //PrintAllVariablesinScope(god, true);
     printf("LABEL MAIN\n");
     printf("DEFVAR GF@exp\n");
+    printf("DEFVAR GF@equal1\n");
+    printf("DEFVAR GF@equal2\n");
     printf("DEFVAR GF@floathelp1\n");
     printf("DEFVAR GF@floathelp2\n");
     printf("DEFVAR GF@typeresult\n");
+    
     // Instructions();
     GenerateSubTree((root->right));
     printf("EXIT int@0\n");
@@ -466,6 +499,7 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
             if (!strcmp(root->T->val->s, "!=")) {
                 convertToFloatAndSwap();
                 printf("EQS\n");
+                printf("NOTS\n");
             }
             if (!strcmp(root->T->val->s, ">")) {
                 convertToFloatAndSwap();
@@ -474,6 +508,30 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
             if (!strcmp(root->T->val->s, "<")) {
                 convertToFloatAndSwap();
                 printf("LTS\n");
+            }
+            if (!strcmp(root->T->val->s, ">=")) {
+                convertToFloatAndSwap();
+                printf("POPS GF@equal1\n");
+                printf("POPS GF@equal2\n");
+                printf("PUSHS GF@equal2\n");
+                printf("PUSHS GF@equal1\n");
+                printf("GTS\n");
+                printf("PUSHS GF@equal2\n");
+                printf("PUSHS GF@equal1\n");
+                printf("EQS\n");
+                printf("ORS\n");
+            }
+            if (!strcmp(root->T->val->s, "<=")) {
+                convertToFloatAndSwap();
+                printf("POPS GF@equal1\n");
+                printf("POPS GF@equal2\n");
+                printf("PUSHS GF@equal2\n");
+                printf("PUSHS GF@equal1\n");
+                printf("LTS\n");
+                printf("PUSHS GF@equal2\n");
+                printf("PUSHS GF@equal1\n");
+                printf("EQS\n");
+                printf("ORS\n");
             }
             if(!strcmp(root->T->val->s, "??")){
                 convertToFloatAndSwap();
