@@ -132,13 +132,14 @@ bool CorpusSecondary(struct bst_tok_node **seed, bst_node **sym_table) {
             *seed = Set_TokNode(myToken);
             // Chytit variable dat ju do return stroma
             GetToken();
-            if(myToken->dtype != varidT) return false;
-            (*seed)->left = Set_TokNode(myToken);
+            if(myToken->dtype != newlineT){
+                TakeToken = false;
+            }
+            if (!Expression(&((*seed)->left), NULL, sym_table)) return false;
             return CorpusSecondary(&((*seed)->right), sym_table);
         case RCbracketT: {
             return true;
         } break;
-        case linecommentT:
         case newlineT: {
             return CorpusSecondary(&(*seed), sym_table);
         } break;
@@ -195,11 +196,15 @@ bool FunctionDef(struct bst_tok_node **seed, bst_node **sym_table) {
     if (myToken->dtype != LbracketT) return false;
     if (!FunctionDefParams(&((*seed)->left->left), sym_table, (*seed)->T->val->s)) return false;
     GetToken();
+    EnterSkip();
     if (myToken->dtype == arrowT) {
         GetToken();
         if (myToken->dtype != vartypeT) return false;
         (*seed)->right = Set_TokNode(myToken);
         GetToken();
+        if(myToken->dtype == newlineT){
+            GetToken();
+        }
         if (myToken->dtype != LCbracketT) return false;
         return CorpusSecondary(&((*seed)->left->right), &ptr->funcTree);
     } else if (myToken->dtype == LCbracketT) {

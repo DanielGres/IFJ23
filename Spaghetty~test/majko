@@ -1,0 +1,281 @@
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 01: Empty program
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 02: Unfinished multiline comment
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 03: Legal variable names
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 04: Variable names starting with numbers
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 05: Variable name as single underscore
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 06: Variable name as keyword
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 07: Legal nil initialization
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 08: Illegal nil initialization:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 09: Type deduction
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 10: Nil type deduction:
+	Wrong return code, expected 8, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 11: Comments
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 12: Variable redefinition
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 13: Variable shadowing:
+	Wrong return code, expected 0, got 3[33m--------------------------------[0m
+[1m[31mFailed[0m Test 14: Variable out of scope:
+	Wrong return code, expected 5, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 15: Undefined variable:
+	Wrong return code, expected 5, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 16: Default nil initialisation
+1c1
+< 
+---
+> nil!
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 17: Uninitialised variable:
+	Wrong return code, expected 5, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 18: Uninitialised variable (init in deeper scope):
+	Wrong return code, expected 5, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 19: Variable initialised in scope
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 20: Function call
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 21: Function call before definition
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 22: Undefined function
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 23: Function redefinition
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 24: Function call with arguments
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 25: Function with wrong parameter id:
+	Wrong return code, expected 5, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 26: Function call with wrong parameter name:
+	Wrong return code, expected 4, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 27: Function call with omitted name
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 28: Function call with illegaly omitted name:
+	Wrong return code, expected 4, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 29: Function call with wrong parameter type:
+	Wrong return code, expected 4, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 30: Function call with wrong number of params:
+	Wrong return code, expected 4, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 31: Modify function parameter:
+	Wrong return code, expected 9, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 32: Eearly return from procedure:
+	Wrong return code, expected 0, got 2[33m--------------------------------[0m
+[1m[31mFailed[0m Test 33: Try to return value from procedure:
+	Wrong return code, expected 2, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 34: Try to return without value from function
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 35: Return wrong type from function:
+	Wrong return code, expected 6, got 2[33m--------------------------------[0m
+[1m[32mPassed[0m Test 36: Return statement in global scope
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 37: Return statement in global scope
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 38: Modify constant:
+	Wrong return code, expected 9, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 39: Set constant after definition
+1c1
+< 
+---
+> 4
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 40: Incomplete variable declaration
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 41: Wrong variable init type:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 42: Omit variable value in deifinition
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 43: Assignment with wrong type:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 44: Assignment
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 45: Assign to const variable:
+	Wrong return code, expected 9, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 46: If statement
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 47: If statement with wrong condition type:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 48: If let statement
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 49: If let statement with non-null variable:
+	Wrong return code, expected 9, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 50: If let statement modify attempt:
+	Wrong return code, expected 9, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 51: While loop
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 52: While loop with wrong condition type:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 53: Discard function return value:
+	Wrong return code, expected 0, got 2[33m--------------------------------[0m
+[1m[31mFailed[0m Test 54: Call function, assign to wrong variable type:
+	Wrong return code, expected 7, got 2[33m--------------------------------[0m
+[1m[31mFailed[0m Test 55: Call procedure, try to assign:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 56: Call procedure, try to init:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 57: Arithmetic
+15c15,18
+< 
+---
+> Hello world
+> 1
+> 3
+> 3
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 58: Implicit conversion of literal
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 59: Implicit conversion of non-literal:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 60: Wrong binary types:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 61: Non null lhs in coalescence:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 62: Non-matching types in nil coalescence:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 63: Force unwrapping of non-nullable variable:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 64: Comparison of different types:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 65: Comparison of convertible types
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 66: Comparison of non-nil and nil types
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 67: Comparison of strings
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 68: Relational operators
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 69: Relational operator with illegal implicit conversion:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 70: Operator precedence
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 71: Builtin conversion functions
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 72: Int2Double with wrong type:
+	Wrong return code, expected 4, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 73: Double2Int with wrong type:
+	Wrong return code, expected 4, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 74: Builtin Length function
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 75: Builtin Length function with wrong type:
+	Wrong return code, expected 4, got 0[33m--------------------------------[0m
+[1m[31mFailed[0m Test 76: Substring
+0a1,2
+> abcdefghijk
+> cde
+1a4,8
+> 
+> 
+> 
+> 
+> done
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 77: Builtin ord function
+1c1
+< 
+---
+> 72
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 78: Builtin chr function
+1c1
+< 
+---
+> H
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 79: Init variable in while loop
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 80: Init variable in while loop - nested
+8c8,28
+< 
+---
+> foo
+> foo
+> foo
+> foo
+> foo
+> foo
+> bar
+> foo
+> foo
+> foo
+> foo
+> foo
+> foo
+> bar
+> foo
+> foo
+> foo
+> foo
+> foo
+> foo
+> bar
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 81: Illegal token instead of data type
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 82: String literal with newline character
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 83: Init Double variable with int literal
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 84: Basic multiline string
+1c1,2
+< helloworld
+---
+> hello
+> world
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 85: Multiline string with indent
+1c1,2
+<     hello    world  
+---
+>   hello
+>   world
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 86: Empty multiline string
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 87: Multiline string with empty line
+1c1,2
+< 
+---
+> a
+> b
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 88: Multiline string with indent and empty line
+1c1,2
+< 
+---
+> hello
+> world
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 89: Multiline string with bad indent
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 90: Multiline string with closing quotes not on unique line
+[33m--------------------------------[0m
+[1m[32mPassed[0m Test 91: Equality comparison with nil literal
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 92: Example - concat:
+	Wrong return code, expected 0, got 3[33m--------------------------------[0m
+[1m[31mFailed[0m Test 93: Example - factorial (iterative):
+	Wrong return code, expected 0, got 3[33m--------------------------------[0m
+[1m[31mFailed[0m Test 94: Example - factorial (recursive):
+	Wrong return code, expected 0, got 2[33m--------------------------------[0m
+[1m[31mFailed[0m Test 95: Create a variable inside while loop
+1c1
+< 54
+---
+> 543215432154321
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 96: Shadowing a variable inside if-let statement:
+	Wrong return code, expected 0, got 3[33m--------------------------------[0m
+[1m[32mPassed[0m Test 97: Implicit conversions in variable declarations
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 98: Illegal implicit conversions in variable declarations:
+	Wrong return code, expected 7, got 0[33m--------------------------------[0m
+[1m[32mPassed[0m Test 99: Implicit conversions in variable assignment
+[33m--------------------------------[0m
+[1m[31mFailed[0m Test 100: Illegal implicit conversions in variable assignment:
+	Wrong return code, expected 7, got 0

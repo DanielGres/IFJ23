@@ -2,7 +2,7 @@
 
 testNum=1
 compilerPath="../ifj23"
-
+counter=0
 # arguments:
 # 1. name of test
 # 2. input file
@@ -22,6 +22,7 @@ execTest () {
 		printf "\tWrong return code, expected $4, got $returnCode"
 	elif [ -z "$(diff --ignore-trailing-space --ignore-blank-lines tmp_output2.txt $3)" ]; then
 		printf "\e[1m\e[32mPassed\e[0m Test %02d: $1\n" $testNum
+		counter=$((counter+1))
 	else
 		printf "\e[1m\e[31mFailed\e[0m Test %02d: $1\n" $testNum
 		diff tmp_output2.txt $3 | colordiff
@@ -130,3 +131,4 @@ execTest "Implicit conversions in variable declarations" "input/var_init_implici
 execTest "Illegal implicit conversions in variable declarations" "input/var_init_implicit_convert_bad.swift" "output/empty.txt" 7
 execTest "Implicit conversions in variable assignment" "input/assignment_implicit_convert.swift" "output/empty.txt" 0
 execTest "Illegal implicit conversions in variable assignment" "input/assignment_implicit_convert_wrong.swift" "output/empty.txt" 7
+echo -e "\n passed:" $counter "/" $((testNum-1))

@@ -4,7 +4,7 @@
 #include "token.h"
 
 typedef enum {
-    NOT_NOTNIL,  // ! - NOT (!boolvar), NOTNIL (var!)
+    NOTNIL,      // !
     MUL,         // *
     DIV,         // /
     PLUS,        // +
@@ -15,14 +15,11 @@ typedef enum {
     LTN,         // <
     GEQ,         // >=
     GTN,         // >
-    LAND,        // && logical and
-    LOR,         // || logical or
     DBLQ,        // ??
     BRACKETS,    // (
     BRACKETE,    // )
-    BOOLVAR,     // bool
     VALUE,       // value
-    IDENTIFIER,  // ID (variable, number, string, function)
+    IDENTIFIER,  // ID (variable, number, string, function?)
     DOLLAR,      // $
 
     ENTERPRISE,  // E-boy

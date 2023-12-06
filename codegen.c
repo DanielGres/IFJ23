@@ -103,12 +103,6 @@ void GenerateSubTree(struct bst_tok_node *curr_root) {
         case funcT: {
             GenerateFunctionDefinition(curr_root->left);
         } break;
-        case returnT: {
-            GenerateExpression(curr_root->left, false);
-            printf("POPS LF@retval\n");
-            printf("POPFRAME\n");
-            printf("RETURN\n");
-        } break;
         default: {
             return;
         }
@@ -133,6 +127,12 @@ void GenerateSubTreeFunction(struct bst_tok_node *curr_root) {
         } break;
         case varidT: {
             CallFuncAssigment(curr_root, true);
+        } break;
+        case returnT: {
+            GenerateExpression(curr_root->left, false);
+            printf("POPS LF@retval\n");
+            printf("POPFRAME\n");
+            printf("RETURN\n");
         } break;
         default: {
             return;
@@ -266,7 +266,7 @@ void GenerateCallFunction(struct bst_tok_node *root) {
         printf("DEFVAR TF@retval\n");
         PrepareFuncCallParams(root->left);
         printf("CALL %s\n",root->T->val->s);
-        // printf("PUSHS TF@retval\n");
+        printf("PUSHS TF@retval\n");
     };
 }
 
@@ -432,6 +432,22 @@ void convertToFloatAndSwap(){
     printf("LABEL endDiv%d\n", DivJumpCounter);
 }
 
+bool checkString(){
+    DivJumpCounter++;
+    printf("POPS GF@floathelp1\n");
+    printf("TYPE GF@typeresult GF@floathelp1\n");
+    printf("PUSHS GF@floathelp1\n");
+    printf("JUMPIFNEQ string%d GF@typeresult string@string\n", DivJumpCounter);
+    printf("POPS GF@floathelp1\n");
+    printf("POPS GF@floathelp2\n");
+    printf("CONCAT GF@floathelp2 GF@floathelp2 GF@floathelp1\n");
+    printf("PUSHS GF@floathelp2\n");
+    printf("JUMP endString%d\n", DivJumpCounter);
+    printf("LABEL string%d\n",DivJumpCounter);
+    printf("ADDS\n");
+    printf("LABEL endString%d\n",DivJumpCounter);
+}
+
 void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
     switch (root->T->dtype) {
         case varidT: {
@@ -459,7 +475,7 @@ void GenerateExprInstruction(struct bst_tok_node *root, bool inFunction) {
         case operatorT: {
             if (!strcmp(root->T->val->s, "+")) {
                 convertToFloatAndSwap();
-                printf("ADDS\n");
+                checkString();
             }
             if (!strcmp(root->T->val->s, "-")) {
                 convertToFloatAndSwap();
@@ -569,14 +585,24 @@ void GenerateExpression(struct bst_tok_node *root, bool inFunction) {
 void GenerateLet(struct bst_tok_node *root, bool inFunction) {
     if (Is_In_BTree(god, root->T->val->s)) {
         printf("DEFVAR GF@%s\n", root->T->val->s);
-        GenerateExpression(root->left, inFunction);
-        printf("POPS GF@exp\n");
-        printf("MOVE GF@%s GF@exp\n", root->T->val->s);
+        if(root->left != NULL){
+            GenerateExpression(root->left, inFunction);
+            printf("POPS GF@exp\n");
+            printf("MOVE GF@%s GF@exp\n", root->T->val->s);
+        }
+        else{
+            printf("MOVE GF@%s nil@nil\n", root->T->val->s);
+        }
     } else {
         printf("DEFVAR LF@%s\n", root->T->val->s);
-        GenerateExpression(root->left, inFunction);
-        printf("POPS GF@exp\n");
-        printf("MOVE LF@%s GF@exp\n", root->T->val->s);
+        if(root->left != NULL){
+            GenerateExpression(root->left, inFunction);
+            printf("POPS GF@exp\n");
+            printf("MOVE LF@%s GF@exp\n", root->T->val->s);
+        }
+        else{
+            printf("MOVE LF@%s nil@nil\n", root->T->val->s);
+        }
     }
     // Expression call
     // Result of expression will be on top of stack
@@ -585,14 +611,25 @@ void GenerateLet(struct bst_tok_node *root, bool inFunction) {
 void GenerateVar(struct bst_tok_node *root, bool inFunction) {
     if (Is_In_BTree(god, root->T->val->s)) {
         printf("DEFVAR GF@%s\n", root->T->val->s);
-        GenerateExpression(root->left, inFunction);
-        printf("POPS GF@exp\n");
-        printf("MOVE GF@%s GF@exp\n", root->T->val->s);
+        //printf("CO TOTO MA DOPEKLA ZNAMENAT %s\n", root->left->T->val->s);
+        if(root->left != NULL){
+            GenerateExpression(root->left, inFunction);
+            printf("POPS GF@exp\n");
+            printf("MOVE GF@%s GF@exp\n", root->T->val->s);
+        }
+        else{
+            printf("MOVE GF@%s nil@nil\n", root->T->val->s);
+        }
     } else {
         printf("DEFVAR LF@%s\n", root->T->val->s);
-        GenerateExpression(root->left, inFunction);
-        printf("POPS GF@exp\n");
-        printf("MOVE LF@%s GF@exp\n", root->T->val->s);
+        if(root->left != NULL){
+            GenerateExpression(root->left, inFunction);
+            printf("POPS GF@exp\n");
+            printf("MOVE LF@%s GF@exp\n", root->T->val->s);
+        }
+        else{
+            printf("MOVE LF@%s nil@nil\n", root->T->val->s);
+        }
     }
 }
 
