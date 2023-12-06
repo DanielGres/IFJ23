@@ -6,7 +6,7 @@
 
 #include "dyn_string.h"
 
-#define STRING_ALLOC_SIZE 8  // Magic number
+#define STRING_ALLOC_SIZE 8
 
 void dynstr_add(dyn_string *str, char c) {
     if (str->len + 1 >= str->allen) {
@@ -30,7 +30,6 @@ void dynstr_init(dyn_string *str) {
         str->allen = STRING_ALLOC_SIZE;
         str->s[str->len] = '\0';
     } else {
-        printf("Internal error: dynstr_init failed to allocate memory.\n");
         exit(99);
     }
 }
@@ -45,8 +44,6 @@ void dynstr_copy(dyn_string *to, dyn_string *from) {
 }
 
 bool dynstr_cmp(dyn_string *string1, char *string2) {
-    // printf("String1 -> %s\n", string1->s);
-    // printf("String2 -> %s\n", string2);
     return (strcmp(string1->s, string2) == 0);
 }
 
