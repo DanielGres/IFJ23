@@ -28,7 +28,7 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
         if ((*root) == NULL) {
             return false;
         }
-        //printf("Name = %s IsVar: %d declared: %d\n", name, var_type, declaration);
+        // printf("Name = %s IsVar: %d declared: %d\n", name, var_type, declaration);
         STRMALCPY(((*root)->name), name);
         (*root)->type = type;
         (*root)->left = NULL;
@@ -60,12 +60,12 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
                     if (!(*root)->var_declared) {
                         (*root)->var_declared = declaration;
                     } else {
-                        printf("Chyba Anton\n");
+                        // printf("Chyba Anton\n");
                         exit(3);
                     }
                 } else {
                     if (!(*root)->var_declared) {
-                        printf("Chyba Bernolak\n");
+                        // printf("Chyba Bernolak\n");
                         exit(3);
                     } else {
                         (*root)->variable = true;
@@ -73,9 +73,10 @@ bool Insert_BTree(bst_node **root, char *name, token_type type, bool declaration
                 }
             } else {
                 if (declaration) {
-                    if (!(*root)->var_declared) {
-                        (*root)->var_declared = declaration;
+                    if (!(*root)->func_declared) {
+                        (*root)->func_declared = declaration;
                     } else {
+                        // REDECLARATION OF FUNCTION
                         exit(3);
                         // printf("Chyba\n");
                     }
@@ -157,6 +158,12 @@ struct bst_node *SubTreePointer(bst_node *root, char *name) {
         } else if (strcmp(name, ((ptr)->name)) < 0) {
             ptr = ptr->right;
         }
+    }
+}
+void InsertParam(bst_node **root, char *function, char *nick_name, char *name, token_type type) {
+    bst_node *ptr = SubTreePointer(root, function);
+    if (ptr != NULL) {
+        printf("Pridavanie parametra nick: %s, name: %s, value: %d\n", nick_name, name, type);
     }
 }
 

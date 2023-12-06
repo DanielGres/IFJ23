@@ -270,6 +270,7 @@ bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
             return true;
         } break;
         case intnumT:
+        case nilT:
         case doublenumT:
         case stringT: {
             *seed = Set_TokNode(myToken);
