@@ -19,35 +19,31 @@ bool TakeToken = true;
         TakeToken = true;    \
     }
 
-// bool Expression(struct bst_tok_node **seed) {
-//     GetToken();
-//     if (myToken->dtype != intnumT) return false;
-//     *seed = Set_TokNode(myToken);
-//     return true;
-// }
-
 bool CorpusPrime(struct bst_tok_node **seed, bst_node **sym_table) {
     GetToken();
     switch (myToken->dtype) {
+        // Let rule
         case letT: {
             *seed = Set_TokNode(myToken);
             if (!Let(&((*seed)->left), sym_table)) return false;
             if (!EndCommand()) return false;
             return CorpusPrime(&((*seed)->right), sym_table);
         } break;
+        // Vet rule
         case varT: {
             *seed = Set_TokNode(myToken);
             if (!Var(&((*seed)->left), sym_table)) return false;
             if (!EndCommand()) return false;
             return CorpusPrime(&((*seed)->right), sym_table);
         } break;
+        // Assigment or function call rule
         case varidT: {
             *seed = Set_TokNode(myToken);
             GetToken();
             if (myToken->dtype == equalT) {
                 if (!assigment(&((*seed)->left), sym_table)) return false;
             } else if (myToken->dtype == LbracketT) {
-                // SEMANTIC~CHECK
+                // Insertion into symtable
                 Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, false, false);
 
                 if (!FunctionCall(&((*seed)->left), sym_table)) return false;
@@ -151,8 +147,10 @@ bool CorpusSecondary(struct bst_tok_node **seed, bst_node **sym_table) {
 
 bool EndCommand() {
     GetToken();
+    // Check for end of command
     switch (myToken->dtype) {
         case semicolonT: {
+            // Newline can be here
             GetToken();
             if (myToken->dtype == newlineT)
                 return true;
@@ -174,6 +172,7 @@ bool EndCommand() {
     }
 }
 
+// Function skips over unnecessary newlines
 void EnterSkip() {
     if (myToken->dtype == newlineT) {
         GetToken();
@@ -188,7 +187,7 @@ bool FunctionDef(struct bst_tok_node **seed, bst_node **sym_table) {
     // SEMANTIC~CHECK
     Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, true, false);
 
-    // MAJKOV HOKUS POKUS
+    
     bst_node *ptr = SubTreePointer((*sym_table), (*seed)->T->val->s);
 
     GetToken();
@@ -242,6 +241,7 @@ bool FunctionDefParams(struct bst_tok_node **seed, bst_node **sym_table, char *n
 
             GetToken();
             if (myToken->dtype == commaT) {
+                // Name of variable or its id expected after comma
                 return FunctionDefParams(&((*seed)->left), sym_table, name);
             } else if (myToken->dtype == RbracketT) {
                 return true;
@@ -263,13 +263,13 @@ bool assigment(struct bst_tok_node **seed, bst_node **sym_table) {
 bool FunctionCall(struct bst_tok_node **seed, bst_node **sym_table) {
     // This sets up "(" to the left of varidT so code generation knows its funciton call
     *seed = Set_TokNode(myToken);
-    // Check for parameters and set them to the left
-
+    // Check for parameters and set them to the left of "("
     return FunctionCallParameters(&((*seed)->left), sym_table);
 }
 
 bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
     GetToken();
+    // Setting nodes to the left of "("
     switch (myToken->dtype) {
         case RbracketT: {
             return true;
@@ -281,6 +281,7 @@ bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
             *seed = Set_TokNode(myToken);
             GetToken();
             if (myToken->dtype == commaT) {
+                // Recursive call for parameters and their insertion to the left
                 return FunctionCallParameters(&((*seed)->left), sym_table);
             } else if (myToken->dtype == RbracketT) {
                 return true;
@@ -289,6 +290,7 @@ bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
             }
         } break;
         case varidT: {
+            
             *seed = Set_TokNode(myToken);
 
             GetToken();
@@ -296,10 +298,8 @@ bool FunctionCallParameters(struct bst_tok_node **seed, bst_node **sym_table) {
                 GetToken();
                 (*seed)->right = Set_TokNode(myToken);
                 if (myToken->dtype == varidT) {
-                    //return false;
                     Insert_BTree(sym_table, (*seed)->right->T->val->s, (*seed)->right->T->dtype, false, true);
                 }
-                // SEMANTIC~CHECK
                 GetToken();
                 if (myToken->dtype == commaT) {
                     return FunctionCallParameters(&((*seed)->left), sym_table);
@@ -328,23 +328,27 @@ bool Let(struct bst_tok_node **seed, bst_node **sym_table) {
     *seed = Set_TokNode(myToken);
     if (myToken->dtype != varidT) return false;
 
-    // SEMANTIC~CHECK
+    // Insert new variable into symbol tree
     Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, true, true);
 
     GetToken();
+    // Multiple options of definition
     switch (myToken->dtype) {
         case colonT: {
             GetToken();
             if (myToken->dtype != vartypeT && myToken->dtype != vartypeQT) return false;
             GetToken();
             if (myToken->dtype == equalT) {
+                // let var : type = expression
                 return Expression(&((*seed)->left), NULL, sym_table);
             } else {
+                // let var : type
                 TakeToken = false;
                 return true;
             }
         } break;
         case equalT: {
+            // let var = expression
             return Expression(&((*seed)->left), NULL, sym_table);
         } break;
         default: {
@@ -359,7 +363,7 @@ bool Var(struct bst_tok_node **seed, bst_node **sym_table) {
     *seed = Set_TokNode(myToken);
     if (myToken->dtype != varidT) return false;
 
-    // SEMANTIC~CHECK
+    // Insert new variable into symbol tree
     Insert_BTree(sym_table, (*seed)->T->val->s, (*seed)->T->dtype, true, true);
 
     GetToken();
@@ -369,13 +373,16 @@ bool Var(struct bst_tok_node **seed, bst_node **sym_table) {
             if (myToken->dtype != vartypeT && myToken->dtype != vartypeQT) return false;
             GetToken();
             if (myToken->dtype == equalT) {
+                // var : type = expression
                 return Expression(&((*seed)->left), NULL, sym_table);
             } else {
+                // var : type
                 TakeToken = false;
                 return true;
             }
         } break;
         case equalT: {
+            // var = expression
             return Expression(&((*seed)->left), NULL, sym_table);
         } break;
         default: {
@@ -387,6 +394,7 @@ bool Var(struct bst_tok_node **seed, bst_node **sym_table) {
 bool IfPrime(struct bst_tok_node **seed, bst_node **sym_table) {
     *seed = Set_TokNode(myToken);
     GetToken();
+    // Possible if shape, for special check if variable was initialized
     if(myToken->dtype == letT){
         (*seed)->left = Set_TokNode(myToken);
         GetToken();
@@ -399,6 +407,7 @@ bool IfPrime(struct bst_tok_node **seed, bst_node **sym_table) {
         if (!Expression(&((*seed)->left), NULL, sym_table)) return false;
     }
 
+    // Continuation of if body
     GetToken();
     EnterSkip();
     if (myToken->dtype != LCbracketT) return false;

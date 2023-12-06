@@ -510,13 +510,6 @@ void GenerateExprInstruction(struct bst_tok_node *root) {
                 convertToFloatAndSwap();
                 printf("MULS\n");
             }
-            if (!strcmp(root->T->val->s, ".")) {
-                printf("POPS GF@floathelp1\n");
-                printf("POPS GF@floathelp2\n");
-                printf("PUSHS GF@floathelp1\n");
-                printf("PUSHS GF@floathelp2\n");
-                printf("CONCATS\n");
-            }
             if (!strcmp(root->T->val->s, "/")) {
                 convertToFloatAndSwap();
                 DivJumpCounter++;
