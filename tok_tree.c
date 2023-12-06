@@ -1,7 +1,13 @@
-// Implementace překladače imperativního jazyka IFJ23
-// Daniel Greš --- xgresd00
-// Mário Mihál --- xmihal13
-
+/**
+ * @file tok_tree.c
+ * @author xkotuc02, xmihal13
+ * @brief Procedures for operations with AST tree
+ * @version 0.1
+ * @date 2023-12-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "tok_tree.h"
 
 void Init_TokTree(struct bst_tok_node *root) {
@@ -24,11 +30,6 @@ struct bst_tok_node *Insert_TokTree(struct bst_tok_node *root, bool isleft, toke
     return root;
 }
 
-void Ja(struct bst_tok_node *to, struct bst_tok_node *from)  // TODO ani za boha toto nenechajte JA
-{
-    *to = *from;
-}
-
 struct bst_tok_node *Create_TokTree(token *T_from, struct bst_tok_node *Left_root, struct bst_tok_node *Right_root) {
     struct bst_tok_node *root = Set_TokNode(T_from);
     root->right = Right_root;
@@ -49,19 +50,7 @@ void inorderTraversal(struct bst_tok_node *root) {
     } else {
         inorderTraversal((root->right));
         dynstr_print(root->T->val);
-        // printf("%d", root->T->dtype);
         inorderTraversal((root->left));
-    }
-}
-
-void PostorderTraversal(struct bst_tok_node *root) {
-    if (root == NULL) {
-        return;
-    } else {
-        PostorderTraversal((root->right));
-        dynstr_print(root->T->val);
-        // printf("%d", root->T->dtype);
-        PostorderTraversal((root->left));
     }
 }
 

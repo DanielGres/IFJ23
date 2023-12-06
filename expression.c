@@ -1,8 +1,16 @@
+/**
+ * @file expression.c
+ * @author xmihal13,xhanco00
+ * @brief 
+ * @version 0.1
+ * @date 2023-12-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "expression.h"
-
 #include "syntax.h"
-
-// I LOVE BURRITO
 
 extern token *myToken;
 extern bool TakeToken;
@@ -12,7 +20,6 @@ extern bool TakeToken;
     } else {                 \
         TakeToken = true;    \
     }
-
 
 table_sign_enum prec_table[T_SIZE][T_SIZE] = {
     // 0  1  2  3  4  5  6  7  8  9
@@ -27,7 +34,6 @@ table_sign_enum prec_table[T_SIZE][T_SIZE] = {
     {R, R, R, R, R, F, R, E, E, R},  // id
     {S, S, S, S, S, S, E, S, S, E}   // $
 };
-// TREBA PREROBIT NA CUSTOM $
 
 int get_index_enum(table_symbol_enum symbolE) {
     switch (symbolE) {
@@ -65,7 +71,6 @@ int get_index_enum(table_symbol_enum symbolE) {
 }
 
 table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
-    // DEL printf("Token :%d\n", loc_token->dtype);
     if (dynstr_cmp(loc_token->val, "!")) {
         return NOTNIL;
     } else if (dynstr_cmp(loc_token->val, "*")) {
@@ -103,7 +108,6 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
         return DOLLAR;
     }
 }
-// TO~DO Strom na semantiku
 int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
     table_symbol_enum inputed_symbol, top;
     table_sign_enum operation;
@@ -115,29 +119,19 @@ int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
     bool functi_switch = false;
     table_symbol_enum stack_index;
 
-    // buffer for rules
     dyn_string buffer;
     dynstr_init(&buffer);
 
     GetToken();
     do {
-        // GET INPUT SYMBOL
         inputed_symbol = get_table_symbol(myToken, NULL);
-        // HELP PRINT
-        // printf("%d\n", inputed_symbol);
 
-        // GET OPERATION
-
-        // IF E SKIP IT
         if (prec_stack->top->symbol == ENTERPRISE) {
             stack_index = prec_stack->top->next->symbol;
         } else {
             stack_index = prec_stack->top->symbol;
         }
         operation = prec_table[get_index_enum(stack_index)][get_index_enum(inputed_symbol)];
-
-        // CHECK PRINT
-        // printf("Operation :%d FOR STACK:%d AND INPUT:%d\n", operation, get_index_enum(stack_index), get_index_enum(inputed_symbol));
 
         switch (operation) {
             case S:
@@ -195,19 +189,12 @@ int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                         dynstr_add(&buffer, '(');
                     } else if (top == BRACKETE) {
                         dynstr_add(&buffer, ')');
-                    }
-                    // else if (top == LAND) {
-                    //     dynstr_addstr(&buffer, "&&");
-                    // } else if (top == LOR) {
-                    //     dynstr_addstr(&buffer, "||");
-                    // } 
-                    else {
-                        exit(69);
+                    } else {
+                        exit(99);
                     }
                     ptr = ptr->next;
                     top = ptr->symbol;
                 }
-                //dynstr_print(&buffer);
                 //  Pick Rule
                 if (dynstr_cmp(&buffer, "i")) {
                     if (prec_stack->top->tok_node->T->dtype == varidT) {
@@ -259,9 +246,7 @@ int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                     struct bst_tok_node *root = SetChildNodes(parent, LeftChild, NULL);
                     stack_push_node(prec_stack, ENTERPRISE, root);
 
-                }
-                // TODO pridat ?? a !
-                else {
+                } else {
                     exit(2);
                 }
                 stack_pop_UndTop(prec_stack);
@@ -274,9 +259,6 @@ int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
             default:
                 break;
         }
-        // DEL stack_push(prec_stack, inputed_symbol, myToken);
-
-        //stack_print(prec_stack->top);
         iteration++;
 
         if (prec_stack->top->symbol == ENTERPRISE) {
@@ -301,7 +283,7 @@ void T_Body(stack *my_stack) {
         stack_pop(my_stack);
         struct bst_tok_node *tmpNode3 = my_stack->top->tok_node;
         stack_pop(my_stack);
-        
+
         struct bst_tok_node *root = SetChildNodes(tmpNode2, tmpNode1, tmpNode3);
         stack_push_node(my_stack, ENTERPRISE, root);
     }

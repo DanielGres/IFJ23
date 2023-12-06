@@ -1,3 +1,13 @@
+/**
+ * @file stack.h
+ * @author Daniel Greš, Mario Mihál
+ * @brief
+ * @version 0.1
+ * @date 2023-12-07
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 #ifndef STACK_H
 #define STACK_H
 #include "tok_tree.h"
@@ -22,7 +32,7 @@ typedef enum {
     IDENTIFIER,  // ID (variable, number, string, function?)
     DOLLAR,      // $
 
-    ENTERPRISE,  // E-boy
+    ENTERPRISE,  // E from Rule
     SHIFT        // Shift
 } table_symbol_enum;
 
@@ -126,6 +136,13 @@ stack_item *stack_top(stack *precedent_stack);
  */
 void stack_free(stack *precedent_stack);
 
+/**
+ * @brief Pops stack item under top
+ *
+ * @param precedent_stack
+ * @return true if poped
+ * @return false if can't be popped
+ */
 bool stack_pop_UndTop(stack *precedent_stack);
 
 #endif

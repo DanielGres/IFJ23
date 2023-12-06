@@ -1,3 +1,13 @@
+/**
+ * @file expression.h
+ * @author Mário Mihál
+ * @brief 
+ * @version 0.1
+ * @date 2023-12-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
@@ -20,13 +30,6 @@ typedef enum {
     F   // Function call
 } table_sign_enum;
 
-typedef enum {
-    IF_CBracket,  // IF starting with Brackets, ending with '{'
-    IF_Let,       // IF starting with let, ending with '{'
-    Function,     // Function, ending with ','/')'
-    Declaration   // Declaration, ending with Error or ';'
-} expression_case;
-
 /**
  * @brief boolean function checks if the next given token is a valid expression
  *
@@ -38,6 +41,11 @@ typedef enum {
  */
 int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table);
 
+/**
+ * @brief The function that generates AST tree from top 3 nodes on the stack, and then pushes new node onto stack
+ *
+ * @param my_stack
+ */
 void T_Body(stack *my_stack);
 
 #endif

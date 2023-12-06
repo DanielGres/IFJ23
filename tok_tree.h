@@ -1,6 +1,13 @@
-// Implementace překladače imperativního jazyka IFJ23
-// Daniel Greš --- xgresd00
-// Mário Mihál --- xmihal13
+/**
+ * @file tok_tree.h
+ * @author Branislav Kotúč, Mário Mihál
+ * @brief Header for ATS tree functions
+ * @version 0.1
+ * @date 2023-12-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #ifndef TOK_TREE_H
 #define TOK_TREE_H
@@ -43,14 +50,6 @@ struct bst_tok_node *Set_TokNode(token *T_from);
 struct bst_tok_node *Insert_TokTree(struct bst_tok_node *root, bool isleft, token *T_from);
 
 /**
- * @brief function sets the DST as SRC
- *
- * @param to DST
- * @param from SRC
- */
-void Ja(struct bst_tok_node *to, struct bst_tok_node *from);
-
-/**
  * @brief function creates tree from the given first parameter and inserts left and right root from the next 2 given parameters
  *
  * @param T_from start root node from which are left and right root inserted
@@ -69,7 +68,6 @@ struct bst_tok_node *SetChildNodes(struct bst_tok_node *root, struct bst_tok_nod
  */
 void inorderTraversal(struct bst_tok_node *root);
 
-void PostorderTraversal(struct bst_tok_node *root);
 /**
  * @brief function deletes the whole token BST
  *

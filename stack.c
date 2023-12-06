@@ -1,6 +1,13 @@
-// Implementace překladače imperativního jazyka IFJ22
-// Daniel Greš --- xgresd00
-// Mário Mihál --- xmihal13
+/**
+ * @file stack.c
+ * @author xgresd00, xmihal13
+ * @brief
+ * @version 0.1
+ * @date 2023-12-07
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 
 #include "stack.h"
 
@@ -9,20 +16,20 @@ void stack_init(stack *precedent_stack) {
 }
 
 bool stack_push(stack *precedent_stack, table_symbol_enum symbol, token *T) {
-    stack_item *new_item = malloc(sizeof(stack_item) + 32);  ////PORIESIT NESKOR
+    stack_item *new_item = malloc(sizeof(stack_item) + 32);
     if (new_item == NULL) {
         return false;
     }
 
     (new_item)->symbol = symbol;
-    (new_item)->tok_node = Set_TokNode(T);  // TO~DO RENAME
+    (new_item)->tok_node = Set_TokNode(T);
     (new_item)->next = precedent_stack->top;
     precedent_stack->top = new_item;
 
     return true;
 }
 bool stack_push_node(stack *precedent_stack, table_symbol_enum symbol, struct bst_tok_node *node) {
-    stack_item *new_item = malloc(sizeof(stack_item) + 16);  ////PORIESIT NESKOR
+    stack_item *new_item = malloc(sizeof(stack_item) + 16);
     if (new_item == NULL) {
         return false;
     }
@@ -34,7 +41,7 @@ bool stack_push_node(stack *precedent_stack, table_symbol_enum symbol, struct bs
 }
 
 bool item_push(stack *precedent_stack, table_symbol_enum symbol, stack_item *item_next) {
-    stack_item *new_item = (stack_item *)malloc(sizeof(stack_item) + 16);  // PORIESIT NESKOR
+    stack_item *new_item = (stack_item *)malloc(sizeof(stack_item) + 16);
 
     if (new_item == NULL)
         return false;
