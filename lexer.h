@@ -14,7 +14,7 @@
 
 /**
  * @brief Enumerated type for the states of the finite state machine
- * 
+ *
  */
 typedef enum {
     START_STATE,

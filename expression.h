@@ -10,21 +10,7 @@
 #include "tok_tree.h"
 #include "token.h"
 
-#define T_SIZE 10
-
-// TO~DELETE
-// typedef enum
-// {
-//     I_NOTNIL,       // 0 !
-//     I_MUL_DIV,      // 1 */
-//     I_PLUS_MINUS,   // 2 +-
-//     I_EN_OP,        // 3 == != < > <= >=
-//     I_DBLQST,       // 4 ??
-//     I_BRACKETS,     // 5 (
-//     I_BRACKETE,     // 6 )
-//     I_DATA,         // 7 id
-//     I_DOLLAR        // 8 dollar
-// } table_index_enum;
+#define T_SIZE 12
 
 typedef enum {
     S,  // < SHIFT
@@ -46,10 +32,11 @@ typedef enum {
  *
  * @param condition changes if current symbol is either "$" sign or brackete which sets the condition variable to 1 for ";" or 2 for brackete
  * @param root link to the table of symbols
- * @return true if the token is an expression
- * @return false if it does not fulfill any of the "if" or "switch" conditions
+ * @return if > 0 then [1 - int, 2 - float, 3 - string]
+ * @return if < 0 then [-1 intNill, -2 floatNill, -3 stringNill]
+ * @return 0 -> bad expression
  */
-bool Expression(struct bst_tok_node **seed, char *EOE,bst_node **sym_table);
+int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table);
 
 void T_Body(stack *my_stack);
 

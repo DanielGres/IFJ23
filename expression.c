@@ -14,23 +14,24 @@ extern bool TakeToken;
     }
 
 table_sign_enum prec_table[T_SIZE][T_SIZE] = {
-    // 0  1  2  3  4  5  6  7  8  9
-    {E, R, R, R, R, E, R, E, E, R},  // !
-    {S, R, R, R, R, S, R, S, S, R},  // */
-    {S, S, R, R, R, S, R, S, S, R},  // +-
-    {S, S, S, R, R, S, R, S, S, R},  // == != <= >= < >
-    {S, S, S, S, S, S, R, S, S, R},  // ??
-    {S, S, S, S, S, S, N, S, S, E},  // (
-    {E, R, R, R, R, E, R, E, E, R},  // )
-    {E, R, R, R, R, E, R, E, E, R},  // value
-    {R, R, R, R, R, F, R, E, E, R},  // id
-    {S, S, S, S, S, S, E, S, S, E}   // $
+    // 0  1  2  3  4  5  6  7  8  9 10 11
+    {E, R, R, R, R, R, R, R, R, E, E, R},  // !
+    {S, R, R, R, R, R, S, R, S, S, S, R},  // */
+    {S, S, R, R, R, R, S, R, S, S, S, R},  // +-
+    {S, S, S, R, R, R, S, R, S, S, S, R},  // == != <= >= < >
+    {S, S, S, R, R, R, S, R, S, S, S, R},  // && ||
+    {S, S, S, S, S, S, S, R, S, S, S, R},  // ??
+    {S, S, S, S, S, S, S, N, S, S, S, E},  // (
+    {E, R, R, R, R, R, E, R, R, E, E, R},  // )
+    {S, E, E, S, S, R, E, R, E, E, E, R},  // bool variable
+    {E, R, R, R, R, R, E, R, E, E, E, R},  // value
+    {R, R, R, R, R, R, F, R, E, E, E, R},  // id
+    {S, S, S, S, S, S, S, E, S, S, S, E}   // $
 };
-// TREBA PREROBIT NA CUSTOM $
 
 int get_index_enum(table_symbol_enum symbolE) {
     switch (symbolE) {
-        case NOTNIL:
+        case NOT_NOTNIL:
             return 0;
         case MUL:
         case DIV:
@@ -45,18 +46,23 @@ int get_index_enum(table_symbol_enum symbolE) {
         case GEQ:
         case GTN:
             return 3;
-        case DBLQ:
+        case LAND:
+        case LOR:
             return 4;
-        case BRACKETS:
+        case DBLQ:
             return 5;
-        case BRACKETE:
+        case BRACKETS:
             return 6;
+        case BRACKETE:
+            return 7;
+        case BOOLVAR:
+            return 8;
         case VALUE:
-            return 8;
-        case IDENTIFIER:
-            return 8;
-        case DOLLAR:
             return 9;
+        case IDENTIFIER:
+            return 10;
+        case DOLLAR:
+            return 11;
         default:
             return 33;
             break;
@@ -66,7 +72,7 @@ int get_index_enum(table_symbol_enum symbolE) {
 table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
     // DEL printf("Token :%d\n", loc_token->dtype);
     if (dynstr_cmp(loc_token->val, "!")) {
-        return NOTNIL;
+        return NOT_NOTNIL;
     } else if (dynstr_cmp(loc_token->val, "*")) {
         return MUL;
     } else if (dynstr_cmp(loc_token->val, "/")) {
@@ -87,12 +93,18 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
         return LTN;
     } else if (dynstr_cmp(loc_token->val, ">")) {
         return GTN;
+    } else if (dynstr_cmp(loc_token->val, "&&")) {
+        return LAND;
+    } else if (dynstr_cmp(loc_token->val, "||")) {
+        return LOR;
     } else if (dynstr_cmp(loc_token->val, "??")) {
         return DBLQ;
     } else if (dynstr_cmp(loc_token->val, "(")) {
         return BRACKETS;
     } else if (dynstr_cmp(loc_token->val, ")")) {
         return BRACKETE;
+    } else if (loc_token->dtype == boolT) {
+        return BOOLVAR;
     } else if ((loc_token->dtype == intnumT) || (loc_token->dtype == doublenumT) || (loc_token->dtype == stringT)) {
         return VALUE;
     } else if ((loc_token->dtype == varidT)) {
@@ -103,7 +115,8 @@ table_symbol_enum get_table_symbol(token *loc_token, bst_node **root) {
     }
 }
 // TO~DO Strom na semantiku
-bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
+int Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
+
     table_symbol_enum inputed_symbol, top;
     table_sign_enum operation;
     stack_item *ptr;
@@ -166,7 +179,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                         dynstr_add(&buffer, 'i');
                     } else if (top == ENTERPRISE) {
                         dynstr_add(&buffer, 'E');
-                    } else if (top == NOTNIL) {
+                    } else if (top == NOT_NOTNIL) {
                         dynstr_add(&buffer, '!');
                     } else if (top == MUL) {
                         dynstr_add(&buffer, '*');
@@ -194,6 +207,10 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                         dynstr_add(&buffer, '(');
                     } else if (top == BRACKETE) {
                         dynstr_add(&buffer, ')');
+                    } else if (top == LAND) {
+                        dynstr_addstr(&buffer, "&&");
+                    } else if (top == LOR) {
+                        dynstr_addstr(&buffer, "||");
                     } else {
                         exit(69);
                     }
@@ -232,6 +249,26 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
                     T_Body(prec_stack);
                 } else if (dynstr_cmp(&buffer, "E>=E")) {
                     T_Body(prec_stack);
+                } else if (dynstr_cmp(&buffer, "E??E")) {
+                    T_Body(prec_stack);
+                } else if (dynstr_cmp(&buffer, "E&&E")) {
+                    T_Body(prec_stack);
+                } else if (dynstr_cmp(&buffer, "E||E")) {
+                    T_Body(prec_stack);
+                }
+                // NOTNIL
+                else if (dynstr_cmp(&buffer, "!E")) {
+                    stack_pop(prec_stack);
+                }
+                // NEGATION
+                else if (dynstr_cmp(&buffer, "E!")) {
+                    struct bst_tok_node *parent = prec_stack->top->tok_node;
+                    stack_pop(prec_stack);
+                    struct bst_tok_node *LeftChild = prec_stack->top->tok_node;
+                    stack_pop(prec_stack);
+                    struct bst_tok_node *root = SetChildNodes(parent, LeftChild, NULL);
+                    stack_push_node(prec_stack, ENTERPRISE, root);
+
                 }
                 // TODO pridat ?? a !
                 else {
@@ -249,7 +286,7 @@ bool Expression(struct bst_tok_node **seed, char *EOE, bst_node **sym_table) {
         }
         // DEL stack_push(prec_stack, inputed_symbol, myToken);
 
-        //stack_print(prec_stack->top);
+        // stack_print(prec_stack->top);
         iteration++;
 
         if (prec_stack->top->symbol == ENTERPRISE) {
